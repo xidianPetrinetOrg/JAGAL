@@ -4,12 +4,13 @@ package graph.visualization;
 import graph.Edge;
 import graph.Vertex;
 import graph.abstr.AbstractGraph;
-import graphic.GraphicUtils;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Iterator;
+
+import de.invation.code.toval.graphic.GraphicUtils;
 
 public abstract class VisualGraph<V extends Vertex<U>, E extends Edge<V>, U> extends VisualVertexSet<V>{
 		private static final long serialVersionUID = 1L;

@@ -2,7 +2,6 @@ package graph.visualization;
 
 
 import graph.Vertex;
-import graphic.GraphicUtils;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,6 +12,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.JPanel;
+
+import de.invation.code.toval.graphic.GraphicUtils;
 
 public class VisualVertexSet<V extends Vertex<?>> extends JPanel{
 	private static final long serialVersionUID = 1L;

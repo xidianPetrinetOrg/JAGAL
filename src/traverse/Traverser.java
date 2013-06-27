@@ -15,8 +15,9 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import types.HashList;
-import validate.ParameterException;
+import de.invation.code.toval.types.HashList;
+import de.invation.code.toval.validate.ParameterException;
+
 
 public class Traverser<V extends Object> implements Iterator<V>{
 	

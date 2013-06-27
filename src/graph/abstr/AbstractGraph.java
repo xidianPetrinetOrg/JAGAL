@@ -17,8 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.invation.code.toval.types.HashList;
+
 import traverse.Traversable;
-import types.HashList;
 
 /**
  * Directed Graph!

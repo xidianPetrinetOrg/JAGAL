@@ -10,13 +10,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+import de.invation.code.toval.validate.ParameterException.ErrorCode;
+
 import ts.Event;
 import ts.EventNotFoundException;
 import ts.State;
 import ts.abstr.AbstractTransitionSystem;
-import validate.ParameterException;
-import validate.Validate;
-import validate.ParameterException.ErrorCode;
 
 
 public abstract class AbstractLabeledTransitionSystem<E extends Event, S extends State> extends AbstractTransitionSystem<S, LabeledTransitionRelation<S, E>>{

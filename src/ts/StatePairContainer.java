@@ -6,7 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import misc.SetUtils;
+import de.invation.code.toval.misc.SetUtils;
+
 
 
 public class StatePairContainer<S extends State> {

@@ -12,9 +12,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+
 import traverse.Traversable;
-import validate.ParameterException;
-import validate.Validate;
 
 public class SCCTarjan<V extends Object> {
 

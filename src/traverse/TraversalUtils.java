@@ -13,10 +13,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+
 import traverse.Traverser.TraversalMode;
 import traverse.algorithms.SCCTarjan;
-import validate.ParameterException;
-import validate.Validate;
 
 public class TraversalUtils {
 	

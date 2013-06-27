@@ -1,9 +1,9 @@
 package graph.algorithm.coloring;
 
+import de.invation.code.toval.validate.ParameterException;
 import graph.Edge;
 import graph.Vertex;
 import graph.abstr.AbstractGraph;
-import validate.ParameterException;
 
 public interface GraphColoring {
 	

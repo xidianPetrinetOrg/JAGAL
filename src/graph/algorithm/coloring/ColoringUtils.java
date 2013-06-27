@@ -9,8 +9,9 @@ import graph.exception.GraphException;
 import java.util.HashSet;
 import java.util.Set;
 
-import validate.ParameterException;
-import validate.Validate;
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+
 
 public class ColoringUtils {
 	
