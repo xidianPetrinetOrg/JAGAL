@@ -1,6 +1,6 @@
-package ts.util;
+package de.uni.freiburg.iig.telematik.jagal.ts.util;
 
-import ts.State;
+import de.uni.freiburg.iig.telematik.jagal.ts.State;
 
 
 public class TSUtils {

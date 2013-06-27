@@ -1,4 +1,4 @@
-package ts.abstr;
+package de.uni.freiburg.iig.telematik.jagal.ts.abstr;
 
 
 import java.util.ArrayList;
@@ -12,10 +12,10 @@ import java.util.Set;
 
 import de.uni.freiburg.iig.telematik.jagal.graph.abstr.AbstractGraph;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.ts.EventNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.ts.State;
+import de.uni.freiburg.iig.telematik.jagal.ts.TransitionRelation;
 
-import ts.EventNotFoundException;
-import ts.State;
-import ts.TransitionRelation;
 
 public abstract class AbstractTransitionSystem<S extends State, T extends TransitionRelation<S>> extends AbstractGraph<S, T, Object> {
 	

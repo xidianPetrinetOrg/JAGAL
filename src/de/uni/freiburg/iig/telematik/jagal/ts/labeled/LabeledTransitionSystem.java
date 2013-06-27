@@ -1,9 +1,10 @@
-package ts.labeled;
+package de.uni.freiburg.iig.telematik.jagal.ts.labeled;
 
 import java.util.Collection;
 
-import ts.Event;
-import ts.State;
+import de.uni.freiburg.iig.telematik.jagal.ts.Event;
+import de.uni.freiburg.iig.telematik.jagal.ts.State;
+
 
 
 public class LabeledTransitionSystem extends AbstractLabeledTransitionSystem<Event, State> {

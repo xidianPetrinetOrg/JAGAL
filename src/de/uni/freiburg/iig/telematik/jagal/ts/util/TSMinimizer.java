@@ -1,14 +1,15 @@
-package ts.util;
+package de.uni.freiburg.iig.telematik.jagal.ts.util;
 
 import java.util.HashSet;
 
-import ts.Event;
-import ts.MarkingStatePairContainer;
-import ts.State;
-import ts.StatePair;
-import ts.StatePairContainer;
-import ts.labeled.AbstractLabeledTransitionSystem;
-import ts.labeled.LabeledTransitionSystem;
+import de.uni.freiburg.iig.telematik.jagal.ts.Event;
+import de.uni.freiburg.iig.telematik.jagal.ts.MarkingStatePairContainer;
+import de.uni.freiburg.iig.telematik.jagal.ts.State;
+import de.uni.freiburg.iig.telematik.jagal.ts.StatePair;
+import de.uni.freiburg.iig.telematik.jagal.ts.StatePairContainer;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.AbstractLabeledTransitionSystem;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.LabeledTransitionSystem;
+
 
 
 public class TSMinimizer {

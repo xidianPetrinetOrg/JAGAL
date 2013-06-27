@@ -1,4 +1,4 @@
-package ts.labeled;
+package de.uni.freiburg.iig.telematik.jagal.ts.labeled;
 
 
 import java.util.ArrayList;
@@ -13,11 +13,11 @@ import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.GraphException;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.ts.Event;
+import de.uni.freiburg.iig.telematik.jagal.ts.EventNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.ts.State;
+import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
 
-import ts.Event;
-import ts.EventNotFoundException;
-import ts.State;
-import ts.abstr.AbstractTransitionSystem;
 
 
 public abstract class AbstractLabeledTransitionSystem<E extends Event, S extends State> extends AbstractTransitionSystem<S, LabeledTransitionRelation<S, E>>{

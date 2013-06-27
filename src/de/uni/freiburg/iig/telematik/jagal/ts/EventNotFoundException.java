@@ -1,7 +1,7 @@
-package ts;
+package de.uni.freiburg.iig.telematik.jagal.ts;
 
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.GraphException;
-import ts.labeled.AbstractLabeledTransitionSystem;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.AbstractLabeledTransitionSystem;
 
 
 

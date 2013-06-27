@@ -1,8 +1,8 @@
-package ts.labeled;
+package de.uni.freiburg.iig.telematik.jagal.ts.labeled;
 
-import ts.Event;
-import ts.State;
-import ts.TransitionRelation;
+import de.uni.freiburg.iig.telematik.jagal.ts.Event;
+import de.uni.freiburg.iig.telematik.jagal.ts.State;
+import de.uni.freiburg.iig.telematik.jagal.ts.TransitionRelation;
 
 public class LabeledTransitionRelation<S extends State, E extends Event> extends TransitionRelation<S>{
 	

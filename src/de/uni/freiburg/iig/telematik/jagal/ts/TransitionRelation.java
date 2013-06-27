@@ -1,4 +1,4 @@
-package ts;
+package de.uni.freiburg.iig.telematik.jagal.ts;
 
 import de.uni.freiburg.iig.telematik.jagal.graph.Edge;
 

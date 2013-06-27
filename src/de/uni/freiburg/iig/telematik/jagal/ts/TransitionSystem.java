@@ -1,8 +1,9 @@
-package ts;
+package de.uni.freiburg.iig.telematik.jagal.ts;
 
 import java.util.Collection;
 
-import ts.abstr.AbstractTransitionSystem;
+import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
+
 
 public class TransitionSystem extends AbstractTransitionSystem<State, TransitionRelation<State>> {
 	
