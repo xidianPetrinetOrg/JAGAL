@@ -1,4 +1,4 @@
-package traverse.algorithms;
+package de.uni.freiburg.iig.telematik.jagal.traverse.algorithms;
 
 
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.graph.Graph;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.traverse.Traversable;
 
-import traverse.Traversable;
 
 public class SCCTarjan<V extends Object> {
 

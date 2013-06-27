@@ -18,8 +18,8 @@ import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.EdgeNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.GraphException;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.traverse.Traversable;
 
-import traverse.Traversable;
 
 /**
  * Directed Graph!

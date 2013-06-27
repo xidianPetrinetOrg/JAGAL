@@ -1,4 +1,4 @@
-package traverse;
+package de.uni.freiburg.iig.telematik.jagal.traverse;
 
 
 import java.util.Set;
