@@ -1,8 +1,5 @@
 package traverse;
 
-import graph.Graph;
-import graph.Vertex;
-import graph.exception.VertexNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +14,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import de.invation.code.toval.types.HashList;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.jagal.graph.Graph;
+import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
+import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 
 
 public class Traverser<V extends Object> implements Iterator<V>{

@@ -1,6 +1,6 @@
 package ts;
 
-import graph.Edge;
+import de.uni.freiburg.iig.telematik.jagal.graph.Edge;
 
 public class TransitionRelation<S extends State> extends Edge<S> {
 	

@@ -1,8 +1,5 @@
 package traverse;
 
-import graph.Vertex;
-import graph.abstr.AbstractGraph;
-import graph.exception.VertexNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +12,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
+import de.uni.freiburg.iig.telematik.jagal.graph.abstr.AbstractGraph;
+import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 
 import traverse.Traverser.TraversalMode;
 import traverse.algorithms.SCCTarjan;

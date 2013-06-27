@@ -1,10 +1,11 @@
 package ts;
 
-import graph.Vertex;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 
 
 public class State extends Vertex<Object> {

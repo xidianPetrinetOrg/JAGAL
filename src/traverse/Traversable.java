@@ -1,10 +1,10 @@
 package traverse;
 
-import graph.exception.VertexNotFoundException;
 
 import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 
 
 public interface Traversable<G extends Object> {

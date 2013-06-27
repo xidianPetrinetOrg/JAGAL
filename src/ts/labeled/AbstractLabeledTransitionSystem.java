@@ -1,7 +1,5 @@
 package ts.labeled;
 
-import graph.exception.GraphException;
-import graph.exception.VertexNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +11,8 @@ import java.util.Set;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.uni.freiburg.iig.telematik.jagal.graph.exception.GraphException;
+import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 
 import ts.Event;
 import ts.EventNotFoundException;
