@@ -17,7 +17,7 @@ public class TSMinimizer {
 	public static <E extends Event, S extends State> void minimize(AbstractLabeledTransitionSystem<E, S> ts){
 		
 		
-		if(!ts.isDFN()){
+		if(!ts.isDFA()){
 			throw new IllegalArgumentException("This minimization only operates on DFNs");
 		}
 		MarkingStatePairContainer<S> container = new MarkingStatePairContainer<S>(StatePairContainer.getStatePairsFrom(ts.getStates()));

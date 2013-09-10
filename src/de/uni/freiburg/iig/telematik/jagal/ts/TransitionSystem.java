@@ -2,6 +2,8 @@ package de.uni.freiburg.iig.telematik.jagal.ts;
 
 import java.util.Collection;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
 
 
@@ -39,6 +41,24 @@ public class TransitionSystem extends AbstractTransitionSystem<State, Transition
 		ts.removeEdge(relation1);
 //		ts.removeAllEdges(ts.getRelations());
 		System.out.println(ts);
+	}
+
+	@Override
+	public State createNewState(String name) throws ParameterException {
+		Validate.notNull(name);
+		return new State(name);
+	}
+
+	@Override
+	public TransitionRelation<State> createNewTransitionRelation(State sourceState, State targetState) throws ParameterException {
+		Validate.notNull(sourceState);
+		Validate.notNull(targetState);
+		return new TransitionRelation<State>(sourceState, targetState);
+	}
+
+	@Override
+	public TransitionSystem createNewInstance() {
+		return new TransitionSystem();
 	}
 
 }

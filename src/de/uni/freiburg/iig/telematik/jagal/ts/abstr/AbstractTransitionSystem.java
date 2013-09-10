@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.graph.abstr.AbstractGraph;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.EventNotFoundException;
@@ -43,6 +44,29 @@ public abstract class AbstractTransitionSystem<S extends State, T extends Transi
 		super(name, states);
 	}
 	
+	/**
+	 * Creates a new state of type <code>S</code> with the given name.<br>
+	 * This method is abstract because only subclasses know the type <code>S</code> of their states.
+	 * @param name The name for the new state.
+	 * @return A new state of type <code>S</code> with the given name.
+	 */
+	public abstract S createNewState(String name) throws ParameterException;
+	
+	/**
+	 * Creates a new relation of type <code>T</code> from the given source and target states.
+	 * This method is abstract because only subclasses know the type <code>T</code> of their relations.
+	 * @param sourceState The state where the relation starts
+	 * @param targetState The state where the relation ends
+	 * @return A new relation of type <code>T</code>.
+	 */
+	public abstract T createNewTransitionRelation(S sourceState, S targetState) throws ParameterException;
+	
+	/**
+	 * Creates a new transition system instance.<br>
+	 * This method is abstract because only subclasses know their own type.
+	 * @return A new transition system instance.
+	 */
+	public abstract AbstractTransitionSystem<S, T> createNewInstance();
 	
 	/**
 	 * This method is never called.
