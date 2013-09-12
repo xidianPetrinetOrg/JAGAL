@@ -12,7 +12,7 @@ import de.uni.freiburg.iig.telematik.jagal.ts.TransitionRelation;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.AbstractLabeledTransitionSystem;
 import de.uni.freiburg.iig.telematik.jagal.ts.serialize.formats.TSSerializationFormat;
-import de.uni.freiburg.iig.telematik.jagal.ts.serialize.serializer.LTSSerializer_SoleCarmona;
+import de.uni.freiburg.iig.telematik.jagal.ts.serialize.serializer.LTSSerializer_Petrify;
 
 public class TSSerialization {
 	
@@ -25,9 +25,9 @@ public class TSSerialization {
 	getSerializer(AbstractTransitionSystem<S,T> ts, TSSerializationFormat format) throws ParameterException, SerializationException{
 		
 		switch(format){
-		case SOLE_CARMONA:
+		case PETRIFY:
 			if(ts instanceof AbstractLabeledTransitionSystem)
-				return new LTSSerializer_SoleCarmona(ts);
+				return new LTSSerializer_Petrify(ts);
 			throw new SerializationException(SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, ts.getClass());
 		default:
 			throw new SerializationException(SerializationException.ErrorCode.UNSUPPORTED_FORMAT, format);

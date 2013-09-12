@@ -86,6 +86,26 @@ public abstract class AbstractLabeledTransitionSystem<E extends Event, S extends
 		return Collections.unmodifiableSet(events);
 	}
 	
+	public Set<Event> getLambdaEvents(){
+		Set<Event> result = new HashSet<Event>();
+		for(Event event: getEvents()){
+			if(event.isLambdaEvent()){
+				result.add(event);
+			}
+		}
+		return result;
+	}
+	
+	public Set<Event> getEventsWithLabel(String label){
+		Set<Event> result = new HashSet<Event>();
+		for(Event event: events){
+			if(event.getLabel().equals(label)){
+				result.add(event);
+			}
+		}
+		return result;
+	}
+	
 	public E getEvent(String name){
 		for(E event: events){
 			if(event.getName().equals(name)){
@@ -354,7 +374,7 @@ public abstract class AbstractLabeledTransitionSystem<E extends Event, S extends
 		return false;
 	}
 
-	protected void validateEvent(E event) throws ParameterException{
+	public void validateEvent(E event) throws ParameterException{
 		Validate.notNull(event);
 		if(!contains(event))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unknown event");

@@ -5,7 +5,7 @@ import de.invation.code.toval.file.FileFormat;
 
 public enum TSSerializationFormat {
 	
-	SOLE_CARMONA(new TSFF_SoleCarmona());
+	PETRIFY(new TSFF_Petrify());
 	
 	private FileFormat fileFormat = null;
 	

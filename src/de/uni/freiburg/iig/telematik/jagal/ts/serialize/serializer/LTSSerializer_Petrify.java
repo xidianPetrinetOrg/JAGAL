@@ -12,12 +12,12 @@ import de.uni.freiburg.iig.telematik.jagal.ts.labeled.LabeledTransitionRelation;
 import de.uni.freiburg.iig.telematik.jagal.ts.serialize.SerializationException;
 import de.uni.freiburg.iig.telematik.jagal.ts.serialize.TSSerializer;
 
-public class LTSSerializer_SoleCarmona<S extends State, 
+public class LTSSerializer_Petrify<S extends State, 
 									   E extends Event,
 									   T extends LabeledTransitionRelation<S,E>> extends TSSerializer<S,T>{
 	
 	private final String RELATION_FORMAT = "%s %s %s";
-	public LTSSerializer_SoleCarmona(AbstractTransitionSystem<S,T> petriNet) throws ParameterException {
+	public LTSSerializer_Petrify(AbstractTransitionSystem<S,T> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 
