@@ -12,6 +12,7 @@ import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.graph.abstr.AbstractGraph;
+import de.uni.freiburg.iig.telematik.jagal.graph.exception.GraphException;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.EventNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.State;
@@ -129,6 +130,17 @@ public abstract class AbstractTransitionSystem<S extends State, T extends Transi
 			return endStates.add(state);
 		}
 		return false;
+	}
+	
+	public boolean removeState(S state){
+		try {
+			super.removeVertex(state);
+			alternativeNames.remove(state);
+			return true;
+		} catch (GraphException e) {
+			// State is not part of the transition system
+			return false;
+		}
 	}
 	
 	public boolean removeEndState(S state){
