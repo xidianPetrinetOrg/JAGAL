@@ -94,6 +94,15 @@ public abstract class AbstractTransitionSystem<S extends State, T extends Transi
 		return success;
 	}
 	
+	public S getState(String name){
+		for(S event: getVertexes()){
+			if(event.getName().equals(name)){
+				return event;
+			}
+		}
+		return null;
+	}
+	
 	public Set<S> getStates(){
 		return super.getVertexes();
 	}

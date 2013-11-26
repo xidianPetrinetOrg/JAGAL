@@ -1,8 +1,6 @@
 package de.uni.freiburg.iig.telematik.jagal.ts;
 
 
-
-
 public class Event {
 	
 	protected String name;
