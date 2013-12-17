@@ -7,7 +7,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Iterator;
 
-import de.invation.code.toval.graphic.GraphicUtils;
+import de.invation.code.toval.graphic.util.GraphicUtils;
 import de.uni.freiburg.iig.telematik.jagal.graph.Edge;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 import de.uni.freiburg.iig.telematik.jagal.graph.abstr.AbstractGraph;

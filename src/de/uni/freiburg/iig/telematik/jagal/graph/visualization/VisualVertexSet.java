@@ -12,7 +12,7 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-import de.invation.code.toval.graphic.GraphicUtils;
+import de.invation.code.toval.graphic.util.GraphicUtils;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 
 public class VisualVertexSet<V extends Vertex<?>> extends JPanel{
