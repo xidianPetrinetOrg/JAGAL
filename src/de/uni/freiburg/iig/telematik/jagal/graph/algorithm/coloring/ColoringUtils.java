@@ -19,10 +19,10 @@ public class ColoringUtils {
 		Validate.notNull(graph);
 		Coloring<V> coloring = new Coloring<V>();
 		Set<Integer> neighborColors = new HashSet<Integer>();
-		for(V vertex: graph.getVertexes()){
+		for(V vertex: graph.getVertices()){
 			neighborColors.clear();
 			try {
-				for(V neighbor: graph.getNeighbors(vertex)){
+				for(V neighbor: graph.getNeighbors(vertex.getName())){
 					if(coloring.isColored(neighbor)){
 						neighborColors.add(coloring.getColor(neighbor));
 					}
@@ -45,7 +45,7 @@ public class ColoringUtils {
 	public static <V extends Vertex<U>, E extends Edge<V>, U> Coloring<U> getElementColoring(AbstractGraph<V, E, U> graph, Coloring<V> vertexColoring) throws ParameterException{
 		Validate.notNull(graph);
 		Coloring<U> elementColoring = new Coloring<U>();
-		for(V vertex: graph.getVertexes()){
+		for(V vertex: graph.getVertices()){
 			elementColoring.setColor(vertex.getElement(), vertexColoring.getColor(vertex));
 		}
 		return elementColoring;
@@ -60,9 +60,9 @@ public class ColoringUtils {
 	public static <V extends Vertex<U>, E extends Edge<V>, U> Set<V> maxClique(AbstractGraph<V, E, U> graph){
 		Set<V> vertexes = new HashSet<V>();
 		Set<V> biggestCliqueSoFar = new HashSet<V>();
-		for(V testVertex: graph.getVertexes()){
+		for(V testVertex: graph.getVertices()){
 			// Build the biggest clique containing the current vertex.
-			vertexes.addAll(graph.getVertexes());
+			vertexes.addAll(graph.getVertices());
 			vertexes.remove(testVertex);
 			
 			Set<V> maxClique = new HashSet<V>();
@@ -71,7 +71,7 @@ public class ColoringUtils {
 				// Check if the given vertex is connected to all vertexes in the clique
 				for(V cliqueVertex: maxClique){
 					try {
-						if(!graph.getChildren(cliqueVertex).contains(vertex) && !graph.getParents(cliqueVertex).contains(vertex)){
+						if(!graph.getChildren(cliqueVertex.getName()).contains(vertex) && !graph.getParents(cliqueVertex.getName()).contains(vertex)){
 							// Vertex cannot belong to the clique
 							isCliqueVertex = false;
 							break;
@@ -94,12 +94,12 @@ public class ColoringUtils {
 	
 	public static void main(String[] args) throws Exception {
 		Graph<String> g = new Graph<String>();
-		g.addElement("1");
-		g.addElement("2");
-		g.addElement("3");
-		g.addElement("4");
-		g.addElement("5");
-		g.addElement("6");
+		g.addVertex("1");
+		g.addVertex("2");
+		g.addVertex("3");
+		g.addVertex("4");
+		g.addVertex("5");
+		g.addVertex("6");
 		g.addEdge("1", "2");
 		g.addEdge("1", "5");
 		g.addEdge("2", "5");

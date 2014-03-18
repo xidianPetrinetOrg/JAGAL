@@ -99,4 +99,22 @@ public class EdgeContainer<E extends Edge<?>>{
 	public boolean isEmpty(){
 		return !hasIncomingEdges() && !hasOutgoingEdges();
 	}
+	
+	@Override
+	public String toString(){
+		StringBuilder builder = new StringBuilder();
+		builder.append("Incoming:");
+		builder.append('\n');
+		for(E incomingEdge: incoming){
+			builder.append(incomingEdge);
+			builder.append('\n');
+		}
+		builder.append("Outgoing:");
+		builder.append('\n');
+		for(E outgoingEdge: outgoing){
+			builder.append(outgoingEdge);
+			builder.append('\n');
+		}
+		return builder.toString();
+	}
 }

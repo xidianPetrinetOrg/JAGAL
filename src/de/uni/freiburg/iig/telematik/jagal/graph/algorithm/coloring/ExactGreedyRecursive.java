@@ -34,7 +34,7 @@ public class ExactGreedyRecursive implements GraphColoring {
 		RecursiveResult<V> recursiveResult = determineColoringRec(graph, 
 											 initialColoring, 
 											 initialColoring.chromaticNumber(), 
-											 graph.getVertexes().size() + 1, 
+											 graph.getVertices().size() + 1, 
 											 initialColoring.chromaticNumber(),
 											 new ArrayList<Coloring<V>>());
 		return recursiveResult.storedColorings.get(0);
@@ -50,13 +50,13 @@ public class ExactGreedyRecursive implements GraphColoring {
 		Validate.notNull(graph);
 		Validate.notNull(coloring);
 		Validate.notNull(storedColorings);
-		if(coloring.isComplete(graph.getVertexes())){
+		if(coloring.isComplete(graph.getVertices())){
 			// TODO: Store coloring
 			storedColorings.add(coloring);
 			return new RecursiveResult<V>(coloring.chromaticNumber(), storedColorings);
 		}
 		
-		V uncoloredVertex = coloring.getUncoloredKeys(graph.getVertexes()).iterator().next();
+		V uncoloredVertex = coloring.getUncoloredKeys(graph.getVertices()).iterator().next();
 		for(int c=1; c <= Math.min(k + 1, best - 1); c++){
 			if(isColorUsedByNeighbors(graph, uncoloredVertex, coloring, c)){
 				continue;
@@ -82,14 +82,14 @@ public class ExactGreedyRecursive implements GraphColoring {
 		Validate.notNegative(color);
 		boolean colorAlreadyUsed = false;
 		try {
-			for(V neighbor: graph.getNeighbors(uncoloredVertex)){
+			for(V neighbor: graph.getNeighbors(uncoloredVertex.getName())){
 				if(coloring.isColored(neighbor) && coloring.getColor(neighbor) == color){
 					colorAlreadyUsed = true;
 					break;
 				}
 			}
 		} catch (GraphException e) {
-			// Cannot happen, since we only use graph vertexes
+			// Cannot happen, since we only use graph Vertices
 			e.printStackTrace();
 		}
 		return colorAlreadyUsed;
@@ -107,10 +107,10 @@ public class ExactGreedyRecursive implements GraphColoring {
 	
 	public static void main(String[] args) throws Exception{
 		Graph<String> g = new Graph<String>();
-		g.addElement("1");
-		g.addElement("2");
-		g.addElement("3");
-		g.addElement("4");
+		g.addVertex("1");
+		g.addVertex("2");
+		g.addVertex("3");
+		g.addVertex("4");
 		g.addEdge("1", "2");
 		g.addEdge("2", "3");
 		g.addEdge("3", "4");

@@ -1,7 +1,7 @@
 package de.uni.freiburg.iig.telematik.jagal.traverse;
 
 
-import java.util.Set;
+import java.util.Collection;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
@@ -9,12 +9,12 @@ import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundExcepti
 
 public interface Traversable<G extends Object> {
 	
-	public Set<G> getParents(G node) throws VertexNotFoundException, ParameterException;
+	public Collection<G> getParents(G node) throws VertexNotFoundException, ParameterException;
 	
-	public Set<G> getChildren(G node) throws VertexNotFoundException, ParameterException;
-	
+	public Collection<G> getChildren(G node) throws VertexNotFoundException, ParameterException;
+
 	public int nodeCount();
 	
-	public Set<G> getNodes();
+	public Collection<G> getNodes();
 
 }

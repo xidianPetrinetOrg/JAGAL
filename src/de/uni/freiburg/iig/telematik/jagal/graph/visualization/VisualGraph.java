@@ -63,9 +63,7 @@ public abstract class VisualGraph<V extends Vertex<U>, E extends Edge<V>, U> ext
 		}
 		
 		protected void drawEdge(E edge, Color color){
-			if(baseGraph.containsEdge(edge)){
-				drawArrow(edge.getSource(), edge.getTarget(), defaultWeight, color);
-			}
+			drawArrow(edge.getSource(), edge.getTarget(), defaultWeight, color);
 		}
 		
 		protected void drawArrow(V source, V target, double weight, Color color){

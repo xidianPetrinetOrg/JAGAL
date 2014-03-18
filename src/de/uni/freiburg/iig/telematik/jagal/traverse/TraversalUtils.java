@@ -3,6 +3,7 @@ package de.uni.freiburg.iig.telematik.jagal.traverse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -228,7 +229,7 @@ public class TraversalUtils {
 		tempPaths.offer(firstPath);
 		
 		while(!tempPaths.isEmpty()){
-			Set<V> parents = traversableStructure.getParents(tempPaths.peek().get(tempPaths.peek().size()-1));
+			Collection<V> parents = traversableStructure.getParents(tempPaths.peek().get(tempPaths.peek().size()-1));
 			for(V v: parents){
 				ArrayList<V> newPath = new ArrayList<V>(tempPaths.peek());
 				if(!tempPaths.peek().contains(v)){

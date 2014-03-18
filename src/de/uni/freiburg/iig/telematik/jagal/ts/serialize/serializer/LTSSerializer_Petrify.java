@@ -1,30 +1,31 @@
 package de.uni.freiburg.iig.telematik.jagal.ts.serialize.serializer;
 
-import java.util.Set;
+import java.util.Collection;
 
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.jagal.ts.Event;
-import de.uni.freiburg.iig.telematik.jagal.ts.State;
 import de.uni.freiburg.iig.telematik.jagal.ts.TSType;
-import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
-import de.uni.freiburg.iig.telematik.jagal.ts.labeled.AbstractLabeledTransitionSystem;
-import de.uni.freiburg.iig.telematik.jagal.ts.labeled.LabeledTransitionRelation;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractEvent;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLTSState;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionRelation;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionSystem;
+import de.uni.freiburg.iig.telematik.jagal.ts.serialize.LTSSerializer;
 import de.uni.freiburg.iig.telematik.jagal.ts.serialize.SerializationException;
-import de.uni.freiburg.iig.telematik.jagal.ts.serialize.TSSerializer;
 
-public class LTSSerializer_Petrify<S extends State, 
-									   E extends Event,
-									   T extends LabeledTransitionRelation<S,E>> extends TSSerializer<S,T>{
+public class LTSSerializer_Petrify<	S extends AbstractLTSState<E,O>, 
+									E extends AbstractEvent,
+									T extends AbstractLabeledTransitionRelation<S,E,O>,
+									O extends Object> extends LTSSerializer<S,E,T,O>{
 	
 	private final String RELATION_FORMAT = "%s %s %s";
-	public LTSSerializer_Petrify(AbstractTransitionSystem<S,T> petriNet) throws ParameterException {
+	
+	public LTSSerializer_Petrify(AbstractLabeledTransitionSystem<E,S,O> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public String serialize() throws SerializationException {
-		AbstractLabeledTransitionSystem<E,S> ts = (AbstractLabeledTransitionSystem<E,S>) getTransitionSystem();
+		AbstractLabeledTransitionSystem<E,S,O> ts = (AbstractLabeledTransitionSystem<E,S,O>) getTransitionSystem();
 		StringBuilder builder = new StringBuilder();
 		String newLine = System.getProperty("line.separator");
 		
@@ -41,14 +42,14 @@ public class LTSSerializer_Petrify<S extends State,
 		builder.append(newLine);
 		
 		// Add relations
-		for(LabeledTransitionRelation<S,E> relation: ts.getRelations()){
+		for(AbstractLabeledTransitionRelation<S,E,O> relation: ts.getRelations()){
 			builder.append(String.format(RELATION_FORMAT, relation.getSource().getName(), relation.getEvent().getName(), relation.getTarget().getName()));
 			builder.append(newLine);
 		}
 		
 		// Add start states
 		builder.append(".marking {");
-		Set<S> startStates = ts.getStartStates();
+		Collection<S> startStates = ts.getStartStates();
 		int addedStates = 0;
 		for(S startState: startStates){
 			builder.append(startState.getName());
@@ -61,6 +62,7 @@ public class LTSSerializer_Petrify<S extends State,
 		
 		return builder.toString();
 	}
+	
 
 	@Override
 	public TSType acceptedNetType() {

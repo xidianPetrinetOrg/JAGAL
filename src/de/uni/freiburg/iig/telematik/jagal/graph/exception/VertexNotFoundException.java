@@ -10,16 +10,16 @@ public class VertexNotFoundException extends GraphException {
 	
 	private static final long serialVersionUID = 1L;
 	private String messagePart = " does not contain vertex ";
-	private String vertex;
+	private String vertexName;
 
-	public <V extends Vertex<U>, E extends Edge<V>, U> VertexNotFoundException(V vertex, AbstractGraph<V, E, U> graph){
+	public <V extends Vertex<U>, E extends Edge<V>, U> VertexNotFoundException(String vertexName, AbstractGraph<V, E, U> graph){
 		super(graph.getName());
-		this.vertex = vertex.toString();
+		this.vertexName = vertexName;
 	}
 	
-	public <V extends Vertex<U>, E extends Edge<V>, U> VertexNotFoundException(V vertex, String vertexDescription, AbstractGraph<V, E, U> graph){
+	public <V extends Vertex<U>, E extends Edge<V>, U> VertexNotFoundException(String vertexName, String vertexDescription, AbstractGraph<V, E, U> graph){
 		super(graph.getName());
-		this.vertex = vertex.toString();
+		this.vertexName = vertexName;
 		messagePart = " does not contain "+vertexDescription+" ";
 	}
 	
@@ -28,6 +28,6 @@ public class VertexNotFoundException extends GraphException {
 	}
 	
 	public String getVertex(){
-		return vertex;
+		return vertexName;
 	}
 }

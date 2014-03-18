@@ -5,40 +5,42 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractState;
 
-public class MarkingStatePairContainer<S extends State> extends StatePairContainer<S> {
-	private Set<StatePair<S>> markedPairs = new HashSet<StatePair<S>>();
-	private Set<StatePair<S>> unmarkedPairs = new HashSet<StatePair<S>>();
+
+public class MarkingStatePairContainer<S extends AbstractState<O>, O> extends StatePairContainer<S,O> {
+	private Set<StatePair<S,O>> markedPairs = new HashSet<StatePair<S,O>>();
+	private Set<StatePair<S,O>> unmarkedPairs = new HashSet<StatePair<S,O>>();
 	
 	public MarkingStatePairContainer(){
 		super();
 	}
 	
-	public MarkingStatePairContainer(StatePair<S>... statePairs){
+	public MarkingStatePairContainer(StatePair<S,O>... statePairs){
 		super();
-		for(StatePair<S> statePair: statePairs){
+		for(StatePair<S,O> statePair: statePairs){
 			addStatePair(statePair);
 		}
 	}
 	
-	public MarkingStatePairContainer(Collection<StatePair<S>> statePairs){
+	public MarkingStatePairContainer(Collection<StatePair<S,O>> statePairs){
 		super();
-		for(StatePair<S> statePair: statePairs){
+		for(StatePair<S,O> statePair: statePairs){
 			addStatePair(statePair);
 		}
 	}
 	
-	public Set<StatePair<S>> getMarkedStatePairs(){
+	public Set<StatePair<S,O>> getMarkedStatePairs(){
 		return Collections.unmodifiableSet(markedPairs);
 	}
 	
-	public Set<StatePair<S>> getUnmarkedStatePairs(){
+	public Set<StatePair<S,O>> getUnmarkedStatePairs(){
 		return Collections.unmodifiableSet(unmarkedPairs);
 	}
 	
 	
 	public void markPair(S state1, S state2){
-		StatePair<S> testPair = getStatePair(state1, state2);
+		StatePair<S,O> testPair = getStatePair(state1, state2);
 		if(testPair != null){
 			markedPairs.add(testPair);
 			unmarkedPairs.remove(testPair);
@@ -46,10 +48,10 @@ public class MarkingStatePairContainer<S extends State> extends StatePairContain
 	}
 	
 	public boolean isMarked(S state1, S state2){
-		return markedPairs.contains(new StatePair<S>(state1, state2));
+		return markedPairs.contains(new StatePair<S,O>(state1, state2));
 	}
 	
-	public void markPair(StatePair<S> statePair){
+	public void markPair(StatePair<S,O> statePair){
 		if(statePairs.contains(statePair)){
 			markedPairs.add(getEqualStatePair(statePair));
 			unmarkedPairs.remove(getEqualStatePair(statePair));
@@ -57,7 +59,7 @@ public class MarkingStatePairContainer<S extends State> extends StatePairContain
 	}
 
 	@Override
-	public boolean addStatePair(StatePair<S> statePair){
+	public boolean addStatePair(StatePair<S,O> statePair){
 		boolean isNewElement =  super.addStatePair(statePair);
 		if(isNewElement){
 			if(unmarkedPairs == null){
@@ -69,11 +71,11 @@ public class MarkingStatePairContainer<S extends State> extends StatePairContain
 	}
 	
 	public static void main(String[] args){
-		MarkingStatePairContainer<State> c = new MarkingStatePairContainer<State>();
+		MarkingStatePairContainer<State,Object> c = new MarkingStatePairContainer<State,Object>();
 		c.addStatePair(new State("s0"), new State("s5"));
 		System.out.println(c.getStatePairs());
-		StatePair<State> p1 = new StatePair<State>(new State("z4"), new State("z3"));
-		StatePair<State> p2 = new StatePair<State>(new State("z4"), new State("z2"));
+		StatePair<State,Object> p1 = new StatePair<State,Object>(new State("z4"), new State("z3"));
+		StatePair<State,Object> p2 = new StatePair<State,Object>(new State("z4"), new State("z2"));
 		System.out.println(p1.hashCode());
 		System.out.println(p2.hashCode());
 //		c.addStatePair(p1);

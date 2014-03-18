@@ -3,8 +3,10 @@ package de.uni.freiburg.iig.telematik.jagal.ts;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractState;
 
-public class StatePair<S extends State> {
+
+public class StatePair<S extends AbstractState<O>, O> {
 	private final String toStringFormat = "(%s|%s)";
 	
 	public S state1;
@@ -18,8 +20,8 @@ public class StatePair<S extends State> {
 		stateSet.add(state2);
 	}
 	
-	public static <SS extends State> StatePair<SS> createStatePair(SS state1, SS state2){
-		return new StatePair<SS>(state1, state2);
+	public static <SS extends AbstractState<OO>, OO extends Object> StatePair<SS,OO> createStatePair(SS state1, SS state2){
+		return new StatePair<SS,OO>(state1, state2);
 	}
 	
 	@Override

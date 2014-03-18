@@ -3,6 +3,7 @@ package de.uni.freiburg.iig.telematik.jagal.graph.weighted;
 
 import java.util.Collection;
 
+import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 import de.uni.freiburg.iig.telematik.jagal.graph.abstr.AbstractGraph;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
@@ -13,16 +14,16 @@ public abstract class AbstractWeightedGraph<V extends Vertex<U>, U> extends Abst
 		super();
 	}
 	
-	public AbstractWeightedGraph(String name){
+	public AbstractWeightedGraph(String name) throws ParameterException{
 		super(name);
 	}
 	
-	public AbstractWeightedGraph(Collection<V> vertexes){
-		super(vertexes);
+	public AbstractWeightedGraph(Collection<String> vertexNames) throws ParameterException{
+		super(vertexNames);
 	}
 	
-	public AbstractWeightedGraph(String name, Collection<V> vertexes){
-		super(name, vertexes);
+	public AbstractWeightedGraph(String name, Collection<String> vertexNames) throws ParameterException{
+		super(name, vertexNames);
 	}
 
 //	@Override
@@ -30,12 +31,12 @@ public abstract class AbstractWeightedGraph<V extends Vertex<U>, U> extends Abst
 //		return "graph.WeightedEdge";
 //	}
 	
-	public WeightedEdge<V> addEdge(U sourceElement, U targetElement, double weight) throws VertexNotFoundException{
-		return addEdge(createNewVertex(sourceElement), createNewVertex(targetElement), weight);
-	}
+//	public WeightedEdge<V> addEdge(U sourceElement, U targetElement, double weight) throws VertexNotFoundException{
+//		return addEdge(createNewVertex(sourceElement), createNewVertex(targetElement), weight);
+//	}
 	
-	public WeightedEdge<V> addEdge(V sourceVertex, V targetVertex, double weight) throws VertexNotFoundException{
-		WeightedEdge<V> newEdge = super.addEdge(sourceVertex, targetVertex);
+	public WeightedEdge<V> addEdge(String sourceVertexName, String targetVertexName, double weight) throws VertexNotFoundException, ParameterException{
+		WeightedEdge<V> newEdge = super.addEdge(sourceVertexName, targetVertexName);
 		if(newEdge == null){
 			//Edge already contained in graph
 			return null;

@@ -7,28 +7,29 @@ import java.util.List;
 import java.util.Set;
 
 import de.invation.code.toval.misc.SetUtils;
+import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractState;
 
 
 
-public class StatePairContainer<S extends State> {
+public class StatePairContainer<S extends AbstractState<O>, O> {
 	
-	protected Set<StatePair<S>> statePairs = new HashSet<StatePair<S>>();
+	protected Set<StatePair<S,O>> statePairs = new HashSet<StatePair<S,O>>();
 	
 	public StatePairContainer(){}
 	
-	public StatePairContainer(StatePair<S>... statePairs){
-		for(StatePair<S> statePair: statePairs){
+	public StatePairContainer(StatePair<S,O>... statePairs){
+		for(StatePair<S,O> statePair: statePairs){
 			addStatePair(statePair);
 		}
 	}
 	
-	public StatePairContainer(Collection<StatePair<S>> statePairs){
-		for(StatePair<S> statePair: statePairs){
+	public StatePairContainer(Collection<StatePair<S,O>> statePairs){
+		for(StatePair<S,O> statePair: statePairs){
 			addStatePair(statePair);
 		}
 	}
 	
-	public Set<StatePair<S>> getStatePairs(){
+	public Set<StatePair<S,O>> getStatePairs(){
 		return Collections.unmodifiableSet(statePairs);
 	}
 	
@@ -36,7 +37,7 @@ public class StatePairContainer<S extends State> {
 		return addStatePair(StatePair.createStatePair(state1, state2));
 	}
 	
-	public boolean addStatePair(StatePair<S> statePair){
+	public boolean addStatePair(StatePair<S,O> statePair){
 		return statePairs.add(statePair);
 	}
 	
@@ -44,12 +45,12 @@ public class StatePairContainer<S extends State> {
 		return getStatePair(state1, state1) != null;
 	}
 
-	public StatePair<S> getStatePair(S state1, S state2){
-		return getEqualStatePair(new StatePair<S>(state1, state2));
+	public StatePair<S,O> getStatePair(S state1, S state2){
+		return getEqualStatePair(new StatePair<S,O>(state1, state2));
 	}
 	
-	protected StatePair<S> getEqualStatePair(StatePair<S> statePair){
-		for(StatePair<S> pair: statePairs){
+	protected StatePair<S,O> getEqualStatePair(StatePair<S,O> statePair){
+		for(StatePair<S,O> pair: statePairs){
 			if(statePair.equals(pair)){
 				return pair;
 			}
@@ -57,10 +58,11 @@ public class StatePairContainer<S extends State> {
 		return null;
 	}
 	
-	public static <S extends State> Set<StatePair<S>> getStatePairsFrom(Set<S> states){
-		Set<StatePair<S>> result = new HashSet<StatePair<S>>(); 
-		for(List<S> statePair: SetUtils.getKElementarySets(states, 2)){
-			result.add(new StatePair<S>(statePair.get(0), statePair.get(1)));
+	public static <S extends AbstractState<O>, O> Set<StatePair<S,O>> getStatePairsFrom(Collection<S> states){
+		Set<S> stateSet = new HashSet<S>(states);
+		Set<StatePair<S,O>> result = new HashSet<StatePair<S,O>>(); 
+		for(List<S> statePair: SetUtils.getKElementarySets(stateSet, 2)){
+			result.add(new StatePair<S,O>(statePair.get(0), statePair.get(1)));
 		}
 		return result;
 	}

@@ -4,6 +4,7 @@ package de.uni.freiburg.iig.telematik.jagal.graph;
 
 import java.util.Collection;
 
+import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.graph.abstr.AbstractGraph;
 
 public class Graph<U extends Object> extends AbstractGraph<Vertex<U>, Edge<Vertex<U>>, U> {
@@ -12,21 +13,21 @@ public class Graph<U extends Object> extends AbstractGraph<Vertex<U>, Edge<Verte
 		super();
 	}
 	
-	public Graph(String name){
+	public Graph(String name) throws ParameterException{
 		super(name);
 	}
 	
-	public Graph(Collection<Vertex<U>> vertexes){
-		super(vertexes);
+	public Graph(Collection<String> vertexNames) throws ParameterException{
+		super(vertexNames);
 	}
 	
-	public Graph(String name, Collection<Vertex<U>> vertexes){
-		super(name, vertexes);
+	public Graph(String name, Collection<String> vertexNames) throws ParameterException{
+		super(name, vertexNames);
 	}
 	
 	@Override
-	protected Vertex<U> createNewVertex(U element) {
-		return new Vertex<U>(element);
+	protected Vertex<U> createNewVertex(String name, U element) {
+		return new Vertex<U>(name, element);
 	}
 
 	@Override
@@ -36,13 +37,9 @@ public class Graph<U extends Object> extends AbstractGraph<Vertex<U>, Edge<Verte
 
 	public static void main(String[] args) throws Exception {
 		Graph<String> g = new Graph<String>();
-		Vertex<String> v1 = new Vertex<String>("v1");
-		Vertex<String> v2 = new Vertex<String>("v2");
-		g.addVertex(v1);
-		g.addVertex(v2);
-		g.addEdge(v1, v2);
-		System.out.println(g);
-		g.removeAllEdges(g.getEdges());
+		g.addVertex("v1");
+		g.addVertex("v2");
+		g.addEdge("v1", "v2");
 		System.out.println(g);
 	}
 

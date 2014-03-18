@@ -17,10 +17,9 @@ public class EdgeNotFoundException extends GraphException {
 		this.edge = edge.toString();
 	}
 	
-	public <V extends Vertex<U>, E extends Edge<V>, U> EdgeNotFoundException(V source, V target, AbstractGraph<V, E, U> graph){
+	public <V extends Vertex<U>, E extends Edge<V>, U> EdgeNotFoundException(String sourceName, String targetName, AbstractGraph<V, E, U> graph){
 		super(graph.getName());
-		this.edge = edge.toString();
-		messagePart = " does not contain edge between "+source+" and "+target;
+		messagePart = " does not contain edge between "+sourceName+" and "+targetName;
 	}
 	
 	public String getMessage(){

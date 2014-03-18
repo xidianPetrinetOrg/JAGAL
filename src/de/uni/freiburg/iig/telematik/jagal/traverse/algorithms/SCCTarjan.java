@@ -77,10 +77,10 @@ public class SCCTarjan<V extends Object> {
 
 	public static void main(String[] args) throws ParameterException {
 		Graph<String> g = new Graph<String>();
-		g.addElement("1");
-		g.addElement("2");
-		g.addElement("3");
-		g.addElement("4");
+		g.addVertex("1");
+		g.addVertex("2");
+		g.addVertex("3");
+		g.addVertex("4");
 		try {
 			g.addEdge("1", "2");
 			g.addEdge("1", "3");

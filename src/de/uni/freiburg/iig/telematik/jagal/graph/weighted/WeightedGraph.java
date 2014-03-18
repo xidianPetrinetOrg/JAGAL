@@ -3,6 +3,7 @@ package de.uni.freiburg.iig.telematik.jagal.graph.weighted;
 
 import java.util.Collection;
 
+import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 
 public class WeightedGraph<U extends Object> extends AbstractWeightedGraph<Vertex<U>, U>{
@@ -11,22 +12,21 @@ public class WeightedGraph<U extends Object> extends AbstractWeightedGraph<Verte
 		super();
 	}
 	
-	public WeightedGraph(String name){
+	public WeightedGraph(String name) throws ParameterException{
 		super(name);
 	}
 	
-	public WeightedGraph(Collection<Vertex<U>> vertexes){
-		super(vertexes);
+	public WeightedGraph(Collection<String> vertexNames) throws ParameterException{
+		super(vertexNames);
 	}
 	
-	public WeightedGraph(Collection<Vertex<U>> vertexes, String name){
-		super(name, vertexes);
+	public WeightedGraph(Collection<String> vertexNames, String name) throws ParameterException{
+		super(name, vertexNames);
 	}
-	
 	
 	@Override
-	protected Vertex<U> createNewVertex(U element) {
-		return new Vertex<U>(element);
+	protected Vertex<U> createNewVertex(String name, U element) {
+		return new Vertex<U>(name, element);
 	}
 	
 	@Override
@@ -36,9 +36,9 @@ public class WeightedGraph<U extends Object> extends AbstractWeightedGraph<Verte
 
 	public static void main(String[] args) throws Exception{
 		WeightedGraph<String> g = new WeightedGraph<String>();
-		g.addVertex(new Vertex<String>("A"));
-		g.addVertex(new Vertex<String>("B"));
-		g.addEdge(new Vertex<String>("A"), new Vertex<String>("B"), 0.5);
+		g.addVertex("A");
+		g.addVertex("B");
+		g.addEdge("A", "B", 0.5);
 		System.out.println(g);
 	}
 

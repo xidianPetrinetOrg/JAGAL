@@ -7,9 +7,7 @@ public class VertexFactory<V extends Vertex<U>, U>{
 	private final Class<? extends V> vertexClass;
 
 	public VertexFactory(Class<? extends V> vertexClass){
-		System.out.println("v1");
 		this.vertexClass = vertexClass;
-		System.out.println("v2");
 	}
 
 	public V createVertex(){

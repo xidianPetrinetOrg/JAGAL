@@ -3,7 +3,7 @@ package de.uni.freiburg.iig.telematik.jagal.ts;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
-import de.uni.freiburg.iig.telematik.jagal.ts.labeled.AbstractLabeledTransitionSystem;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionSystem;
 
 public enum TSType {
 	

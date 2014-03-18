@@ -7,53 +7,41 @@ import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
 
 
-public class TransitionSystem extends AbstractTransitionSystem<State, TransitionRelation<State>> {
+public class TransitionSystem extends AbstractTransitionSystem<State, TransitionRelation, Object> {
 	
 	public TransitionSystem() {
 		super();
 	}
 	
-	public TransitionSystem(String name){
+	public TransitionSystem(String name) throws ParameterException{
 		super(name);
 	}
 	
-	public TransitionSystem(Collection<State> states){
+	public TransitionSystem(Collection<String> states) throws ParameterException{
 		super(states);
 	}
 	
-	public TransitionSystem(String name, Collection<State> states){
+	public TransitionSystem(String name, Collection<String> states) throws ParameterException{
 		super(name, states);
 	}
 
 	@Override
-	protected TransitionRelation<State> createNewEdge(State sourceVertex, State targetVertex) {
-		return new TransitionRelation<State>(sourceVertex, targetVertex);
+	protected TransitionRelation createNewEdge(State sourceVertex, State targetVertex) {
+		return new TransitionRelation(sourceVertex, targetVertex);
 	}
-
-	public static void main(String[] args) throws Exception{
-		TransitionSystem ts = new TransitionSystem();
-		ts.addVertex(new State("s1"));
-		ts.addVertex(new State("s2"));
-		TransitionRelation<State> relation1 = new TransitionRelation<State>(new State("s1"), new State("s2"));
-		ts.addRelation(new State("s1"), new State("s2"));
-		System.out.println(ts);
-		System.out.println("Contains: "+ts.containsEdge(relation1));
-		ts.removeEdge(relation1);
-//		ts.removeAllEdges(ts.getRelations());
-		System.out.println(ts);
-	}
-
+	
 	@Override
-	public State createNewState(String name) throws ParameterException {
+	public State createNewState(String name, Object element) throws ParameterException {
 		Validate.notNull(name);
-		return new State(name);
+		Validate.notNull(element);
+		return new State(name, element);
 	}
 
 	@Override
-	public TransitionRelation<State> createNewTransitionRelation(State sourceState, State targetState) throws ParameterException {
+	public TransitionRelation createNewTransitionRelation(State sourceState, State targetState) throws ParameterException {
 		Validate.notNull(sourceState);
 		Validate.notNull(targetState);
-		return new TransitionRelation<State>(sourceState, targetState);
+		return new TransitionRelation(sourceState, targetState);
 	}
 
 	@Override
@@ -61,4 +49,16 @@ public class TransitionSystem extends AbstractTransitionSystem<State, Transition
 		return new TransitionSystem();
 	}
 
+	public static void main(String[] args) throws Exception{
+		TransitionSystem ts = new TransitionSystem();
+		ts.addState("s1");
+		ts.addState("s2");
+		ts.addRelation("s1", "s2");
+		System.out.println(ts);
+		System.out.println("Contains: "+ts.containsEdge("s1", "s2"));
+		ts.removeEdge("s1","s2");
+//		ts.removeAllEdges(ts.getRelations());
+		System.out.println(ts);
+	}
+	
 }
