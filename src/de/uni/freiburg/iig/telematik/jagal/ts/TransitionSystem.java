@@ -2,7 +2,6 @@ package de.uni.freiburg.iig.telematik.jagal.ts;
 
 import java.util.Collection;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
 
@@ -13,15 +12,15 @@ public class TransitionSystem extends AbstractTransitionSystem<State, Transition
 		super();
 	}
 	
-	public TransitionSystem(String name) throws ParameterException{
+	public TransitionSystem(String name) {
 		super(name);
 	}
 	
-	public TransitionSystem(Collection<String> states) throws ParameterException{
+	public TransitionSystem(Collection<String> states) {
 		super(states);
 	}
 	
-	public TransitionSystem(String name, Collection<String> states) throws ParameterException{
+	public TransitionSystem(String name, Collection<String> states) {
 		super(name, states);
 	}
 
@@ -31,14 +30,14 @@ public class TransitionSystem extends AbstractTransitionSystem<State, Transition
 	}
 	
 	@Override
-	public State createNewState(String name, Object element) throws ParameterException {
+	public State createNewState(String name, Object element)  {
 		Validate.notNull(name);
 		Validate.notNull(element);
 		return new State(name, element);
 	}
 
 	@Override
-	public TransitionRelation createNewTransitionRelation(State sourceState, State targetState) throws ParameterException {
+	public TransitionRelation createNewTransitionRelation(State sourceState, State targetState)  {
 		Validate.notNull(sourceState);
 		Validate.notNull(targetState);
 		return new TransitionRelation(sourceState, targetState);

@@ -2,37 +2,35 @@ package de.uni.freiburg.iig.telematik.jagal.ts.labeled;
 
 import java.util.Collection;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
+import de.uni.freiburg.iig.telematik.jagal.ts.exception.StateNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionSystem;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.exception.EventNotFoundException;
 
-
-
-public class LabeledTransitionSystem extends AbstractLabeledTransitionSystem<Event, LTSState, Object> {
+public class LabeledTransitionSystem extends AbstractLabeledTransitionSystem<Event, LTSState, LabeledTransitionRelation, Object> {
 
 	public LabeledTransitionSystem() {
 		super();
 	}
 	
-	public LabeledTransitionSystem(String name) throws ParameterException{
+	public LabeledTransitionSystem(String name) {
 		super(name);
 	}
 	
-	public LabeledTransitionSystem(Collection<String> states) throws ParameterException{
+	public LabeledTransitionSystem(Collection<String> states) {
 		super(states);
 	}
 	
-	public LabeledTransitionSystem(String name, Collection<String> states) throws ParameterException{
+	public LabeledTransitionSystem(String name, Collection<String> states) {
 		super(name, states);
 	}
 	
-	public LabeledTransitionSystem(Collection<String> states, Collection<String> events) throws ParameterException{
+	public LabeledTransitionSystem(Collection<String> states, Collection<String> events) {
 		super(states, events);
 	}
 	
-	public LabeledTransitionSystem(String name, Collection<String> states, Collection<String> events) throws ParameterException{
+	public LabeledTransitionSystem(String name, Collection<String> states, Collection<String> events) {
 		super(name, states, events);
 	}
 	
@@ -42,28 +40,28 @@ public class LabeledTransitionSystem extends AbstractLabeledTransitionSystem<Eve
 	}
 
 	@Override
-	public LTSState createNewState(String name, Object element) throws ParameterException {
+	public LTSState createNewState(String name, Object element) {
 		Validate.notNull(name);
 		return new LTSState(name, element);
 	}
 
 	@Override
-	public LabeledTransitionRelation createNewTransitionRelation(LTSState sourceState, LTSState targetState) throws ParameterException {
+	public LabeledTransitionRelation createNewTransitionRelation(LTSState sourceState, LTSState targetState) {
 		Validate.notNull(sourceState);
 		Validate.notNull(targetState);
 		return new LabeledTransitionRelation(sourceState, targetState);
 	}
 
 	@Override
-	public LabeledTransitionRelation createNewTransitionRelation(String sourceStateName, String targetStateName, String eventName) throws ParameterException, VertexNotFoundException {
-		validateVertex(sourceStateName);
-		validateVertex(targetStateName);
+	public LabeledTransitionRelation createNewTransitionRelation(String sourceStateName, String targetStateName, String eventName) throws EventNotFoundException, StateNotFoundException {
+		validateState(sourceStateName);
+		validateState(targetStateName);
 		validateEvent(eventName);
 		return new LabeledTransitionRelation(getState(sourceStateName), getState(targetStateName), getEvent(eventName));
 	}
 
 	@Override
-	public Event createNewEvent(String name, String label) throws ParameterException {
+	public Event createNewEvent(String name, String label) {
 		Validate.notNull(name);
 		Validate.notNull(label);
 		return new Event(name, label);
@@ -74,6 +72,13 @@ public class LabeledTransitionSystem extends AbstractLabeledTransitionSystem<Eve
 		return new LabeledTransitionSystem();
 	}
 	
+	
+	
+	@Override
+	public LabeledTransitionSystem clone() {
+		return (LabeledTransitionSystem) super.clone();
+	}
+
 	public static void main(String[] args) throws Exception{
 		LabeledTransitionSystem ts = new LabeledTransitionSystem();
 		ts.addState("s0");

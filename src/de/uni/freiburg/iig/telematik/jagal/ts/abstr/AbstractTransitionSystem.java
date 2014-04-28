@@ -5,40 +5,41 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.graph.abstr.AbstractGraph;
+import de.uni.freiburg.iig.telematik.jagal.graph.exception.EdgeNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.GraphException;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
-import de.uni.freiburg.iig.telematik.jagal.ts.EventNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.ts.exception.RelationNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.ts.exception.StateNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.exception.EventNotFoundException;
 
 
 public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T extends AbstractTransitionRelation<S,O>, O extends Object> extends AbstractGraph<S, T, O> {
 	
-	private final String toStringFormat = "TS = {S, T, S_start, S_end}\n  S       = %s\n  S_start = %s\n  S_end   = %s\n  T       = %s\n";
+	private static final String toStringFormat = "TS = {S, T, S_start, S_end}\n  S       = %s\n  S_start = %s\n  S_end   = %s\n  T       = %s\n";
+	private static final String complexityFormat = "|S| = %s, |T| = %s";
 	
 	protected Map<String, S> endStates = new HashMap<String, S>();
 	protected Map<String, S> startStates = new HashMap<String, S>(); 
-	
-//	private final String ALTERNATIVE_NAME_FORMAT = "s%s";
-//	private Map<String, String> alternativeNames = new HashMap<String, String>();
 	
 	public AbstractTransitionSystem() {
 		super();
 	}
 	
-	public AbstractTransitionSystem(String name) throws ParameterException{
+	public AbstractTransitionSystem(String name) {
 		super(name);
 	}
 	
-	public AbstractTransitionSystem(Collection<String> stateNames) throws ParameterException{
+	public AbstractTransitionSystem(Collection<String> stateNames) {
 		super(stateNames);
 	}
 	
-	public AbstractTransitionSystem(String name, Collection<String> stateNames) throws ParameterException{
+	public AbstractTransitionSystem(String name, Collection<String> stateNames) {
 		super(name, stateNames);
 	}
 	
@@ -48,7 +49,7 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T ext
 	 * @param name The name for the new state.
 	 * @return A new state of type <code>S</code> with the given name.
 	 */
-	protected abstract S createNewState(String name, O element) throws ParameterException;
+	protected abstract S createNewState(String name, O element) ;
 	
 	/**
 	 * Creates a new relation of type <code>T</code> from the given source and target states.
@@ -57,7 +58,7 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T ext
 	 * @param targetState The state where the relation ends
 	 * @return A new relation of type <code>T</code>.
 	 */
-	public abstract T createNewTransitionRelation(S sourceState, S targetState) throws ParameterException;
+	public abstract T createNewTransitionRelation(S sourceState, S targetState) ;
 	
 	/**
 	 * Creates a new transition system instance.<br>
@@ -67,7 +68,7 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T ext
 	public abstract AbstractTransitionSystem<S,T,O> createNewInstance();
 	
 	@Override
-	protected S createNewVertex(String name, O element) throws ParameterException{
+	protected S createNewVertex(String name, O element) {
 		return createNewState(name, element);
 	}
 
@@ -76,22 +77,13 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T ext
 		return "Transition system";
 	}
 
-	public boolean addState(String stateName) throws ParameterException{
+	public boolean addState(String stateName) {
 		return super.addVertex(stateName);
 	}
 	
-	public boolean addState(String stateName, O element) throws ParameterException{
+	public boolean addState(String stateName, O element) {
 		return super.addVertex(stateName, element);
 	}
-	
-//	public boolean addState(String stateName, boolean generateCanonicalName){
-//		boolean success = super.addVertex(stateName);
-//		if(generateCanonicalName && success){
-//			String canonicalName = String.format(ALTERNATIVE_NAME_FORMAT, alternativeNames.keySet().size());
-//			alternativeNames.put(stateName, canonicalName);
-//		}
-//		return success;
-//	}
 	
 	public S getState(String name){
 		return super.getVertex(name);
@@ -145,10 +137,14 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T ext
 		return false;
 	}
 	
+	@Override
+	protected T createNewEdge(S sourceVertex, S targetVertex)  {
+		return createNewTransitionRelation(sourceVertex, targetVertex);
+	}
+	
 	public boolean removeState(String stateName){
 		try {
 			super.removeVertex(stateName);
-//			alternativeNames.remove(state);
 			removeStartState(stateName);
 			removeEndState(stateName);
 			return true;
@@ -158,19 +154,33 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T ext
 		}
 	}
 	
-	@Override
-	protected T createNewEdge(S sourceVertex, S targetVertex) throws ParameterException {
-		return createNewTransitionRelation(sourceVertex, targetVertex);
+	public boolean removeRelation(String sourceName, String targetName) throws StateNotFoundException, RelationNotFoundException {
+		try {
+			return super.removeEdge(sourceName, targetName);
+		} catch (VertexNotFoundException e) {
+			throw new StateNotFoundException(e);
+		} catch (EdgeNotFoundException e) {
+			throw new RelationNotFoundException(e);
+		}
+	}
+	
+	public Set<T> getRelationsFor(String stateName){
+		return super.getEdgesFor(stateName);
+	}
+	
+	protected T getRelation(String sourceName, String targetName) throws StateNotFoundException, RelationNotFoundException {
+		try {
+			return super.getEdge(sourceName, targetName);
+		} catch (VertexNotFoundException e) {
+			throw new StateNotFoundException(e);
+		} catch (EdgeNotFoundException e) {
+			throw new RelationNotFoundException(e);
+		}
 	}
 
 	@Override
-	public boolean removeVertex(String stateName) throws GraphException {
-		if(super.removeVertex(stateName)){
-			removeStartState(stateName);
-			removeEndState(stateName);
-			return true;
-		}
-		return false;
+	public boolean removeVertex(String stateName) {
+		throw new UnsupportedOperationException("Use removeState() instead.");
 	}
 
 	public boolean removeEndState(String stateName){
@@ -185,6 +195,28 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T ext
 		return Collections.unmodifiableCollection(endStates.values());
 	}
 	
+	public Set<S> getNonLeafEndStates(){
+		Set<S> nonLeafEndStates = new HashSet<S>(endStates.values());
+		for(S endState: endStates.values()){
+			try {
+				if(getOutgoingRelationsFor(endState.getName()).isEmpty())
+					nonLeafEndStates.remove(endState);
+			} catch (StateNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		return nonLeafEndStates;
+	}
+	
+	public Set<String> getNonLeafEndStateNames(){
+		Set<String> result = new HashSet<String>();
+		for(S nonLeafEndState: getNonLeafEndStates()){
+			result.add(nonLeafEndState.getName());
+		}
+		return result;
+	}
+	
+	
 	public boolean hasSeparatedStates(){
 		return hasSeparatedVertices();
 	}
@@ -192,21 +224,6 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T ext
 	public Set<S> getSeparatedStates(){
 		return getSeparatedVertices();
 	}
-
-//	@Override
-//	public T addEdge(Object sourceObject, Object targetObject) {
-//		throw new UnsupportedOperationException();
-//	}
-//	
-//	@Override
-//	public boolean addAllElements(Collection<Object> elements) {
-//		throw new UnsupportedOperationException();
-//	}
-//	
-//	@Override
-//	public boolean addElement(Object element) {
-//		throw new UnsupportedOperationException();
-//	}
 
 	@Override
 	public boolean containsObject(Object element) {
@@ -218,8 +235,12 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T ext
 		throw new UnsupportedOperationException();
 	}
 
-	public T addRelation(String sourceStateName, String targetStateName) throws VertexNotFoundException, ParameterException {
-		return super.addEdge(sourceStateName, targetStateName);
+	public T addRelation(String sourceStateName, String targetStateName) throws StateNotFoundException {
+		try {
+			return super.addEdge(sourceStateName, targetStateName);
+		} catch (VertexNotFoundException e) {
+			throw new StateNotFoundException(e);
+		}
 	}
 	
 	public boolean containsRelation(String sourceStateName, String targetStateName){
@@ -234,30 +255,46 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T ext
 		return super.getEdgeCount();
 	}
 	
-	public List<T> getIncomingRelationsFor(String stateName) throws VertexNotFoundException{
-		return super.getIncomingEdgesFor(stateName);
+	public List<T> getIncomingRelationsFor(String stateName) throws StateNotFoundException {
+		try {
+			return super.getIncomingEdgesFor(stateName);
+		} catch (VertexNotFoundException e) {
+			throw new StateNotFoundException(e);
+		}
 	}
 	
-	public List<S> getSourcesFor(String stateName) throws VertexNotFoundException, EventNotFoundException{
+	public List<S> getSourcesFor(String stateName) throws EventNotFoundException, StateNotFoundException{
 		List<S> result = new ArrayList<S>();
-		if(hasIncomingEdges(stateName)){
-			for(AbstractTransitionRelation<S,O> relation: getIncomingRelationsFor(stateName)){
-				result.add(relation.getSource());
+		try {
+			if(hasIncomingEdges(stateName)){
+				for(AbstractTransitionRelation<S,O> relation: getIncomingRelationsFor(stateName)){
+					result.add(relation.getSource());
+				}
 			}
+		} catch (VertexNotFoundException e) {
+			throw new StateNotFoundException(e);
 		}
 		return result;
 	}
 	
-	public List<T> getOutgoingRelationsFor(String stateName) throws VertexNotFoundException{
-		return super.getOutgoingEdgesFor(stateName);
+	public List<T> getOutgoingRelationsFor(String stateName) throws StateNotFoundException{
+		try {
+			return super.getOutgoingEdgesFor(stateName);
+		} catch(VertexNotFoundException e){
+			throw new StateNotFoundException(e);
+		}
 	}
 	
-	public List<S> getTargetsFor(String stateName) throws VertexNotFoundException, EventNotFoundException{
+	public List<S> getTargetsFor(String stateName) throws StateNotFoundException{
 		List<S> result = new ArrayList<S>();
-		if(hasOutgoingEdges(stateName)){
-			for(AbstractTransitionRelation<S,O> relation: getOutgoingRelationsFor(stateName)){
-				result.add(relation.getTarget());
+		try {
+			if(hasOutgoingEdges(stateName)){
+				for(AbstractTransitionRelation<S,O> relation: getOutgoingRelationsFor(stateName)){
+					result.add(relation.getTarget());
+				}
 			}
+		} catch (VertexNotFoundException e) {
+			throw new StateNotFoundException(e);
 		}
 		return result;
 	}
@@ -315,9 +352,7 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T ext
 			for(T ownRelation: getRelations()){
 				result.addRelation(ownRelation.getSource().getName(), ownRelation.getTarget().getName());
 			}
-		}catch(ParameterException e){
-			e.printStackTrace();
-		} catch (VertexNotFoundException e) {
+		} catch (StateNotFoundException e) {
 			e.printStackTrace();
 		}
 		return result;
@@ -325,6 +360,22 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T ext
 	
 	protected void transferContent(S existingState, S newState){
 		newState.setElement(existingState.getElement());
+	}
+	
+	public void validateState(String stateName) throws StateNotFoundException{
+		try {
+			super.validateVertex(stateName);
+		} catch (VertexNotFoundException e) {
+			throw new StateNotFoundException(e);
+		}
+	}
+	
+	public String getComplexity(){
+		return String.format(complexityFormat, getStateCount(), getRelationCount());
+	}
+	
+	public void printComplexity(){
+		System.out.println(getComplexity());
 	}
 	
 	@Override

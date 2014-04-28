@@ -18,14 +18,14 @@ public class LTSSerializer_Petrify<	S extends AbstractLTSState<E,O>,
 	
 	private final String RELATION_FORMAT = "%s %s %s";
 	
-	public LTSSerializer_Petrify(AbstractLabeledTransitionSystem<E,S,O> petriNet) throws ParameterException {
-		super(petriNet);
+	public LTSSerializer_Petrify(AbstractLabeledTransitionSystem<E,S,T,O> ts) throws ParameterException {
+		super(ts);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public String serialize() throws SerializationException {
-		AbstractLabeledTransitionSystem<E,S,O> ts = (AbstractLabeledTransitionSystem<E,S,O>) getTransitionSystem();
+		AbstractLabeledTransitionSystem<E,S,T,O> ts = (AbstractLabeledTransitionSystem<E,S,T,O>) getTransitionSystem();
 		StringBuilder builder = new StringBuilder();
 		String newLine = System.getProperty("line.separator");
 		
@@ -54,6 +54,19 @@ public class LTSSerializer_Petrify<	S extends AbstractLTSState<E,O>,
 		for(S startState: startStates){
 			builder.append(startState.getName());
 			if(++addedStates < startStates.size()){
+				builder.append(' ');
+			}
+		}
+		builder.append('}');
+		builder.append(newLine);
+		
+		// Add end states
+		builder.append(".final {");
+		Collection<S> endStates = ts.getEndStates();
+		addedStates = 0;
+		for (S endState : endStates) {
+			builder.append(endState.getName());
+			if (++addedStates < endStates.size()) {
 				builder.append(' ');
 			}
 		}

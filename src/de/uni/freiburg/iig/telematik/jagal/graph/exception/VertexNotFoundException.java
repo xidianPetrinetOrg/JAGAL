@@ -8,7 +8,7 @@ import de.uni.freiburg.iig.telematik.jagal.graph.abstr.AbstractGraph;
 
 public class VertexNotFoundException extends GraphException {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -2531063172019479258L;
 	private String messagePart = " does not contain vertex ";
 	private String vertexName;
 
@@ -24,7 +24,7 @@ public class VertexNotFoundException extends GraphException {
 	}
 	
 	public String getMessage(){
-		return getGraph()+messagePart+getVertex();
+		return getGraphName()+messagePart+getVertex();
 	}
 	
 	public String getVertex(){

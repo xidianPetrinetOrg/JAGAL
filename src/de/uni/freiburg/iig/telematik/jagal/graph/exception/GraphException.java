@@ -1,18 +1,19 @@
 package de.uni.freiburg.iig.telematik.jagal.graph.exception;
 
 
-public class GraphException extends Exception{
+public abstract class GraphException extends Exception{
 
-	private static final long serialVersionUID = 1L;
-	protected String graph = null;
+	private static final long serialVersionUID = 8025121318188217233L;
+	
+	protected String graphName = null;
 	
 	public GraphException(String graph){
 		super();
-		this.graph = graph;
+		this.graphName = graph;
 	}
 	
-	public String getGraph(){
-		return graph;
+	public String getGraphName(){
+		return graphName;
 	}
 
 }

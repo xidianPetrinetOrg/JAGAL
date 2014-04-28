@@ -12,45 +12,51 @@ import java.util.Map;
 import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
-import de.uni.freiburg.iig.telematik.jagal.ts.EventNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
+import de.uni.freiburg.iig.telematik.jagal.ts.exception.StateNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.ts.exception.TSException;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.exception.EventNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.exception.LabeledRelationNotFoundException;
 
 
 
-public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S extends AbstractLTSState<E,O>, O extends Object> extends AbstractTransitionSystem<S, AbstractLabeledTransitionRelation<S,E,O>,O>{
+public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent, 
+														S extends AbstractLTSState<E,O>, 
+														R extends AbstractLabeledTransitionRelation<S,E,O>, 
+														O extends Object> extends AbstractTransitionSystem<S,R,O>{
 	
-	protected final String toStringFormat = "TS = {S, E, T, S_start, S_end}\n  S       = %s\n  S_start = %s\n  S_end   = %s\n  E       = %s\n  T       = %s\n";
+	protected static final String toStringFormat = "TS = {S, E, T, S_start, S_end}\n  S       = %s\n  S_start = %s\n  S_end   = %s\n  E       = %s\n  T       = %s\n";
+	private static final String complexityFormat = "|S| = %s, |T| = %s, |E| = %s";
 	
 	protected Map<String, E> events = new HashMap<String, E>();
-	protected Map<String, Set<AbstractLabeledTransitionRelation<S,E,O>>> eventRelations = new HashMap<String, Set<AbstractLabeledTransitionRelation<S,E,O>>>();
+	protected Map<String, Set<R>> eventRelations = new HashMap<String, Set<R>>();
 	private Boolean isDFA = true;
 	
 	protected AbstractLabeledTransitionSystem() {
 		super();
 	}
 	
-	protected AbstractLabeledTransitionSystem(String name) throws ParameterException{
+	protected AbstractLabeledTransitionSystem(String name) {
 		super(name);
 	}
 	
-	protected AbstractLabeledTransitionSystem(Collection<String> stateNames) throws ParameterException{
+	protected AbstractLabeledTransitionSystem(Collection<String> stateNames) {
 		super(stateNames);
 	}
 	
-	protected AbstractLabeledTransitionSystem(String name, Collection<String> stateName) throws ParameterException{
+	protected AbstractLabeledTransitionSystem(String name, Collection<String> stateName) {
 		super(name, stateName);
 	}
 	
-	protected AbstractLabeledTransitionSystem(Collection<String> stateNames, Collection<String> eventNames) throws ParameterException{
+	protected AbstractLabeledTransitionSystem(Collection<String> stateNames, Collection<String> eventNames) {
 		this(stateNames);
 		addEvents(eventNames);
 	}
 	
-	protected AbstractLabeledTransitionSystem(String name, Collection<String> stateNames, Collection<String> eventNames) throws ParameterException{
+	protected AbstractLabeledTransitionSystem(String name, Collection<String> stateNames, Collection<String> eventNames) {
 		this(name, stateNames);
 		addEvents(eventNames);
 	}
@@ -63,7 +69,7 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 	 * @param event The event which triggers the relation
 	 * @return A new labeled transition relation.
 	 */
-	protected abstract AbstractLabeledTransitionRelation<S,E,O> createNewTransitionRelation(String sourceStateName, String targetStateName, String eventName) throws Exception;
+	protected abstract R createNewTransitionRelation(String sourceStateName, String targetStateName, String eventName) throws Exception;
 	
 	/**
 	 * Creates a new event with the give nname and label.<br>
@@ -73,17 +79,17 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 	 * @return A new event of type <code>E</code> with the given name and label.
 	 * @throws ParameterException
 	 */
-	protected abstract E createNewEvent(String name, String label) throws ParameterException;
+	protected abstract E createNewEvent(String name, String label) ;
 
 	public boolean isDFA(){
 		return isDFA;
 	}
 
-	public boolean addEvent(String eventName) throws ParameterException{
+	public boolean addEvent(String eventName) {
 		return addEvent(eventName, eventName);
 	}
 	
-	public boolean addEvent(String eventName, String eventLabel) throws ParameterException{
+	public boolean addEvent(String eventName, String eventLabel) {
 		if(events.containsKey(eventName))
 			return false;
 		addEvent(createNewEvent(eventName, eventLabel));
@@ -92,10 +98,10 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 	
 	protected void addEvent(E event){
 		events.put(event.getName(), event);
-		eventRelations.put(event.getName(), new HashSet<AbstractLabeledTransitionRelation<S,E,O>>());
+		eventRelations.put(event.getName(), new HashSet<R>());
 	}
 	
-	public boolean addEvents(Collection<String> eventNames) throws ParameterException{
+	public boolean addEvents(Collection<String> eventNames) {
 		Validate.notNull(eventNames);
 		boolean modified = false;
 		for(String eventName: eventNames){
@@ -109,6 +115,10 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 		return Collections.unmodifiableCollection(events.values());
 	}
 	
+	public Set<String> getEventNames(){
+		return Collections.unmodifiableSet(events.keySet());
+	}
+	
 	public int getEventCount(){
 		return events.size();
 	}
@@ -117,6 +127,16 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 		Set<E> result = new HashSet<E>();
 		for(E event: getEvents()){
 			if(event.isLambdaEvent()){
+				result.add(event);
+			}
+		}
+		return result;
+	}
+	
+	public Set<E> getNonLambdaEvents(){
+		Set<E> result = new HashSet<E>();
+		for(E event: getEvents()){
+			if(!event.isLambdaEvent()){
 				result.add(event);
 			}
 		}
@@ -150,7 +170,7 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 	
 	public Set<E> getUnusedEvents(){
 		Set<E> usedEvents = new HashSet<E>();
-		for(AbstractLabeledTransitionRelation<S,E,O> relation: getRelations()){
+		for(R relation: getRelations()){
 			usedEvents.add(relation.getEvent());
 		}
 		Set<E> unusedEvents = new HashSet<E>(events.values());
@@ -162,33 +182,33 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 		return !getUnusedEvents().isEmpty();
 	}
 	
-	public Set<S> getSourceStates(String eventName) throws ParameterException{
+	public Set<S> getSourceStates(String eventName) throws EventNotFoundException {
 		validateEvent(eventName);
 		Set<S> result = new HashSet<S>();
-		for(AbstractLabeledTransitionRelation<S,E,O> relation: getRelationsFor(eventName)){
+		for(R relation: getRelationsForEvent(eventName)){
 			result.add(relation.getSource());
 		}
 		return result;
 	}
 	
-	public Set<S> getTargetStates(String eventName) throws ParameterException{
+	public Set<S> getTargetStates(String eventName) throws EventNotFoundException {
 		validateEvent(eventName);
 		Set<S> result = new HashSet<S>();
-		for(AbstractLabeledTransitionRelation<S,E,O> relation: getRelationsFor(eventName)){
+		for(R relation: getRelationsForEvent(eventName)){
 			result.add(relation.getTarget());
 		}
 		return result;
 	}
 
-	public AbstractLabeledTransitionRelation<S,E,O> addRelation(String sourceStateName, String targetStateName, String eventName) throws ParameterException, VertexNotFoundException{
-		validateVertex(sourceStateName);
-		validateVertex(targetStateName);
+	public R addRelation(String sourceStateName, String targetStateName, String eventName) throws StateNotFoundException, EventNotFoundException{
+		validateState(sourceStateName);
+		validateState(targetStateName);
 		validateEvent(eventName);
 		
 		if(containsRelation(sourceStateName, targetStateName, eventName))
 			return null;
         
-		AbstractLabeledTransitionRelation<S,E,O> newRelation = super.addRelation(sourceStateName, targetStateName);
+		R newRelation = super.addRelation(sourceStateName, targetStateName);
 		if(newRelation == null){
 			// There is another relation between the same states which uses a different event
 			// Create a completely new relation.
@@ -210,12 +230,12 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 		return newRelation;
 	}
 	
-	public boolean containsRelation(String sourceStateName, String targetStateName, String eventName) throws VertexNotFoundException{
+	public boolean containsRelation(String sourceStateName, String targetStateName, String eventName) throws StateNotFoundException {
 //		System.out.println("check contains: " + sourceStateName + " to " + targetStateName + " via " + eventName);
 		if(!super.containsRelation(sourceStateName, targetStateName)){
 			return false;
 		}
-		for(AbstractLabeledTransitionRelation<S,E,O> relation: getOutgoingRelationsFor(sourceStateName)){
+		for(R relation: getOutgoingRelationsFor(sourceStateName)){
 			if(relation.getTarget().getName().equals(targetStateName)){
 				if(relation.getEvent().getName().equals(eventName)){
 					return true;
@@ -230,17 +250,49 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 	}
 	
 	@Override
-	public AbstractLabeledTransitionRelation<S,E,O> addEdge(String sourceVertexName, String targetVertexName) {
+	public R addEdge(String sourceVertexName, String targetVertexName) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public AbstractLabeledTransitionRelation<S,E,O> addRelation(String sourceStateName, String targetStateName) {
+	public R addRelation(String sourceStateName, String targetStateName) {
 		throw new UnsupportedOperationException();
 	}
 	
+	@Override
+	public boolean removeRelation(String sourceName, String targetName) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean removeEdge(String sourceVertexName, String targetVertexName) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public boolean removeRelation(String sourceName, String targetName, String eventName) throws StateNotFoundException, LabeledRelationNotFoundException, EventNotFoundException {
+		try {
+			R relationToRemove = getRelation(sourceName, targetName, eventName);
+			if(super.removeEdge(relationToRemove)){
+				eventRelations.get(eventName).remove(relationToRemove);
+				return true;
+			} else {
+				return false;
+			}
+		} catch (VertexNotFoundException e) {
+			throw new StateNotFoundException(e);
+		}
+	}
+
+	private R getRelation(String sourceName, String targetName, String eventName) throws LabeledRelationNotFoundException, StateNotFoundException, EventNotFoundException {
+		for (R outgoingRelation : getOutgoingRelationsFor(sourceName, eventName)) {
+			if (outgoingRelation.getTarget().getName().equals(targetName))
+				return outgoingRelation;
+		}
+		throw new LabeledRelationNotFoundException(sourceName, targetName, eventName, this);
+	}
+
 	public boolean hasRelations(String eventName){
-		for(AbstractLabeledTransitionRelation<S,E,O> relation: getRelations()){
+		for(R relation: getRelations()){
 			if(relation.getEvent().getName().equals(eventName)){
 				return true;
 			}
@@ -248,46 +300,71 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 		return false;
 	}
 	
-	public Set<AbstractLabeledTransitionRelation<S,E,O>> getRelationsFor(String eventName) throws ParameterException{
+	public Set<R> getRelationsForEvent(String eventName) throws EventNotFoundException {
 		validateEvent(eventName);
 		return Collections.unmodifiableSet(eventRelations.get(eventName));
 	}
 	
-	public List<AbstractLabeledTransitionRelation<S,E,O>> getIncomingRelationsFor(String stateName, String eventName) throws VertexNotFoundException, ParameterException{
+	public List<R> getIncomingRelationsFor(String stateName, String eventName) throws StateNotFoundException, EventNotFoundException {
 		validateEvent(eventName);
-		validateVertex(stateName);
+		validateState(stateName);
 		
-		List<AbstractLabeledTransitionRelation<S,E,O>> incomingRelations =  new ArrayList<AbstractLabeledTransitionRelation<S,E,O>>(super.getIncomingEdgesFor(stateName));
-		incomingRelations.retainAll(getRelationsFor(eventName));
+		List<R> incomingRelations =  new ArrayList<R>(getIncomingRelationsFor(stateName));
+		incomingRelations.retainAll(getRelationsForEvent(eventName));
 		return incomingRelations;
 	}
 	
-	public List<AbstractLabeledTransitionRelation<S,E,O>> getOutgoingRelationsFor(String stateName, String eventName) throws VertexNotFoundException, ParameterException{
+	@Override
+	public List<R> getIncomingRelationsFor(String stateName) throws StateNotFoundException {
+		try {
+			return super.getIncomingEdgesFor(stateName);
+		} catch (VertexNotFoundException e) {
+			throw new StateNotFoundException(e);
+		}
+	}
+	
+	public List<R> getOutgoingRelationsFor(String stateName, String eventName) throws StateNotFoundException, EventNotFoundException{
 		validateEvent(eventName);
-		validateVertex(stateName);
-		
-		List<AbstractLabeledTransitionRelation<S,E,O>> outgoingRelations = new ArrayList<AbstractLabeledTransitionRelation<S,E,O>>(super.getOutgoingEdgesFor(stateName));
-		outgoingRelations.retainAll(getRelationsFor(eventName));
+		validateState(stateName);
+		List<R> outgoingRelations = new ArrayList<R>(getOutgoingRelationsFor(stateName));
+		outgoingRelations.retainAll(getRelationsForEvent(eventName));
 		return outgoingRelations;
 	}
 	
-	public List<S> getTargetsFor(String stateName, String eventName) throws VertexNotFoundException, EventNotFoundException, ParameterException{
+	@Override
+	public List<R> getOutgoingRelationsFor(String stateName) throws StateNotFoundException {
+		try {
+			return super.getOutgoingEdgesFor(stateName);
+		} catch (VertexNotFoundException e) {
+			throw new StateNotFoundException(e);
+		}
+	}
+	
+	public List<S> getTargetsFor(String stateName, String eventName) throws StateNotFoundException, EventNotFoundException{
 		validateEvent(eventName);
-		validateVertex(stateName);
+		validateState(stateName);
 		
 		List<S> result = new ArrayList<S>();
-		if(hasOutgoingEdges(stateName)){
-			for(AbstractLabeledTransitionRelation<S,E,O> relation: getOutgoingRelationsFor(stateName, eventName)){
+		if(hasOutgoingRelations(stateName)){
+			for(R relation: getOutgoingRelationsFor(stateName, eventName)){
 				result.add(relation.getTarget());
 			}
 		}
 		return result;
 	}
 	
-	public boolean removeEvent(String eventName) throws EventNotFoundException, ParameterException{
+	public boolean hasOutgoingRelations(String stateName) throws StateNotFoundException{
+		try {
+			return super.hasOutgoingEdges(stateName);
+		} catch (VertexNotFoundException e) {
+			throw new StateNotFoundException(e);
+		}
+	}
+	
+	public boolean removeEvent(String eventName) throws EventNotFoundException{
 		validateEvent(eventName);
 		try {
-			removeEdges(getRelationsFor(eventName));
+			removeEdges(getRelationsForEvent(eventName));
 			eventRelations.remove(eventName);
 		} catch (VertexNotFoundException e) {
 			// Edge vertexes are present, since the edge itself was contained in the ts before.
@@ -296,23 +373,20 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
         return events.remove(eventName) != null;
 	}
 	
-	public boolean acceptsSequence(String... sequence) throws ParameterException{
+	
+	
+	public boolean acceptsSequence(String... sequence) throws StateNotFoundException{
 		Validate.notNull(sequence);
 		Validate.notEmpty(sequence);
 		
 		// Find all possible start states
 		Set<S> possibleStartStates = new HashSet<S>();
-		for(S startState: getStartStates()){
-			try {
-				for(AbstractLabeledTransitionRelation<S,E,O> relation: getOutgoingRelationsFor(startState.getName())){
-					if(relation.getEvent().getLabel().equals(sequence[0])){
-						possibleStartStates.add(startState);
-						break;
-					}
+		for (S startState : getStartStates()) {
+			for (R relation : getOutgoingRelationsFor(startState.getName())) {
+				if (relation.getEvent().getLabel().equals(sequence[0])) {
+					possibleStartStates.add(startState);
+					break;
 				}
-			} catch(VertexNotFoundException e){
-				// Should not happen, since we only use start states of the TS
-				e.printStackTrace();
 			}
 		}
 		if(possibleStartStates.isEmpty())
@@ -327,7 +401,7 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 		return false;
 	}
 	
-	private boolean acceptsSequenceRec(S actualState, String... restSequence){
+	private boolean acceptsSequenceRec(S actualState, String... restSequence) throws StateNotFoundException{
 		
 		if(restSequence.length == 0){
 			// This is the trivial case
@@ -336,18 +410,11 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 		
 		// Check if there is an outgoing relation with the right label
 		Set<S> successors = new HashSet<S>();
-		try{ 
-			for(AbstractLabeledTransitionRelation<S,E,O> relation: getOutgoingRelationsFor(actualState.getName())){
-				if(relation.getEvent().getLabel().equals(restSequence[0])){
-					successors.add(relation.getTarget());
-				}
+		for (R relation : getOutgoingRelationsFor(actualState.getName())) {
+			if (relation.getEvent().getLabel().equals(restSequence[0])) {
+				successors.add(relation.getTarget());
 			}
-		} catch(VertexNotFoundException e){
-			// Should not happen, since we only use start states of the TS
-			e.printStackTrace();
 		}
-		
-		
 		if(successors.isEmpty())
 			return false;
 		
@@ -370,14 +437,14 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 		return false;
 	}
 
-	public void validateEvent(String eventName) throws ParameterException{
+	public void validateEvent(String eventName) throws EventNotFoundException {
 		if(!containsEvent(eventName))
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unknown event: " + eventName);
+			throw new EventNotFoundException(eventName, this);
 	}
 	
 	@Override
-	public AbstractLabeledTransitionSystem<E,S,O> clone(){
-		AbstractLabeledTransitionSystem<E,S,O> result = (AbstractLabeledTransitionSystem<E,S,O>) createNewInstance();
+	public AbstractLabeledTransitionSystem<E,S,R,O> clone(){
+		AbstractLabeledTransitionSystem<E,S,R,O> result = (AbstractLabeledTransitionSystem<E,S,R,O>) createNewInstance();
 		try{
 			for(S ownState: getStates()){
 				result.addState(ownState.getName(), ownState.getElement());
@@ -393,16 +460,16 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 				result.addEvent(ownEvent.getName());
 				transferContent(ownEvent, result.getEvent(ownEvent.getName()));
 			}
-			for(AbstractLabeledTransitionRelation<S,E,O> ownRelation: getRelations()){
+			for(R ownRelation: getRelations()){
 				result.addRelation(ownRelation.getSource().getName(), ownRelation.getTarget().getName(), ownRelation.getEvent().getName());
 			}
-		}catch(ParameterException e){
-			e.printStackTrace();
-		} catch (VertexNotFoundException e) {
+		} catch (TSException e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
+	
+	
 	
 	@Override
 	protected void transferContent(S existingState, S newState){
@@ -414,11 +481,18 @@ public abstract class AbstractLabeledTransitionSystem<E extends AbstractEvent, S
 		newEvent.setLambdaEvent(existingEvent.isLambdaEvent());
 	}
 	
+	
+	
+	@Override
+	public String getComplexity() {
+		return String.format(complexityFormat, getStateCount(), getRelationCount(), getEventCount());
+	}
+
 	@Override
 	public String toString(){
 		StringBuilder relations = new StringBuilder();
 		boolean firstEntry = true;
-		for(AbstractLabeledTransitionRelation<S,E,O> relation: getRelations()){
+		for(R relation: getRelations()){
 			if(!firstEntry){
 				relations.append("            ");
 			}

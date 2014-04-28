@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 
 import de.invation.code.toval.types.HashList;
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.graph.Edge;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
@@ -48,15 +47,15 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	
 	public AbstractGraph() {}
 	
-	public AbstractGraph(String name) throws ParameterException{
+	public AbstractGraph(String name) {
 		setName(name);
 	}
 	
-	public AbstractGraph(Collection<String> vertexes) throws ParameterException{
+	public AbstractGraph(Collection<String> vertexes) {
 		addVertices(vertexes);
 	}
 	
-	public AbstractGraph(String name, Collection<String> vertexes) throws ParameterException{
+	public AbstractGraph(String name, Collection<String> vertexes) {
 		setName(name);
 		addVertices(vertexes);
 	}
@@ -84,9 +83,9 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	/**
 	 * Sets the name of the graph.
 	 * @param name The desired graph name.
-	 * @throws ParameterException if the given name is <code>null</code>.
+	 * @ if the given name is <code>null</code>.
 	 */
-	public void setName(String name) throws ParameterException{
+	public void setName(String name) {
 		Validate.notNull(name);
 		this.name = name;
 	}
@@ -200,9 +199,9 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * @param element The element of the new vertex.
 	 * @return <code>true</code> if the vertex could be inserted;
      *		<code>false</code> otherwise.	
-	 * @throws ParameterException if the vertex name is <code>null</code>.
+	 * @ if the vertex name is <code>null</code>.
 	 */
-	public boolean addVertex(String vertexName) throws ParameterException{
+	public boolean addVertex(String vertexName) {
 		return addVertex(vertexName, null);
 	}
 	
@@ -213,9 +212,9 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * @param element The element of the new vertex.
 	 * @return <code>true</code> if the vertex could be inserted;
      *		<code>false</code> otherwise.	
-	 * @throws ParameterException if the vertex name is <code>null</code>.
+	 * @ if the vertex name is <code>null</code>.
 	 */
-	public boolean addVertex(String vertexName, U element) throws ParameterException{
+	public boolean addVertex(String vertexName, U element) {
 		Validate.notNull(vertexName);
 		if(containsVertex(vertexName))
 			return false;
@@ -232,11 +231,11 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * @param vertexNames Names for the graph vertices.
 	 * @return <code>true</code> if at least one vertex was successfully added;<br>
 	 * <code>false</code> otherwise.
-	 * @throws ParameterException If the set of vertex names is <code>null</code>
+	 * @ If the set of vertex names is <code>null</code>
 	 * or contains <code>null</code>-values.
 	 * @see #addVertex(String)
 	 */
-	public boolean addVertices(Collection<String> vertexNames) throws ParameterException{
+	public boolean addVertices(Collection<String> vertexNames) {
 		Validate.notNull(vertexNames);
 		boolean updated = false;
 		for(String vertexName: vertexNames){
@@ -349,9 +348,9 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 //		return null;
 //	}
 	
-	protected abstract V createNewVertex(String name, U element) throws ParameterException;
+	protected abstract V createNewVertex(String name, U element) ;
 	
-	protected abstract E createNewEdge(V sourceVertex, V targetVertex) throws ParameterException;
+	protected abstract E createNewEdge(V sourceVertex, V targetVertex) ;
 	
 	public V getVertex(String name){
 		return vertexMap.get(name);
@@ -411,9 +410,10 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * @param vertexName The name of the vertex to remove
 	 * @return <code>true</code> if the removal was successful;
      *		<code>false</code> otherwise.
+	 * @throws VertexNotFoundException 
 	 * @see AbstractGraph#removeEdge(E)
 	 */
-	public boolean removeVertex(String vertexName) throws GraphException{
+	public boolean removeVertex(String vertexName) throws VertexNotFoundException {
         validateVertex(vertexName);
         for(E vertexEdge: getEdgesFor(vertexName)){
         	removeEdge(vertexEdge);
@@ -510,12 +510,12 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
      * @throws VertexNotFoundException If the given vertexes are not found.
      * @throws EdgeNotFoundException If there exists no edge between the given vertexes.
      */
-	public E getEdge(String sourceVertexName, String targetVertexName) throws GraphException{
+	public E getEdge(String sourceVertexName, String targetVertexName) throws VertexNotFoundException, EdgeNotFoundException {
 		if(!containsVertex(sourceVertexName))
 			throw new VertexNotFoundException(sourceVertexName, this);
 		if(!containsVertex(targetVertexName))
 			throw new VertexNotFoundException(targetVertexName, this);
-		
+	
         for(Iterator<E> iter=getEdgeContainer(sourceVertexName).getOutgoingEdges().iterator(); iter.hasNext();){
             E e = iter.next();
             if (e.getTarget().getName().equals(targetVertexName)) {
@@ -551,7 +551,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * @throws VertexNotFoundException If the graph does not contain vertexes 
 	 * that are equal to the given source and target vertexes.
 	 */
-	public E addEdge(String sourceVertexName, String targetVertexName) throws ParameterException, VertexNotFoundException{
+	public E addEdge(String sourceVertexName, String targetVertexName) throws VertexNotFoundException{
         if(!containsVertex(sourceVertexName))
         	throw new VertexNotFoundException(sourceVertexName, this);
         if(!containsVertex(targetVertexName))
@@ -689,7 +689,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * @throws VertexNotFoundException If the graph does not contain one of the edge vertexes.
 	 * @throws EdgeNotFoundException If the graph does not contain an edge from the source to the target vertex.
 	 */
-	public boolean removeEdge(String sourceVertexName, String targetVertexName) throws GraphException{
+	public boolean removeEdge(String sourceVertexName, String targetVertexName) throws VertexNotFoundException, EdgeNotFoundException {
 		return removeEdge(getEdge(sourceVertexName, targetVertexName));
 	}
 	
@@ -808,12 +808,12 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	
 
 	@Override
-	public Collection<V> getParents(V node) throws VertexNotFoundException, ParameterException {
+	public Collection<V> getParents(V node) throws VertexNotFoundException {
 		return getParents(node.getName());
 	}
 
 	@Override
-	public Collection<V> getChildren(V node) throws VertexNotFoundException, ParameterException {
+	public Collection<V> getChildren(V node) throws VertexNotFoundException {
 		return getChildren(node.getName());
 	}
 

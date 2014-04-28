@@ -10,12 +10,12 @@ import de.invation.code.toval.file.FileReader;
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.parser.ParserException.ErrorCode;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.jagal.graph.exception.GraphException;
-import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.TransitionSystem;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractState;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionRelation;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
+import de.uni.freiburg.iig.telematik.jagal.ts.exception.StateNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.ts.exception.TSException;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.LabeledTransitionSystem;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionSystem;
 import de.uni.freiburg.iig.telematik.jagal.ts.parser.TSParserInterface;
@@ -27,6 +27,7 @@ public class PetrifyTSParser implements TSParserInterface{
 	private static final String PREFIX_STATE_GRAPH = ".state graph";
 	private static final String PREFIX_END = ".end";
 	private static final String PREFIX_MARKING = ".marking ";
+	private static final String PREFIX_FINAL = ".final ";
 	private static final String PREFIX_COMMENT = "#";
 	
 	
@@ -50,6 +51,11 @@ public class PetrifyTSParser implements TSParserInterface{
 					lineContent = lineContent.replace("{", "");
 					lineContent = lineContent.replace("}", "");
 					setMarking(ts, lineContent);
+				} else if(nextLine.startsWith(PREFIX_FINAL)){
+					lineContent = nextLine.replace(PREFIX_FINAL, "");
+					lineContent = lineContent.replace("{", "");
+					lineContent = lineContent.replace("}", "");
+					setFinalStates(ts, lineContent);
 				} else if(nextLine.isEmpty() || nextLine.startsWith(PREFIX_STATE_GRAPH) || nextLine.startsWith(PREFIX_END)){
 					// Do nothing
 				} else {
@@ -97,7 +103,7 @@ public class PetrifyTSParser implements TSParserInterface{
 			String eventName = tokens.get(1);
 			try {
 				((AbstractLabeledTransitionSystem) ts).addRelation(sourceName, targetName, eventName);
-			} catch (GraphException e) {
+			} catch (TSException e) {
 				throw new ParserException("Cannot add relation: " + e.getMessage());
 			}
 		} else {
@@ -105,7 +111,7 @@ public class PetrifyTSParser implements TSParserInterface{
 			ensureState(ts, targetName);
 			try {
 				ts.addRelation(sourceName, targetName);
-			} catch (VertexNotFoundException e) {
+			} catch (StateNotFoundException e) {
 				throw new ParserException("Cannot add relation: " + e.getMessage());
 			}
 		}
@@ -122,6 +128,14 @@ public class PetrifyTSParser implements TSParserInterface{
 			if(!ts.containsState(token))
 				throw new ParameterException("Unknown state: " + token);
 			ts.addStartState(token);
+		}
+	}
+	
+	private <S extends AbstractState<O>, T extends AbstractTransitionRelation<S,O>,O> void setFinalStates(AbstractTransitionSystem<S,T,O> ts, String lineContent) throws ParameterException {
+		for(String token: getTokens(lineContent)){
+			if(!ts.containsState(token))
+				throw new ParameterException("Unknown state: " + token);
+			ts.addEndState(token);
 		}
 	}
 

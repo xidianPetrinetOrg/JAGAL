@@ -13,7 +13,7 @@ public abstract class LTSSerializer<S extends AbstractLTSState<E,O>,
 									T extends AbstractLabeledTransitionRelation<S,E,O>,
 									O extends Object> extends TSSerializer<S,T,O>{
 
-	public LTSSerializer(AbstractLabeledTransitionSystem<E,S,O> ts) throws ParameterException {
+	public LTSSerializer(AbstractLabeledTransitionSystem<E,S,T,O> ts) throws ParameterException {
 		super((AbstractTransitionSystem<S, T, O>) ts);
 	}
 

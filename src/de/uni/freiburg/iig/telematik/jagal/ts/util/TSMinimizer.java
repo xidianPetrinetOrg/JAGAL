@@ -8,13 +8,14 @@ import de.uni.freiburg.iig.telematik.jagal.ts.StatePairContainer;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.LabeledTransitionSystem;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractEvent;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLTSState;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionRelation;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionSystem;
 
 
 
 public class TSMinimizer {
 	
-	public static <E extends AbstractEvent, S extends AbstractLTSState<E,O>, O> void minimize(AbstractLabeledTransitionSystem<E,S,O> ts){
+	public static <E extends AbstractEvent, S extends AbstractLTSState<E,O>, R extends AbstractLabeledTransitionRelation<S,E,O>, O> void minimize(AbstractLabeledTransitionSystem<E,S,R,O> ts){
 		
 		
 		if(!ts.isDFA()){
