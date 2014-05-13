@@ -153,8 +153,11 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 		return result;
 	}
 	
-	public E getEvent(String eventName){
-		return events.get(eventName);
+	public E getEvent(String eventName) throws EventNotFoundException{
+		E event = events.get(eventName);
+		if(event == null)
+			throw new EventNotFoundException(eventName, this);
+		return event;
 	}
 	
 	/**

@@ -101,6 +101,10 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T ext
 		return super.getVertices();
 	}
 	
+	public Set<String> getStateNames(){
+		return super.getVertexNames();
+	}
+	
 	public boolean isStartState(String stateName){
 		return startStates.containsKey(stateName);
 	}

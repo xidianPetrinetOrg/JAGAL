@@ -182,6 +182,10 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 		return Collections.unmodifiableCollection(vertexMap.values());
 	}
 	
+	public Set<String> getVertexNames(){
+		return Collections.unmodifiableSet(vertexMap.keySet());
+	}
+	
 	public int getVertexCount(){
 		return vertexMap.keySet().size();
 	}
