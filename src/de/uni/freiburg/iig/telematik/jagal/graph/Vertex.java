@@ -48,6 +48,7 @@ public class Vertex<T extends Object> {
 		return result;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

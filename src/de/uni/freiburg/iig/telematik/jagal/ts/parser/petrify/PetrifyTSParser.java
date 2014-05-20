@@ -17,6 +17,9 @@ import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
 import de.uni.freiburg.iig.telematik.jagal.ts.exception.StateNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.exception.TSException;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.LabeledTransitionSystem;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractEvent;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLTSState;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionRelation;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionSystem;
 import de.uni.freiburg.iig.telematik.jagal.ts.parser.TSParserInterface;
 
@@ -32,6 +35,7 @@ public class PetrifyTSParser implements TSParserInterface{
 	
 	
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public <S extends AbstractState<O>, T extends AbstractTransitionRelation<S,O>, O extends Object> AbstractTransitionSystem<S, T, O> parse(File file) throws IOException, ParserException, ParameterException {
 		AbstractTransitionSystem<S,T,O> ts = createTS(file);
@@ -45,7 +49,7 @@ public class PetrifyTSParser implements TSParserInterface{
 				
 				if(nextLine.startsWith(PREFIX_OUTPUTS)){
 					lineContent = nextLine.replace(PREFIX_OUTPUTS, "");
-					insertEvents(ts, lineContent);
+					insertEvents((AbstractLabeledTransitionSystem) ts, lineContent);
 				} else if(nextLine.startsWith(PREFIX_MARKING)){
 					lineContent = nextLine.replace(PREFIX_MARKING, "");
 					lineContent = lineContent.replace("{", "");
@@ -69,7 +73,13 @@ public class PetrifyTSParser implements TSParserInterface{
 		return ts;
 	}
 	
-	private <S extends AbstractState<O>, T extends AbstractTransitionRelation<S,O>,O> AbstractTransitionSystem<S,T,O> createTS(File file) throws IOException, ParserException{
+	@SuppressWarnings("unchecked")
+	private <S extends AbstractState<O>, 
+			 T extends AbstractTransitionRelation<S,O>,
+			 O> 
+	
+	AbstractTransitionSystem<S,T,O> createTS(File file) throws IOException, ParserException{
+		
 		FileReader reader = new FileReader(file.getAbsolutePath());
 		String nextLine = null;
 		int tokenCount = 0;
@@ -83,7 +93,7 @@ public class PetrifyTSParser implements TSParserInterface{
 		}
 		reader.closeFile();
 		if(tokenCount == 2){
-			return (AbstractTransitionSystem<S,T,O>) new TransitionSystem();
+			return (AbstractTransitionSystem<S, T, O>) new TransitionSystem();
 		} if (tokenCount == 3){
 			return (AbstractTransitionSystem<S,T,O>) new LabeledTransitionSystem();
 		} else {
@@ -92,7 +102,13 @@ public class PetrifyTSParser implements TSParserInterface{
 	}
 
 
-	private <S extends AbstractState<O>, T extends AbstractTransitionRelation<S,O>,O> void addTransition(AbstractTransitionSystem<S,T,O> ts, String lineContent) throws ParameterException, ParserException {
+	@SuppressWarnings("rawtypes")
+	private <S extends AbstractState<O>, 
+			 T extends AbstractTransitionRelation<S,O>,
+			 O> 
+	
+	void addTransition(AbstractTransitionSystem<S,T,O> ts, String lineContent) throws ParserException {
+		
 		List<String> tokens = getTokens(lineContent);
 		String sourceName = tokens.get(0);
 		ensureState(ts, sourceName);
@@ -139,9 +155,14 @@ public class PetrifyTSParser implements TSParserInterface{
 		}
 	}
 
-	private <S extends AbstractState<O>, T extends AbstractTransitionRelation<S,O>,O> void insertEvents(AbstractTransitionSystem<S,T,O> ts, String lineContent) throws ParameterException {
+	private <E extends AbstractEvent,
+			 S extends AbstractLTSState<E,O>, 
+			 T extends AbstractLabeledTransitionRelation<S,E,O>,
+			 O> 
+	void insertEvents(AbstractLabeledTransitionSystem<E,S,T,O> ts, String lineContent){
+		
 		for(String token: getTokens(lineContent)){
-			((AbstractLabeledTransitionSystem) ts).addEvent(token);
+			ts.addEvent(token);
 		}
 	}
 	

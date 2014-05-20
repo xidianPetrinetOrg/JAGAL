@@ -445,9 +445,14 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 			throw new EventNotFoundException(eventName, this);
 	}
 	
+	
+	
+	@Override
+	public abstract AbstractLabeledTransitionSystem<E,S,R,O> createNewInstance();
+
 	@Override
 	public AbstractLabeledTransitionSystem<E,S,R,O> clone(){
-		AbstractLabeledTransitionSystem<E,S,R,O> result = (AbstractLabeledTransitionSystem<E,S,R,O>) createNewInstance();
+		AbstractLabeledTransitionSystem<E,S,R,O> result = createNewInstance();
 		try{
 			for(S ownState: getStates()){
 				result.addState(ownState.getName(), ownState.getElement());
