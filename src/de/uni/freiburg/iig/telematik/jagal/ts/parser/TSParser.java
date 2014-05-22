@@ -10,59 +10,67 @@ import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractState;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionRelation;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractEvent;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLTSState;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionRelation;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionSystem;
 import de.uni.freiburg.iig.telematik.jagal.ts.parser.petrify.PetrifyTSParser;
 
 public class TSParser {
 	
 
-	public static synchronized <S extends AbstractState<O>,
-								T extends AbstractTransitionRelation<S,O>,
-								O extends Object>
+	public static synchronized <E extends AbstractEvent,
+	 							S extends AbstractLTSState<E,O>, 
+	 							T extends AbstractLabeledTransitionRelation<S,E,O>,
+	 							O>
 	
-								AbstractTransitionSystem<S,T,O>
+								AbstractLabeledTransitionSystem<E,S,T,O>
 	
-	parse(File file) throws IOException, ParserException, ParameterException {
+	parse(File file) throws IOException, ParserException{
 		validateFile(file);
 		TSParsingFormat format = guessFormat(file);
 		if(format == null)
 			throw new ParserException(ErrorCode.UNKNOWN_FILE_EXTENSION);
 		TSParserInterface parser = getParser(file, format);
-		return parser.<S,T,O>parse(file);
+		return parser.<E,S,T,O>parse(file);
 	}
 	
-	public static synchronized <S extends AbstractState<O>,
-								T extends AbstractTransitionRelation<S,O>,
-								O extends Object>
-
-								AbstractTransitionSystem<S,T,O>
+	public static synchronized <E extends AbstractEvent,
+	 							S extends AbstractLTSState<E,O>, 
+	 							T extends AbstractLabeledTransitionRelation<S,E,O>,
+	 							O>
+	
+								AbstractLabeledTransitionSystem<E,S,T,O>
 	
 	parse(String fileName) throws IOException, ParserException, ParameterException {
 		Validate.notNull(fileName);
-		return TSParser.<S,T,O>parse(prepareFile(fileName));
+		return TSParser.<E,S,T,O>parse(prepareFile(fileName));
 	}
 	
-	public static synchronized <S extends AbstractState<O>,
-								T extends AbstractTransitionRelation<S,O>,
-								O extends Object>
-
-								AbstractTransitionSystem<S,T,O>
+	public static synchronized <E extends AbstractEvent,
+								S extends AbstractLTSState<E,O>, 
+								T extends AbstractLabeledTransitionRelation<S,E,O>,
+								O>
+	
+								AbstractLabeledTransitionSystem<E,S,T,O>
 	
 	parse(File file, TSParsingFormat format) throws IOException, ParserException, ParameterException {
 		validateFile(file);
 		Validate.notNull(format);
 		TSParserInterface parser = getParser(file, format);
-		return parser.<S,T,O>parse(file);
+		return parser.<E,S,T,O>parse(file);
 	}
 	
-	public static synchronized <S extends AbstractState<O>,
-								T extends AbstractTransitionRelation<S,O>,
-								O extends Object>
-
-								AbstractTransitionSystem<S,T,O>
+	public static synchronized <E extends AbstractEvent,
+	 							S extends AbstractLTSState<E,O>, 
+	 							T extends AbstractLabeledTransitionRelation<S,E,O>,
+	 							O>
+	
+								AbstractLabeledTransitionSystem<E,S,T,O>
 	
 	parse(String fileName, TSParsingFormat format) throws IOException, ParserException, ParameterException {
 		Validate.notNull(fileName);
-		return TSParser.<S,T,O>parse(prepareFile(fileName), format);
+		return TSParser.<E,S,T,O>parse(prepareFile(fileName), format);
 	}
 	
 	private static File prepareFile(String fileName) throws IOException{

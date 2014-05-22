@@ -10,16 +10,8 @@ import de.invation.code.toval.file.FileReader;
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.parser.ParserException.ErrorCode;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.jagal.ts.TransitionSystem;
-import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractState;
-import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionRelation;
-import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
-import de.uni.freiburg.iig.telematik.jagal.ts.exception.StateNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.exception.TSException;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.LabeledTransitionSystem;
-import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractEvent;
-import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLTSState;
-import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionRelation;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionSystem;
 import de.uni.freiburg.iig.telematik.jagal.ts.parser.TSParserInterface;
 
@@ -35,10 +27,11 @@ public class PetrifyTSParser implements TSParserInterface{
 	
 	
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked"})
 	@Override
-	public <S extends AbstractState<O>, T extends AbstractTransitionRelation<S,O>, O extends Object> AbstractTransitionSystem<S, T, O> parse(File file) throws IOException, ParserException, ParameterException {
-		AbstractTransitionSystem<S,T,O> ts = createTS(file);
+	public LabeledTransitionSystem parse(File file) throws IOException, ParserException{
+		
+		LabeledTransitionSystem ts = createTS(file);
 		FileReader reader = new FileReader(file.getAbsolutePath());
 		String nextLine = null;
 		while((nextLine = reader.readLine()) != null){
@@ -49,7 +42,7 @@ public class PetrifyTSParser implements TSParserInterface{
 				
 				if(nextLine.startsWith(PREFIX_OUTPUTS)){
 					lineContent = nextLine.replace(PREFIX_OUTPUTS, "");
-					insertEvents((AbstractLabeledTransitionSystem) ts, lineContent);
+					insertEvents(ts, lineContent);
 				} else if(nextLine.startsWith(PREFIX_MARKING)){
 					lineContent = nextLine.replace(PREFIX_MARKING, "");
 					lineContent = lineContent.replace("{", "");
@@ -70,15 +63,11 @@ public class PetrifyTSParser implements TSParserInterface{
 			}
 		}
 		reader.closeFile();
+		
 		return ts;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private <S extends AbstractState<O>, 
-			 T extends AbstractTransitionRelation<S,O>,
-			 O> 
-	
-	AbstractTransitionSystem<S,T,O> createTS(File file) throws IOException, ParserException{
+	private LabeledTransitionSystem createTS(File file) throws IOException, ParserException{
 		
 		FileReader reader = new FileReader(file.getAbsolutePath());
 		String nextLine = null;
@@ -93,9 +82,9 @@ public class PetrifyTSParser implements TSParserInterface{
 		}
 		reader.closeFile();
 		if(tokenCount == 2){
-			return (AbstractTransitionSystem<S, T, O>) new TransitionSystem();
+			throw new ParserException(ErrorCode.UNSUPPORTED_FORMAT, "File does not seem to contain a TS.");
 		} if (tokenCount == 3){
-			return (AbstractTransitionSystem<S,T,O>) new LabeledTransitionSystem();
+			return new LabeledTransitionSystem();
 		} else {
 			throw new ParserException(ErrorCode.UNSUPPORTED_FORMAT, "Cannot determine TS type.");
 		}
@@ -103,11 +92,7 @@ public class PetrifyTSParser implements TSParserInterface{
 
 
 	@SuppressWarnings("rawtypes")
-	private <S extends AbstractState<O>, 
-			 T extends AbstractTransitionRelation<S,O>,
-			 O> 
-	
-	void addTransition(AbstractTransitionSystem<S,T,O> ts, String lineContent) throws ParserException {
+	private void addTransition(LabeledTransitionSystem ts, String lineContent) throws ParserException {
 		
 		List<String> tokens = getTokens(lineContent);
 		String sourceName = tokens.get(0);
@@ -125,21 +110,17 @@ public class PetrifyTSParser implements TSParserInterface{
 		} else {
 			targetName = tokens.get(1);
 			ensureState(ts, targetName);
-			try {
-				ts.addRelation(sourceName, targetName);
-			} catch (StateNotFoundException e) {
-				throw new ParserException("Cannot add relation: " + e.getMessage());
-			}
+			ts.addRelation(sourceName, targetName);
 		}
 	}
 
-	private <S extends AbstractState<O>, T extends AbstractTransitionRelation<S,O>,O> void ensureState(AbstractTransitionSystem<S,T,O> ts, String stateName) throws ParameterException {
+	private void ensureState(LabeledTransitionSystem ts, String stateName) throws ParameterException {
 		if(!ts.containsState(stateName)){
 			ts.addState(stateName);
 		}
 	}
 
-	private <S extends AbstractState<O>, T extends AbstractTransitionRelation<S,O>,O> void setMarking(AbstractTransitionSystem<S,T,O> ts, String lineContent) throws ParameterException {
+	private void setMarking(LabeledTransitionSystem ts, String lineContent) throws ParameterException {
 		for(String token: getTokens(lineContent)){
 			if(!ts.containsState(token))
 				throw new ParameterException("Unknown state: " + token);
@@ -147,7 +128,7 @@ public class PetrifyTSParser implements TSParserInterface{
 		}
 	}
 	
-	private <S extends AbstractState<O>, T extends AbstractTransitionRelation<S,O>,O> void setFinalStates(AbstractTransitionSystem<S,T,O> ts, String lineContent) throws ParameterException {
+	private void setFinalStates(LabeledTransitionSystem ts, String lineContent) throws ParameterException {
 		for(String token: getTokens(lineContent)){
 			if(!ts.containsState(token))
 				throw new ParameterException("Unknown state: " + token);
@@ -155,11 +136,7 @@ public class PetrifyTSParser implements TSParserInterface{
 		}
 	}
 
-	private <E extends AbstractEvent,
-			 S extends AbstractLTSState<E,O>, 
-			 T extends AbstractLabeledTransitionRelation<S,E,O>,
-			 O> 
-	void insertEvents(AbstractLabeledTransitionSystem<E,S,T,O> ts, String lineContent){
+	private void insertEvents(LabeledTransitionSystem ts, String lineContent){
 		
 		for(String token: getTokens(lineContent)){
 			ts.addEvent(token);

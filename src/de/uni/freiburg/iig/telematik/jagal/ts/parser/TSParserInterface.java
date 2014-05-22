@@ -4,17 +4,18 @@ import java.io.File;
 import java.io.IOException;
 
 import de.invation.code.toval.parser.ParserException;
-import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractState;
-import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionRelation;
-import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractEvent;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLTSState;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionRelation;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionSystem;
 
 
 public interface TSParserInterface {
 
-	public <S extends AbstractState<O>,
-			T extends AbstractTransitionRelation<S,O>,
-			O extends Object>
+	public <E extends AbstractEvent,
+	 		S extends AbstractLTSState<E,O>, 
+	 		T extends AbstractLabeledTransitionRelation<S,E,O>,
+	 		O extends Object>
 	
-			AbstractTransitionSystem<S,T,O> parse(File file) throws IOException, ParserException, ParameterException;
+			AbstractLabeledTransitionSystem<E,S,T,O> parse(File file) throws IOException, ParserException;
 }
