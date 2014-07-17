@@ -1,6 +1,7 @@
 package de.uni.freiburg.iig.telematik.jagal.ts.abstr;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,10 +20,11 @@ import de.uni.freiburg.iig.telematik.jagal.ts.exception.StateNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.exception.EventNotFoundException;
 
 
-public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T extends AbstractTransitionRelation<S,O>, O extends Object> extends AbstractGraph<S, T, O> {
-	
+public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T extends AbstractTransitionRelation<S,O>, O extends Object> extends AbstractGraph<S, T, O> implements Serializable {
+
+	private static final long serialVersionUID = -728502376317368044L;
+
 	private static final String toStringFormat = "TS = {S, T, S_start, S_end}\n  S       = %s\n  S_start = %s\n  S_end   = %s\n  T       = %s\n";
-	private static final String complexityFormat = "|S| = %s, |T| = %s";
 	
 	protected Map<String, S> endStates = new HashMap<String, S>();
 	protected Map<String, S> startStates = new HashMap<String, S>(); 
@@ -372,14 +374,6 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T ext
 		} catch (VertexNotFoundException e) {
 			throw new StateNotFoundException(e);
 		}
-	}
-	
-	public String getComplexity(){
-		return String.format(complexityFormat, getStateCount(), getRelationCount());
-	}
-	
-	public void printComplexity(){
-		System.out.println(getComplexity());
 	}
 	
 	@Override

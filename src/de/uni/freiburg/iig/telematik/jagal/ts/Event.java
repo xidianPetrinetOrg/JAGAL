@@ -5,6 +5,8 @@ import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractEvent;
 
 public class Event extends AbstractEvent{
 	
+	private static final long serialVersionUID = 1400285695561951287L;
+
 	public Event(String name){
 		super(name);
 	}

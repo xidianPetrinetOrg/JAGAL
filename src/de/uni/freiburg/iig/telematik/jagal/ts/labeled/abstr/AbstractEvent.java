@@ -1,8 +1,12 @@
 package de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr;
 
+import java.io.Serializable;
 
-public abstract class AbstractEvent {
 
+public abstract class AbstractEvent implements Serializable{
+
+	private static final long serialVersionUID = 2049051501026413012L;
+	
 	protected String name;
 	protected String label = "";
 	

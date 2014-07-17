@@ -18,6 +18,7 @@ import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
 import de.uni.freiburg.iig.telematik.jagal.ts.exception.StateNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.exception.TSException;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.TSComplexity;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.exception.EventNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.exception.LabeledRelationNotFoundException;
 
@@ -28,8 +29,9 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 														R extends AbstractLabeledTransitionRelation<S,E,O>, 
 														O extends Object> extends AbstractTransitionSystem<S,R,O>{
 	
+	private static final long serialVersionUID = -8005788902665552329L;
+
 	protected static final String toStringFormat = "TS = {S, E, T, S_start, S_end}\n  S       = %s\n  S_start = %s\n  S_end   = %s\n  E       = %s\n  T       = %s\n";
-	private static final String complexityFormat = "|S| = %s, |T| = %s, |E| = %s";
 	
 	protected Map<String, E> events = new HashMap<String, E>();
 	protected Map<String, Set<R>> eventRelations = new HashMap<String, Set<R>>();
@@ -277,6 +279,8 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 			R relationToRemove = getRelation(sourceName, targetName, eventName);
 			if(super.removeEdge(relationToRemove)){
 				eventRelations.get(eventName).remove(relationToRemove);
+				getState(targetName).removeIncomingEvent(getEvent(eventName));
+				getState(sourceName).removeOutgoingEvent(getEvent(eventName));
 				return true;
 			} else {
 				return false;
@@ -489,11 +493,8 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 		newEvent.setLambdaEvent(existingEvent.isLambdaEvent());
 	}
 	
-	
-	
-	@Override
-	public String getComplexity() {
-		return String.format(complexityFormat, getStateCount(), getRelationCount(), getEventCount());
+	public TSComplexity getComplexity() {
+		return new TSComplexity(getStateCount(), getEventCount(), getRelationCount());
 	}
 
 	@Override

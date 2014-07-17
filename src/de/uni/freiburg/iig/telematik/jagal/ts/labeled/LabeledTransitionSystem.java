@@ -10,6 +10,8 @@ import de.uni.freiburg.iig.telematik.jagal.ts.labeled.exception.EventNotFoundExc
 
 public class LabeledTransitionSystem extends AbstractLabeledTransitionSystem<Event, LTSState, LabeledTransitionRelation, Object> {
 
+	private static final long serialVersionUID = -7254836871349786579L;
+
 	public LabeledTransitionSystem() {
 		super();
 	}

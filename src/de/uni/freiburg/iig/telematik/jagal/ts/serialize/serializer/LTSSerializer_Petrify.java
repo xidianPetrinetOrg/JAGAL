@@ -29,6 +29,13 @@ public class LTSSerializer_Petrify<	S extends AbstractLTSState<E,O>,
 		StringBuilder builder = new StringBuilder();
 		String newLine = System.getProperty("line.separator");
 		
+		builder.append("# states: ");
+		builder.append(ts.getStateCount());
+		builder.append(newLine);
+		builder.append("# events: ");
+		builder.append(ts.getEventCount());
+		builder.append(newLine);
+		
 		// Add first line: events
 		builder.append(".outputs");
 		for(E event: ts.getEvents()){

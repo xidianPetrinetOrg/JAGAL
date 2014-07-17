@@ -1,10 +1,13 @@
 package de.uni.freiburg.iig.telematik.jagal.ts.abstr;
 
-import de.uni.freiburg.iig.telematik.jagal.graph.Edge;
-import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractState;
+import java.io.Serializable;
 
-public abstract class AbstractTransitionRelation<S extends AbstractState<O>, O extends Object> extends Edge<S> {
-	
+import de.uni.freiburg.iig.telematik.jagal.graph.Edge;
+
+public abstract class AbstractTransitionRelation<S extends AbstractState<O>, O extends Object> extends Edge<S> implements Serializable {
+
+	private static final long serialVersionUID = 8676428132800423438L;
+
 	public AbstractTransitionRelation(){
 		super();
 	}

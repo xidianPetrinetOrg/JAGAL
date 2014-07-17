@@ -7,7 +7,9 @@ import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
 
 
 public class TransitionSystem extends AbstractTransitionSystem<State, TransitionRelation, Object> {
-	
+
+	private static final long serialVersionUID = -5760109002670091863L;
+
 	public TransitionSystem() {
 		super();
 	}

@@ -7,9 +7,7 @@ import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLTSState;
 
 public class LTSState extends AbstractLTSState<Event,Object> {
 	
-//	public LTSState(String name){
-//		super(name);
-//	}
+	private static final long serialVersionUID = 5336258082573485517L;
 
 	public LTSState(String name, Object element) {
 		super(name, element);

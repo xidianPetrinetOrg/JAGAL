@@ -5,7 +5,8 @@ import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTrans
 
 public class LabeledTransitionRelation extends AbstractLabeledTransitionRelation<LTSState,Event,Object>{
 	
-	
+	private static final long serialVersionUID = 6945598315811530227L;
+
 	public LabeledTransitionRelation(){
 		super();
 	}

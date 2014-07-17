@@ -4,6 +4,8 @@ import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionRelation;
 
 public class AbstractLabeledTransitionRelation<S extends AbstractLTSState<E,O>, E extends AbstractEvent, O extends Object> extends AbstractTransitionRelation<S,O> {
 
+	private static final long serialVersionUID = 3424924052967526567L;
+	
 	private final String toStringFormat = "(%s, %s, %s)";
 	private final String toStringFormatSimple = "%s %s %s";
 	
