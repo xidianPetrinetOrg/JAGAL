@@ -6,7 +6,7 @@ import java.util.Collection;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 
-public class WeightedGraph<U extends Object> extends AbstractWeightedGraph<Vertex<U>, U>{
+public class WeightedGraph<T extends Object> extends AbstractWeightedGraph<Vertex<T>, T>{
 	
 	public WeightedGraph(){
 		super();
@@ -25,13 +25,13 @@ public class WeightedGraph<U extends Object> extends AbstractWeightedGraph<Verte
 	}
 	
 	@Override
-	protected Vertex<U> createNewVertex(String name, U element) {
-		return new Vertex<U>(name, element);
+	protected Vertex<T> createNewVertex(String name, T element) {
+		return new Vertex<T>(name, element);
 	}
 	
 	@Override
-	protected WeightedEdge<Vertex<U>> createNewEdge(Vertex<U> sourceVertex, Vertex<U> targetVertex) {
-		return new WeightedEdge<Vertex<U>>(sourceVertex, targetVertex);
+	protected WeightedEdge<Vertex<T>> createNewEdge(Vertex<T> sourceVertex, Vertex<T> targetVertex) {
+		return new WeightedEdge<Vertex<T>>(sourceVertex, targetVertex);
 	}
 
 	public static void main(String[] args) throws Exception{

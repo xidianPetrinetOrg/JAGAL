@@ -15,7 +15,7 @@ import de.uni.freiburg.iig.telematik.jagal.graph.exception.GraphException;
 
 public class ColoringUtils {
 	
-	public static <V extends Vertex<U>, E extends Edge<V>, U> Coloring<V> naiveColoring(AbstractGraph<V, E, U> graph) throws ParameterException{
+	public static <V extends Vertex<U>, E extends Edge<V>, U> Coloring<V> naiveColoring(AbstractGraph<V, E, U> graph) {
 		Validate.notNull(graph);
 		Coloring<V> coloring = new Coloring<V>();
 		Set<Integer> neighborColors = new HashSet<Integer>();
@@ -42,7 +42,7 @@ public class ColoringUtils {
 		return coloring;
 	}
 	
-	public static <V extends Vertex<U>, E extends Edge<V>, U> Coloring<U> getElementColoring(AbstractGraph<V, E, U> graph, Coloring<V> vertexColoring) throws ParameterException{
+	public static <V extends Vertex<U>, E extends Edge<V>, U> Coloring<U> getElementColoring(AbstractGraph<V, E, U> graph, Coloring<V> vertexColoring) {
 		Validate.notNull(graph);
 		Coloring<U> elementColoring = new Coloring<U>();
 		for(V vertex: graph.getVertices()){

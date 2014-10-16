@@ -7,7 +7,7 @@ import java.util.Collection;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.graph.abstr.AbstractGraph;
 
-public class Graph<U extends Object> extends AbstractGraph<Vertex<U>, Edge<Vertex<U>>, U> {
+public class Graph<T extends Object> extends AbstractGraph<Vertex<T>, Edge<Vertex<T>>, T> {
 	
 	public Graph(){
 		super();
@@ -26,13 +26,13 @@ public class Graph<U extends Object> extends AbstractGraph<Vertex<U>, Edge<Verte
 	}
 	
 	@Override
-	protected Vertex<U> createNewVertex(String name, U element) {
-		return new Vertex<U>(name, element);
+	protected Vertex<T> createNewVertex(String name, T element) {
+		return new Vertex<T>(name, element);
 	}
 
 	@Override
-	protected Edge<Vertex<U>> createNewEdge(Vertex<U> sourceVertex, Vertex<U> targetVertex) {
-		return new Edge<Vertex<U>>(sourceVertex, targetVertex);
+	protected Edge<Vertex<T>> createNewEdge(Vertex<T> sourceVertex, Vertex<T> targetVertex) {
+		return new Edge<Vertex<T>>(sourceVertex, targetVertex);
 	}
 
 	public static void main(String[] args) throws Exception {

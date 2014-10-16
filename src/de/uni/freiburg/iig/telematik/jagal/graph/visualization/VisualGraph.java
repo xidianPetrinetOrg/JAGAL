@@ -69,7 +69,7 @@ public abstract class VisualGraph<V extends Vertex<U>, E extends Edge<V>, U> ext
 		protected void drawArrow(V source, V target, double weight, Color color){
 			Graphics g = getGraphics();
 			g.setColor(color);
-			GraphicUtils.drawArrowOffset(g, vertexPointMap.get(source),vertexPointMap.get(target), diameterMap.get(source), diameterMap.get(target), weight);
+			GraphicUtils.drawArrowOffset(g, vertexPointMap.get(source), vertexPointMap.get(target), diameterMap.get(source), diameterMap.get(target), weight);
 		}
 		
 	}
