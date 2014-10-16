@@ -20,7 +20,9 @@ import de.uni.freiburg.iig.telematik.jagal.ts.exception.StateNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.exception.EventNotFoundException;
 
 
-public abstract class AbstractTransitionSystem<S extends AbstractState<O>, T extends AbstractTransitionRelation<S,O>, O extends Object> extends AbstractGraph<S, T, O> implements Serializable {
+public abstract class AbstractTransitionSystem<S extends AbstractState<O>, 
+											   T extends AbstractTransitionRelation<S,O>, 
+											   O extends Object> extends AbstractGraph<S, T, O> implements Serializable {
 
 	private static final long serialVersionUID = -728502376317368044L;
 
