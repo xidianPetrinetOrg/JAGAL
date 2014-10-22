@@ -94,18 +94,21 @@ public class LabeledTransitionSystem extends AbstractLabeledTransitionSystem<Eve
 		ts.addEvent("c");
 		ts.addEvent("d");
 		ts.addEvent("e");
+		ts.addEvent("f");
 		ts.addStartState("s0");
 		ts.addEndState("s3");
 		ts.addEndState("s4");
 		ts.addRelation("s0", "s2", "a");
 		ts.addRelation("s2", "s3", "b");
-		ts.addRelation("s0", "s1", "a");
+		ts.addRelation("s0", "s1", "f");
 		ts.addRelation("s1", "s4", "c");
 		ts.addRelation("s4", "s5", "d");
 		ts.addRelation("s5", "s4", "e");
 		
-		String[] sequence1 = {"A", "C", "D", "E", "D", "E"};
-		System.out.println(ts.acceptsSequence(sequence1));
+//		String[] sequence1 = {"a", "b"};
+//		System.out.println(ts.acceptsSequence(sequence1));
+		
+		System.out.println(ts.isDFA());
 	}
 	
 }

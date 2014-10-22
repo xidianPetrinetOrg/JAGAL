@@ -35,7 +35,6 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	
 	protected Map<String, E> events = new HashMap<String, E>();
 	protected Map<String, Set<R>> eventRelations = new HashMap<String, Set<R>>();
-	private Boolean isDFA = true;
 	
 	protected AbstractLabeledTransitionSystem() {
 		super();
@@ -84,7 +83,23 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	protected abstract E createNewEvent(String name, String label) ;
 
 	public boolean isDFA(){
-		return isDFA;
+		if(getStartStates().isEmpty())
+			return false;
+		if(getStartStates().size() > 1)
+			return false;
+		for(S state: getStates()){
+			try {
+				Set<E> relationEvents = new HashSet<E>();
+				for(R outgoingRelation: getOutgoingRelationsFor(state.getName())){
+					if(!relationEvents.add(outgoingRelation.getEvent()))
+						return false;
+				}
+			} catch (StateNotFoundException e) {
+				// Cannot happen, since we iterate over TS states
+				e.printStackTrace();
+			}
+		}
+		return true;
 	}
 
 	public boolean addEvent(String eventName) {
@@ -223,14 +238,8 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 			getEdgeContainer(targetStateName).addIncomingEdge(newRelation);
 		}
 		newRelation.setEvent(getEvent(eventName));
-		
-		if (!this.getState(sourceStateName).addOutgoingEvent(getEvent(eventName))) {
-			// In this case there exists another relation from the sourceState
-			// with the same event which means the transition system gets non-deterministic.
-			isDFA = false;
-		}
-		getState(targetStateName).addIncomingEvent(getEvent(eventName));
 		getState(sourceStateName).addOutgoingEvent(getEvent(eventName));
+		getState(targetStateName).addIncomingEvent(getEvent(eventName));
 		eventRelations.get(eventName).add(newRelation);
 		return newRelation;
 	}
@@ -436,9 +445,6 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	@Override
 	public boolean addStartState(String stateName) {
 		if(super.addStartState(stateName)){
-			if(isDFA()){
-				isDFA = getStartStates().size() == 1;
-			}
 			return true;
 		}
 		return false;
