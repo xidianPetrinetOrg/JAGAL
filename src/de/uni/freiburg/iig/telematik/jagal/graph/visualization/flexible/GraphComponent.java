@@ -17,7 +17,9 @@ public class GraphComponent<G extends Graph<T>, T extends Object> extends Abstra
 		Graph<Object> g = new Graph<Object>();
 		g.addVertex("v1");
 		g.addVertex("v2");
+		g.addVertex("v3");
 		g.addEdge("v1", "v2");
+		g.addEdge("v2", "v3");
 		new DisplayFrame(new GraphComponent(g), true);
 	}
 

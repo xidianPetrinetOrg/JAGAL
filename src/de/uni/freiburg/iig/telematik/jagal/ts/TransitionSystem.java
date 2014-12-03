@@ -34,7 +34,6 @@ public class TransitionSystem extends AbstractTransitionSystem<State, Transition
 	@Override
 	public State createNewState(String name, Object element)  {
 		Validate.notNull(name);
-		Validate.notNull(element);
 		return new State(name, element);
 	}
 

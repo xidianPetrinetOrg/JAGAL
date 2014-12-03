@@ -32,6 +32,10 @@ public abstract class AbstractGraphComponent<G extends AbstractGraph<V,E,U>,V ex
 	protected Map<String, Object> vertices = new HashMap<String, Object>(); 
 
 	public AbstractGraphComponent(G graph) throws Exception {
+		initialize(graph);
+	}
+	
+	protected void initialize(G graph) throws Exception{
 		setupVisualGraph(graph);
 		setLayout(new BorderLayout(20, 0));
 		add(getGraphPanel(), BorderLayout.CENTER);

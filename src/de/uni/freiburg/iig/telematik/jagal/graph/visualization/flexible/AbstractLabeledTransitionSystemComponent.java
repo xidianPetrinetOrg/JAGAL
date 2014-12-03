@@ -8,14 +8,28 @@ import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTrans
 public class AbstractLabeledTransitionSystemComponent<G extends AbstractLabeledTransitionSystem<E,S,R,O>,E extends AbstractEvent, S extends AbstractLTSState<E, O>, R extends AbstractLabeledTransitionRelation<S, E, O>, O extends Object> extends AbstractTransitionSystemComponent<G, S, R, O> {
 
 	private static final long serialVersionUID = 4091538764969398029L;
+	private boolean useEventLabels = false;
 
 	public AbstractLabeledTransitionSystemComponent(G ts) throws Exception {
 		super(ts);
 	}
 
+	
+	public boolean isUseEventLabels() {
+		return useEventLabels;
+	}
+
+
+	public void setUseEventLabels(boolean useEventLabels) {
+		this.useEventLabels = useEventLabels;
+	}
+
+
 	@Override
 	protected String getEdgeLabel(R edge) {
-		return edge.getEvent().getLabel();
+		if(isUseEventLabels())
+			return edge.getEvent().getLabel();
+		return edge.getEvent().getName();
 	}
 	
 }
