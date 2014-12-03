@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.jagal.graph.visualization.flexible;
+package de.uni.freiburg.iig.telematik.jagal.visualization.flexible;
 
 import de.invation.code.toval.graphic.component.DisplayFrame;
 import de.uni.freiburg.iig.telematik.jagal.graph.Edge;

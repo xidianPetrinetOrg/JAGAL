@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.jagal.graph.visualization.circle;
+package de.uni.freiburg.iig.telematik.jagal.visualization.circle;
 
 
 

@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.jagal.graph.visualization.flexible;
+package de.uni.freiburg.iig.telematik.jagal.visualization.flexible;
 
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractEvent;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLTSState;

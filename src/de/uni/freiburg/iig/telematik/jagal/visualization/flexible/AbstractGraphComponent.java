@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.jagal.graph.visualization.flexible;
+package de.uni.freiburg.iig.telematik.jagal.visualization.flexible;
 
 import java.awt.BorderLayout;
 import java.util.HashMap;

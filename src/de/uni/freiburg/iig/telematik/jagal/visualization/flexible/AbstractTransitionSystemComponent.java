@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.jagal.graph.visualization.flexible;
+package de.uni.freiburg.iig.telematik.jagal.visualization.flexible;
 
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractState;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionRelation;
