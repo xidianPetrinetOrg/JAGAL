@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="SERAM.package" default="package" basedir=".">
+<project name="JAGAL.package" default="package" basedir=".">
 
 	<!--
-	Apache Ant build file for the SERAM project
+	Apache Ant build file for the JAGAL project
 	
 	This build file generates three JAR-files from the project:
 	- jagal-0.1.5.jar
@@ -16,8 +16,8 @@
 	Then the project gets compiled (see #compile) and all unit tests are performed
 	(see #test). If the compilation ran without errors, the JARs are packaged (see #package).
 	
-	SERAM depends on the projects TOVAL, JAGAL, JAWL and SEPIA, which compiled classes must be
-	present under the specified paths.
+	JAGAL depends on the projects TOVAL, whose compiled classes must be present under
+	the specified paths.
 	 -->
 
 	<!-- Project details -->
@@ -31,12 +31,15 @@
 
 	<!-- Source and destination directories -->
 	<property name="src.dir" value="${basedir}/src" />
+	<property name="test.dir" value="${basedir}/test" />
 	<property name="target.dir" value="${basedir}/bin" />
 	<property name="target.dir.jar" value="${target.dir}/${artifact.name}-${version.name}" />
 	<property name="libs.dir" value="${basedir}/lib" />
 	<property name="docs.temp.dir" value="${target.dir}/docs" />
 	<property name="classes.target.dir" value="${target.dir}/classes" />
+	<property name="tests.target.dir" value="${target.dir}/tests" />
 	<property name="docs.temp.dir" value="${target.dir}/docs" />
+	<property name="testreport.dir" value="${target.dir}/test-report" />
 
 	<!-- Define classpath -->
 	<property name="TOVAL.location" value="../TOVAL" />
@@ -47,7 +50,10 @@
 	
 	<path id="JAGAL.classpath">
 		<pathelement location="${classes.target.dir}" />
+		<pathelement location="${tests.target.dir}" />
 		<path refid="TOVAL.classpath" />
+		<pathelement location="lib/junit/junit-4.11.jar" />
+		<pathelement location="lib/jgraphXwithsources.jar" />
 	</path>
 
 	<!-- Package JARs -->
@@ -100,6 +106,7 @@
 			</manifest>
 			<fileset dir="${classes.target.dir}" />
 			<fileset dir="${TOVAL.location}/bin/classes" />
+			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/jgraphXwithsources.jar" />
 		</jar>
 	</target>
 
@@ -109,12 +116,23 @@
 			<src path="${src.dir}" />
 			<classpath refid="JAGAL.classpath" />
 		</javac>
+		<copy includeemptydirs="false" todir="${classes.target.dir}">
+			<fileset file="${basedir}/LICENSE.txt" />
+		</copy>
+		<echo>Compile tests...</echo>
+		<javac destdir="${tests.target.dir}" includeantruntime="false">
+			<src path="${test.dir}" />
+			<classpath refid="JAGAL.classpath" />
+		</javac>
 	</target>
 
 	<target name="clean" description="Deletes the target files including current JARs. Old versions of the JARs stay untouched.">
 		<echo>Delete target files...</echo>
 		<!-- Delete compiled classes and tests -->
 		<delete dir="${classes.target.dir}" />
+		<delete dir="${tests.target.dir}" />
+		<!-- Delete test reports -->
+		<delete dir="${testreport.dir}" />
 	</target>
 
 	<target name="init" depends="clean" description="Creates the target directory structure">
@@ -124,11 +142,27 @@
 		</tstamp>
 		<echo>Prepare directories...</echo>
 		<mkdir dir="${classes.target.dir}" />
+		<mkdir dir="${tests.target.dir}" />
 		<copy includeemptydirs="false" todir="${classes.target.dir}">
 			<fileset dir="${src.dir}">
 				<exclude name="**/*.java" />
 			</fileset>
 		</copy>
+		<copy includeemptydirs="false" todir="${tests.target.dir}">
+			<fileset dir="${test.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="test" description="Performs all unit tests">
+		<echo>Perform unit tests...</echo>
+		<mkdir dir="${testreport.dir}" />
+		<junit fork="yes" printsummary="withOutAndErr">
+			<formatter type="xml" />
+			<test name="de.uni.freiburg.iig.telematik.jagal.AllTests" todir="${testreport.dir}" />
+			<classpath refid="JAGAL.classpath" />
+		</junit>
 	</target>
 
 </project>
