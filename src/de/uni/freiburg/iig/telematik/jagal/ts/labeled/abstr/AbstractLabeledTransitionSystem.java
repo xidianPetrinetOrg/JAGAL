@@ -421,7 +421,12 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 		
 		if(restSequence.length == 0){
 			// This is the trivial case
-			return true;
+			System.out.println(actualState);
+			if (getEndStates().isEmpty()) {
+				return true;
+			} else {
+				return getEndStates().contains(actualState);
+			}
 		}
 		
 		// Check if there is an outgoing relation with the right label
