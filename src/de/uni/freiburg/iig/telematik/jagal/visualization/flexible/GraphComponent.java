@@ -13,6 +13,7 @@ public class GraphComponent<G extends Graph<T>, T extends Object> extends Abstra
 		super(graph);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void main(String[] args) throws Exception {
 		Graph<Object> g = new Graph<Object>();
 		g.addVertex("v1");
@@ -22,5 +23,4 @@ public class GraphComponent<G extends Graph<T>, T extends Object> extends Abstra
 		g.addEdge("v2", "v3");
 		new DisplayFrame(new GraphComponent(g), true);
 	}
-
 }

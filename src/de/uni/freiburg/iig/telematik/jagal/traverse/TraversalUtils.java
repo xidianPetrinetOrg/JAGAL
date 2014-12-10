@@ -168,10 +168,11 @@ public class TraversalUtils {
 	}
 	
 //	public static <V extends Vertex<U>, U> boolean isVertexInCycle(AbstractGraph<V, ?, U> graph, V vertex) throws VertexNotFoundException{
-	
+
 	/**
 	 * Checks if a vertex is contained in a cycle.<br>
 	 * In case the given vertex is in a cycle, it is a predecessor of itself.
+	 *
 	 * @param traversableStructure The graph that contains the vertex.
 	 * @param node The vertex for which the property is checked.
 	 * @return <code>true</code> if the given vertex is contained in a cycle;<br>
@@ -184,8 +185,29 @@ public class TraversalUtils {
 		Validate.notNull(traversableStructure);
 		return isPredecessor(traversableStructure, node, node);
 	}
-	
-	
+
+	/**
+	 * Checks if a traversable structure contains a cycle.
+	 * 
+	 * @param traversableStructure The graph to check for cycles.
+	 * @return <code>true</code> if the given structure contains at least one cycle, <code>false</code> otherwise.
+	 * @throws ParameterException
+	 * @see {@link #isNodeInCycle(Traversable, Object)}
+	 */
+	public static <V extends Object> boolean hasCycle(Traversable<V> traversableStructure) throws ParameterException {
+		Validate.notNull(traversableStructure);
+		for (V node : traversableStructure.getNodes()) {
+			try {
+				if (isNodeInCycle(traversableStructure, node))
+					return true;
+			} catch (VertexNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+
 //	public static <V extends Vertex<U>, U> ArrayBlockingQueue<ArrayList<V>> getDirectedPathsFor(AbstractGraph<V, ?, U> graph, V sourceVertex, V targetVertex) throws VertexNotFoundException{
 	
 	/**
