@@ -421,7 +421,6 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 		
 		if(restSequence.length == 0){
 			// This is the trivial case
-			System.out.println(actualState);
 			if (getEndStates().isEmpty()) {
 				return true;
 			} else {
