@@ -35,7 +35,7 @@ public class GraphUtils {
 		queue.clear();
 		queue.offer(outEdgeVertexName);
 		while(!queue.isEmpty()){
-			if(queue.peek() == inEdgeVertexName){
+			if(queue.peek().equals(inEdgeVertexName)){
 				return true;
 			}
 			visited.add(queue.peek());

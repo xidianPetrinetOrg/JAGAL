@@ -7,7 +7,7 @@ public class Vertex<T extends Object> {
 	
 	protected String name = null;
 	protected T element = null;
-	
+
 	protected Vertex(String name){
 		this.name = name;
 	}

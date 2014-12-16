@@ -64,8 +64,9 @@ public class MarkingStatePairContainer<S extends AbstractState<O>, O> extends St
 		if(isNewElement){
 			if(unmarkedPairs == null){
 				System.out.println("set null");
+			} else {
+				unmarkedPairs.add(statePair);
 			}
-			unmarkedPairs.add(statePair);
 		}
 		return isNewElement;
 	}

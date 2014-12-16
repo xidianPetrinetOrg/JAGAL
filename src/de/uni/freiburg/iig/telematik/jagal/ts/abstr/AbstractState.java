@@ -12,6 +12,10 @@ public abstract class AbstractState<O extends Object> extends Vertex<O> implemen
 
 	private boolean isLambdaState = false;
 
+	protected AbstractState() {
+		super(DEFAULT_STATE_NAME);
+	}
+
 	protected AbstractState(String name) {
 		super(name);
 	}

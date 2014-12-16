@@ -85,7 +85,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * @param name The desired graph name.
 	 * @ if the given name is <code>null</code>.
 	 */
-	public void setName(String name) {
+	public final void setName(String name) {
 		Validate.notNull(name);
 		this.name = name;
 	}
@@ -239,7 +239,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * or contains <code>null</code>-values.
 	 * @see #addVertex(String)
 	 */
-	public boolean addVertices(Collection<String> vertexNames) {
+	public final boolean addVertices(Collection<String> vertexNames) {
 		Validate.notNull(vertexNames);
 		boolean updated = false;
 		for(String vertexName: vertexNames){
