@@ -17,6 +17,8 @@ import de.invation.code.toval.types.HashList;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.graph.Edge;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
+import de.uni.freiburg.iig.telematik.jagal.graph.algorithm.coloring.Coloring;
+import de.uni.freiburg.iig.telematik.jagal.graph.algorithm.coloring.GraphColoringFactory;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.EdgeNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.GraphException;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
@@ -495,6 +497,15 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 			throw new VertexNotFoundException(vertexName, this);
 		return getEdgeContainer(vertexName).isEmpty();
 	}
+
+	/**
+	 * Checks if the abstract graph is bipartite, i.e. it can be separated in
+	 * two disjoint groups of vertices, which are not adjacent among themselves.
+	 */
+	public boolean isBipartite() {
+		Coloring<V> c = GraphColoringFactory.exactGreedyColoring(this);
+		return c.getColorGroups().size() == 2;
+	}
 	
 	//------- EDGE manipulation methods ----------------------------------------------------------
 	
@@ -861,5 +872,4 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 		if(!containsVertex(vertexName))
         	throw new VertexNotFoundException(vertexName, this);
 	}
-	
 }

@@ -24,7 +24,26 @@ public class TraversalUtils {
 	
 	private static ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<Object>(10);
 	private static Set<Object> visited = new HashSet<Object>();
-	
+
+	/**
+	 * Returns <code>true</code>, if the given traversable structure is weakly
+	 * connected.
+	 */
+	public static <V extends Object> boolean isWeaklyConnected(Traversable<V> traversableStructure) {
+		for (V node : traversableStructure.getNodes()) {
+			Set<V> nodes = new HashSet<V>();
+			weakConnectivityRec(traversableStructure, node, nodes);
+			if (nodes.size() < traversableStructure.getNodes().size())
+				return false;
+			break;
+		}
+		return true;
+	}
+
+	/**
+	 * Returns <code>true</code>, if the given traversable structure is strongly
+	 * connected.
+	 */
 	public static <V extends Object> boolean isStronglyConnected(Traversable<V> traversableStructure, V node){
 		int visitedNodes = 0;
 		Iterator<V> iter = new Traverser<V>(traversableStructure, node, TraversalMode.DEPTHFIRST);
@@ -50,9 +69,7 @@ public class TraversalUtils {
 		result.remove(node);
 		return result;
 	}
-	
-//	public static <V extends Vertex<U>, U> boolean isPredecessor(AbstractGraph<V, ?, U> graph, V queryVertex, V baseVertex) throws VertexNotFoundException
-	
+
 	/**
 	 * Checks, if {@link queryNode} is a predecessor of {@link baseNode}.
 	 * @param baseNode Basic Node for predecessor search
@@ -271,4 +288,21 @@ public class TraversalUtils {
 		return finalPaths;
 	}
 
+	private static <V extends Object> void weakConnectivityRec(Traversable<V> graph, V v, Set<V> nodes) {
+	    Set<V> neighbours = new HashSet<V>();
+	    try {
+		    neighbours.addAll(graph.getChildren(v));
+			neighbours.addAll(graph.getParents(v));
+		} catch (ParameterException e) {
+			e.printStackTrace();
+		} catch (VertexNotFoundException e) {
+			e.printStackTrace();
+		}
+	    for (V n : neighbours) {
+	        if (false == nodes.contains(n)) {
+	            nodes.add(n);
+	            weakConnectivityRec(graph, n, nodes);
+	        }
+	    }
+	}
 }
