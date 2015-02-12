@@ -113,6 +113,17 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 		return true;
 	}
 	
+	public void renameEvent(String oldName, String newName) throws EventNotFoundException{
+		if(containsEvent(newName))
+			throw new ParameterException("There is already an event with name \"" + newName + "\". Abort renaming.");
+		E existingEvent = getEvent(oldName);
+		existingEvent.setName(newName);
+		events.put(newName, existingEvent);
+		events.remove(oldName);
+		eventRelations.put(newName, eventRelations.get(oldName));
+		eventRelations.remove(oldName);
+	}
+	
 	protected void addEvent(E event){
 		events.put(event.getName(), event);
 		eventRelations.put(event.getName(), new HashSet<R>());

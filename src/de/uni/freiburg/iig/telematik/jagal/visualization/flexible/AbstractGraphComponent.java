@@ -30,12 +30,16 @@ public abstract class AbstractGraphComponent<G extends AbstractGraph<V,E,U>,V ex
 	protected mxGraph visualGraph = null;
 	protected G graph = null;
 	protected Map<String, Object> vertices = new HashMap<String, Object>(); 
+	
+	protected boolean highlightSources = true;
+	protected boolean highlightDrains = false;
 
 	public AbstractGraphComponent(G graph) throws Exception {
-		initialize(graph);
+		Validate.notNull(graph);
+		this.graph = graph;
 	}
 	
-	protected void initialize(G graph) throws Exception{
+	public void initialize() throws Exception{
 		setupVisualGraph(graph);
 		setLayout(new BorderLayout(20, 0));
 		add(getGraphPanel(), BorderLayout.CENTER);
@@ -49,8 +53,9 @@ public abstract class AbstractGraphComponent<G extends AbstractGraph<V,E,U>,V ex
 
 		visualGraph.getModel().beginUpdate();
 		try{
-			for (String vertexName : graph.getVertexNames()) {
-				Object vertex = visualGraph.insertVertex(parent, vertexName, vertexName, 0, 0, 40, 40, "shape=ellipse");
+			for (V graphVertex : graph.getVertices()) {
+				String vertexName = graphVertex.getName();
+				Object vertex = visualGraph.insertVertex(parent, vertexName, vertexName, 0, 0, 40, 40, getShapeForVertex(graphVertex));
 				vertices.put(vertexName, vertex);
 			}
 			for (String vertexName : graph.getVertexNames()) {
@@ -67,17 +72,26 @@ public abstract class AbstractGraphComponent<G extends AbstractGraph<V,E,U>,V ex
 			visualGraph.getModel().endUpdate();
 		}
 		
-		for(V sourceVertex: graph.getSources()){
-			setNodeColor(sourceNodeColor, sourceVertex.getName());
+		if (highlightSources) {
+			for (V sourceVertex : graph.getSources()) {
+				setNodeColor(sourceNodeColor, sourceVertex.getName());
+			}
 		}
-		for(V drainVertex: graph.getDrains()){
-			setNodeColor(drainNodeColor, drainVertex.getName());
+		
+		if (highlightDrains) {
+			for (V drainVertex : graph.getDrains()) {
+				setNodeColor(drainNodeColor, drainVertex.getName());
+			}
 		}
 		
 		mxHierarchicalLayout layout = new mxHierarchicalLayout(visualGraph);
 		layout.execute(visualGraph.getDefaultParent());
 	}
 	
+	protected String getShapeForVertex(V graphVertex) {
+		return "shape=ellipse";
+	}
+
 	protected String getEdgeLabel(E edge){
 		return "";
 	}
