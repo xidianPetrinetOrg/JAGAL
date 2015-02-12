@@ -1,7 +1,5 @@
 package de.uni.freiburg.iig.telematik.jagal.visualization.flexible;
 
-import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
-
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractState;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionRelation;
 import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractTransitionSystem;
@@ -32,18 +30,16 @@ public abstract class AbstractTransitionSystemComponent<G extends AbstractTransi
 		for (S drainVertex : graph.getEndStates()) {
 			setNodeColor(drainNodeColor, drainVertex.getName());
 		}
+//		mxHierarchicalLayout layout = new mxHierarchicalLayout(visualGraph);
+//		layout.execute(visualGraph.getDefaultParent());
+	}
 
-<<<<<<< .mine
+
 	@Override
 	protected String getShapeForVertex(S graphVertex) {
 		if(graph.isEndState(graphVertex.getName()))
 			return "shape=doubleEllipse";
 		return "shape=ellipse";
 	}
-	
-=======
-		mxHierarchicalLayout layout = new mxHierarchicalLayout(visualGraph);
-		layout.execute(visualGraph.getDefaultParent());
-	}
->>>>>>> .r49
+
 }

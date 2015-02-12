@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.jagal.visualization.flexible;
 
+import de.invation.code.toval.graphic.component.DisplayFrame;
 import de.uni.freiburg.iig.telematik.jagal.graph.Edge;
 import de.uni.freiburg.iig.telematik.jagal.graph.Graph;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
@@ -12,8 +13,6 @@ public class GraphComponent<G extends Graph<T>, T extends Object> extends Abstra
 		super(graph);
 	}
 
-<<<<<<< .mine
-=======
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void main(String[] args) throws Exception {
 		Graph<Object> g = new Graph<Object>();
@@ -24,5 +23,4 @@ public class GraphComponent<G extends Graph<T>, T extends Object> extends Abstra
 		g.addEdge("v2", "v3");
 		new DisplayFrame(new GraphComponent(g), true);
 	}
->>>>>>> .r49
 }
