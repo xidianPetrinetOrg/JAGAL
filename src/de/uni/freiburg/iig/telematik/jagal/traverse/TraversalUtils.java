@@ -30,9 +30,18 @@ public class TraversalUtils {
 	 * connected.
 	 */
 	public static <V extends Object> boolean isWeaklyConnected(Traversable<V> traversableStructure) {
+		Validate.notNull(traversableStructure);
 		for (V node : traversableStructure.getNodes()) {
 			Set<V> nodes = new HashSet<V>();
-			weakConnectivityRec(traversableStructure, node, nodes);
+			try {
+				weakConnectivityRec(traversableStructure, node, nodes);
+			} catch (ParameterException e) {
+				// shouldn't be happening
+				e.printStackTrace();
+			} catch (VertexNotFoundException e) {
+				// vertices should always be found, since they are read from the traversable structure
+				e.printStackTrace();
+			}
 			if (nodes.size() < traversableStructure.getNodes().size())
 				return false;
 			break;
@@ -288,16 +297,10 @@ public class TraversalUtils {
 		return finalPaths;
 	}
 
-	private static <V extends Object> void weakConnectivityRec(Traversable<V> graph, V v, Set<V> nodes) {
+	private static <V extends Object> void weakConnectivityRec(Traversable<V> graph, V v, Set<V> nodes) throws ParameterException, VertexNotFoundException {
 	    Set<V> neighbours = new HashSet<V>();
-	    try {
-		    neighbours.addAll(graph.getChildren(v));
-			neighbours.addAll(graph.getParents(v));
-		} catch (ParameterException e) {
-			e.printStackTrace();
-		} catch (VertexNotFoundException e) {
-			e.printStackTrace();
-		}
+	    neighbours.addAll(graph.getChildren(v));
+		neighbours.addAll(graph.getParents(v));
 	    for (V n : neighbours) {
 	        if (false == nodes.contains(n)) {
 	            nodes.add(n);
