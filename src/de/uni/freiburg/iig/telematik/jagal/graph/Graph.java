@@ -1,6 +1,6 @@
 package de.uni.freiburg.iig.telematik.jagal.graph;
 
-
+ 
 
 import java.util.Collection;
 
