@@ -172,6 +172,22 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 		return false;
 	}
 	
+	public boolean hasDrains(){
+		for(String vertexName: vertexMap.keySet()){
+			if(!getEdgeContainer(vertexName).hasOutgoingEdges())
+				return true;
+		}
+		return false;
+	}
+	
+	public boolean hasSources(){
+		for(String vertexName: vertexMap.keySet()){
+			if(!getEdgeContainer(vertexName).hasIncomingEdges())
+				return true;
+		}
+		return false;
+	}
+	
 	
 	//------- VERTEX manipulation methods --------------------------------------------------------------
 	
