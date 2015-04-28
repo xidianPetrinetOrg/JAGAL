@@ -63,7 +63,7 @@ public class SCCTarjan<V extends Object> {
 				lowlinkMap.put(v, Math.min(lowlinkMap.get(v), indexMap.get(n)));
 			}
 		}
-		if (lowlinkMap.get(v) == indexMap.get(v)) {
+		if (lowlinkMap.get(v).equals(indexMap.get(v))) {
 			V n;
 			Set<V> component = new HashSet<V>();
 			do {
