@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.invation.code.toval.types.HashList;
+import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.graph.Edge;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
@@ -85,7 +86,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	/**
 	 * Sets the name of the graph.
 	 * @param name The desired graph name.
-	 * @ if the given name is <code>null</code>.
+	 * @throws ParameterException if the given name is <code>null</code>.
 	 */
 	public final void setName(String name) {
 		Validate.notNull(name);
@@ -218,10 +219,9 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * Adds a vertex with the given name to the graph<br>
 	 * if it does not already contain a vertex with the same name.
 	 * @param vertexName The name of the new vertex.
-	 * @param element The element of the new vertex.
 	 * @return <code>true</code> if the vertex could be inserted;
      *		<code>false</code> otherwise.	
-	 * @ if the vertex name is <code>null</code>.
+	 * @throws ParameterException if the vertex name is <code>null</code>.
 	 */
 	public boolean addVertex(String vertexName) {
 		return addVertex(vertexName, null);
@@ -234,7 +234,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * @param element The element of the new vertex.
 	 * @return <code>true</code> if the vertex could be inserted;
      *		<code>false</code> otherwise.	
-	 * @ if the vertex name is <code>null</code>.
+	 * @throws ParameterException if the vertex name is <code>null</code>.
 	 */
 	public boolean addVertex(String vertexName, U element) {
 		Validate.notNull(vertexName);
@@ -253,7 +253,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * @param vertexNames Names for the graph vertices.
 	 * @return <code>true</code> if at least one vertex was successfully added;<br>
 	 * <code>false</code> otherwise.
-	 * @ If the set of vertex names is <code>null</code>
+	 * @throws ParameterException If the set of vertex names is <code>null</code>
 	 * or contains <code>null</code>-values.
 	 * @see #addVertex(String)
 	 */
@@ -433,7 +433,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * @return <code>true</code> if the removal was successful;
      *		<code>false</code> otherwise.
 	 * @throws VertexNotFoundException 
-	 * @see AbstractGraph#removeEdge(E)
+	 * @see #removeEdge(Edge)
 	 */
 	public boolean removeVertex(String vertexName) throws VertexNotFoundException {
         validateVertex(vertexName);
@@ -489,7 +489,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * Checks if the vertex with the given name is a drain vertex.<br>
 	 * A vertex is considered a drain if it does not have outgoing edges,<br>
 	 * but at least one incoming edge.
-	 * @param vertex The name of the vertex for which the property is checked.
+	 * @param vertexName The name of the vertex for which the property is checked.
 	 * @return <code>true</code> if the vertex with the given name is a drain vertex;<br>
 	 * <code>false</code> otherwise.
 	 * @throws VertexNotFoundException If the graph does not contain a vertex with the given name.
@@ -503,7 +503,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	/**
 	 * Checks if the vertex with the given name is separated.<br>
 	 * A vertex is considered separated if it has no edges at all.
-	 * @param vertex The name of the vertex for which the property is checked.
+	 * @param vertexName The name of the vertex for which the property is checked.
 	 * @return <code>true</code> if the vertex with the given name is separated;<br>
 	 * <code>false</code> otherwise.
 	 * @throws VertexNotFoundException If the graph does not contain a vertex with the given name.
@@ -639,7 +639,6 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
      * Returns all edges (incoming + outgoing) of the given vertex.
      * @param vertexName The vertex for which edges are requested.
      * @return A set of all edged leading from or to the given vertex.
-     * @throws VertexNotFoundException If vertex is not found.
      */
     protected Set<E> getEdgesFor(String vertexName) {
     	Set<E> inAndOut = new HashSet<E>();

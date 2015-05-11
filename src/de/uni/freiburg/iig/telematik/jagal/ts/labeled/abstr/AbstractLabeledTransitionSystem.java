@@ -65,9 +65,9 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	/**
 	 * Creates a new labeled relation of type from the given source and target states.<br>
 	 * This method is abstract because only subclasses know the concrete types of their states and events.
-	 * @param sourceState The state where the relation starts
-	 * @param targetState The state where the relation ends
-	 * @param event The event which triggers the relation
+	 * @param sourceStateName The state where the relation starts
+	 * @param targetStateName The state where the relation ends
+	 * @param eventName The event which triggers the relation
 	 * @return A new labeled transition relation.
 	 */
 	protected abstract R createNewTransitionRelation(String sourceStateName, String targetStateName, String eventName) throws Exception;
@@ -191,7 +191,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	/**
 	 * Checks, if the graph contains an event equal to the given vertex.
 	 * -> This is not a pure reference equality (see {@link Event#equals(Object)}).
-	 * @param Event Event to check
+	 * @param eventName Event to check
 	 * @return <code>true</code> if the specified event is present;
      *		<code>false</code> otherwise.
 	 */

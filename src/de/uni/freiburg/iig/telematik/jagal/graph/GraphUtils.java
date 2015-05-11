@@ -16,13 +16,13 @@ public class GraphUtils {
 	private static Set<Object> visited = new HashSet<Object>();
 	
 	/**
-	 * Checks, if there is a closed cycle in the graph with Node<T> {@link baseNode<T>},
-	 * using {@link inEdge} and {@link outEdge}.
+	 * Checks, if there is a closed cycle in the graph with Node<T> <value>baseNode<T></value>,
+	 * using <value>inEdge</value> and <value>outEdge</value>.
 	 * 
-     *@param baseNode<T> The base Node<T> for cycle check
+     * @param baseVertexName The base Node<T> for cycle check
      * @param outEdgeVertexName Incoming edge of the base Node<T> in the potential cycle
      * @param inEdgeVertexName Outgoing edge of the base Node<T> in the potential cycle
-     * @return <code>true</code> if there is a closed cycle with {@link inEdge} and {@link outEdge};
+     * @return <code>true</code> if there is a closed cycle with <value>inEdge</value> and <value>outEdge</value>;
      *		<code>false</code> otherwise.
      */
 	public static <V extends Vertex<U>, E extends Edge<V>, U> boolean cycleBy(AbstractGraph<V, E, U> graph, String baseVertexName, String inEdgeVertexName, String outEdgeVertexName) throws GraphException {

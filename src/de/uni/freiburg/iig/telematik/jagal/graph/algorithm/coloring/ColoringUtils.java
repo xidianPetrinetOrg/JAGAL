@@ -55,7 +55,6 @@ public class ColoringUtils {
 	 * Determines the maximum clique of the given graph.<br>
 	 * WARNING: Extreme bad runtime, use only for small graphs.
 	 * @param graph
-	 * @return
 	 */
 	public static <V extends Vertex<U>, E extends Edge<V>, U> Set<V> maxClique(AbstractGraph<V, E, U> graph){
 		Set<V> vertexes = new HashSet<V>();

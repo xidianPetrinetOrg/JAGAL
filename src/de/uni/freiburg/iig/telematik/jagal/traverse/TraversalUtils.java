@@ -13,8 +13,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
-import de.uni.freiburg.iig.telematik.jagal.graph.abstr.AbstractGraph;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.traverse.Traverser.TraversalMode;
 import de.uni.freiburg.iig.telematik.jagal.traverse.algorithms.SCCTarjan;
@@ -80,11 +78,10 @@ public class TraversalUtils {
 	}
 
 	/**
-	 * Checks, if {@link queryNode} is a predecessor of {@link baseNode}.
+	 * Checks, if <code>queryNode</code> is a predecessor of <code>baseNode</code>.
 	 * @param baseNode Basic Node for predecessor search
 	 * @param queryNode Query Node for predecessor search
-	 * @return <code>true</code> if {@link queryNode} is a predecessor of {@link baseNode};
-     *		<code>false</code> otherwise.
+	 * @return <code>true</code> if <code>queryNode</code> is a predecessor of <code>baseNode</code>; <code>false</code> otherwise.
 	 * @throws ParameterException 
 	 */
 	@SuppressWarnings("unchecked")
@@ -114,10 +111,10 @@ public class TraversalUtils {
 //	public static <V extends Vertex<U>, U> boolean isSuccessor(AbstractGraph<V, ?, U> graph, V queryVertex, V baseVertex) throws GraphException
 	
 	/**
-	 * Checks, if {@link queryNode<T>} is a successor of {@link baseNode<T>}.
-	 * @param baseNode<T> Basic Node<T> for successor search
-	 * @param queryNode<T> Query Node<T> for successor search
-	 * @return <code>true</code> if {@link queryNode<T>} is a successor of {@link baseNode<T>};
+	 * Checks, if <code>queryNode<T></code> is a successor of <code>baseNode<T></code>.
+	 * @param baseNode Basic Node<T> for successor search
+	 * @param queryNode Query Node<T> for successor search
+	 * @return <code>true</code> if <code>queryNode<T></code> is a successor of <code>baseNode<T></code>;
      *		<code>false</code> otherwise.
 	 * @throws ParameterException 
 	 */
@@ -204,8 +201,7 @@ public class TraversalUtils {
 	 * @return <code>true</code> if the given vertex is contained in a cycle;<br>
 	 * <code>false</code>.
 	 * @throws VertexNotFoundException If the graph does not contain the vertex.
-	 * @throws ParameterException 
-	 * @see {@link #isPredecessor(AbstractGraph, Vertex, Vertex)}
+	 * @throws ParameterException
 	 */
 	public static <V extends Object> boolean isNodeInCycle(Traversable<V> traversableStructure, V node) throws VertexNotFoundException, ParameterException{
 		Validate.notNull(traversableStructure);
@@ -218,7 +214,6 @@ public class TraversalUtils {
 	 * @param traversableStructure The graph to check for cycles.
 	 * @return <code>true</code> if the given structure contains at least one cycle, <code>false</code> otherwise.
 	 * @throws ParameterException
-	 * @see {@link #isNodeInCycle(Traversable, Object)}
 	 */
 	public static <V extends Object> boolean hasCycle(Traversable<V> traversableStructure) throws ParameterException {
 		Validate.notNull(traversableStructure);
@@ -244,7 +239,6 @@ public class TraversalUtils {
 	 * @throws VertexNotFoundException If the graph does not contain the given vertexes.
 	 * @throws ParameterException 
 	 */
-	@SuppressWarnings("unchecked")
 	public static <V extends Object> ArrayBlockingQueue<List<V>> getDirectedPathsFor(Traversable<V> traversableStructure, V sourceNode, V targetNode) throws VertexNotFoundException, ParameterException{
 		Validate.notNull(traversableStructure);
 		ArrayList<V> sourceVertexes = new ArrayList<V>();
@@ -258,7 +252,7 @@ public class TraversalUtils {
 	/**
 	 * Returns a list of paths leading from one source vertex to targetVertex.
 	 * @param traversableStructure The graph that contains the vertexes.
-	 * @param sourceVertex The source vertexes for the desired paths.
+	 * @param sourceNodes The source vertexes for the desired paths.
 	 * @param targetNode The target vertex for the desired paths.
 	 * @return A list of all paths leading from sourceVertex to targetVertex.
 	 * @throws VertexNotFoundException If the graph does not contain the given vertexes.
