@@ -108,13 +108,11 @@ public class TraversalUtils {
 		return false;
 	}
 	
-//	public static <V extends Vertex<U>, U> boolean isSuccessor(AbstractGraph<V, ?, U> graph, V queryVertex, V baseVertex) throws GraphException
-	
 	/**
-	 * Checks, if <code>queryNode<T></code> is a successor of <code>baseNode<T></code>.
-	 * @param baseNode Basic Node<T> for successor search
-	 * @param queryNode Query Node<T> for successor search
-	 * @return <code>true</code> if <code>queryNode<T></code> is a successor of <code>baseNode<T></code>;
+	 * Checks, if <code>queryNode&lt;T&gt;</code> is a successor of <code>baseNode&lt;T&gt;</code>.
+	 * @param baseNode Basic Node&lt;T&gt; for successor search
+	 * @param queryNode Query Node&lt;T&gt; for successor search
+	 * @return <code>true</code> if <code>queryNode&lt;T&gt;</code> is a successor of <code>baseNode&lt;T&gt;</code>;
      *		<code>false</code> otherwise.
 	 * @throws ParameterException 
 	 */

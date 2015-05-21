@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.jagal.graph;
 
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -9,39 +8,42 @@ import de.uni.freiburg.iig.telematik.jagal.graph.abstr.AbstractGraph;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.EdgeNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.GraphException;
 
-
 public class GraphUtils {
-	
+
 	private static ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<Object>(10);
 	private static Set<Object> visited = new HashSet<Object>();
-	
+
 	/**
-	 * Checks, if there is a closed cycle in the graph with Node<T> <value>baseNode<T></value>,
-	 * using <value>inEdge</value> and <value>outEdge</value>.
+	 * Checks, if there is a closed cycle in the graph with Node&lt;T&gt;
+	 * baseNode&lt;T&gt;, using inEdge and outEdge.
 	 * 
-     * @param baseVertexName The base Node<T> for cycle check
-     * @param outEdgeVertexName Incoming edge of the base Node<T> in the potential cycle
-     * @param inEdgeVertexName Outgoing edge of the base Node<T> in the potential cycle
-     * @return <code>true</code> if there is a closed cycle with <value>inEdge</value> and <value>outEdge</value>;
-     *		<code>false</code> otherwise.
-     */
+	 * @param baseVertexName
+	 *            The base Node&lt;T&gt; for cycle check
+	 * @param outEdgeVertexName
+	 *            Incoming edge of the base Node&lt;T&gt; in the potential cycle
+	 * @param inEdgeVertexName
+	 *            Outgoing edge of the base Node&lt;T&gt; in the potential cycle
+	 * @return <code>true</code> if there is a closed cycle with inEdge and
+	 *         outEdge; <code>false</code> otherwise.
+	 */
 	public static <V extends Vertex<U>, E extends Edge<V>, U> boolean cycleBy(AbstractGraph<V, E, U> graph, String baseVertexName, String inEdgeVertexName, String outEdgeVertexName) throws GraphException {
-		if(!graph.containsEdge(inEdgeVertexName, baseVertexName))
+		if (!graph.containsEdge(inEdgeVertexName, baseVertexName))
 			throw new EdgeNotFoundException(inEdgeVertexName, baseVertexName, graph);
-		if(!graph.containsEdge(baseVertexName, outEdgeVertexName))
+		if (!graph.containsEdge(baseVertexName, outEdgeVertexName))
 			throw new EdgeNotFoundException(baseVertexName, outEdgeVertexName, graph);
-		
+
 		visited.clear();
 		queue.clear();
 		queue.offer(outEdgeVertexName);
-		while(!queue.isEmpty()){
-			if(queue.peek().equals(inEdgeVertexName)){
+		while (!queue.isEmpty()) {
+			if (queue.peek().equals(inEdgeVertexName)) {
 				return true;
 			}
 			visited.add(queue.peek());
-			//Cast is safe since only objects of type V were added to the queue before.
-			for(V vertex: graph.getChildren((String) queue.poll())){
-				if(!queue.contains(vertex.getName()) && !visited.contains(vertex.getName())){
+			// Cast is safe since only objects of type V were added to the queue
+			// before.
+			for (V vertex : graph.getChildren((String) queue.poll())) {
+				if (!queue.contains(vertex.getName()) && !visited.contains(vertex.getName())) {
 					queue.offer(vertex.getName());
 				}
 			}

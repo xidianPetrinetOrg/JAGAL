@@ -190,7 +190,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	
 	/**
 	 * Checks, if the graph contains an event equal to the given vertex.
-	 * -> This is not a pure reference equality (see {@link Event#equals(Object)}).
+	 * -&gt; This is not a pure reference equality (see {@link Event#equals(Object)}).
 	 * @param eventName Event to check
 	 * @return <code>true</code> if the specified event is present;
      *		<code>false</code> otherwise.
