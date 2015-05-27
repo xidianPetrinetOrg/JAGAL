@@ -1,15 +1,36 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.uni.freiburg.iig.telematik.jagal</groupId>
 	<artifactId>JAGAL</artifactId>
 	<packaging>jar</packaging>
 	<version>0.1.5</version>
+
 	<name>JAGAL</name>
-	<url>http://maven.apache.org</url>
+	<description>JAGAL provides implementations for directed graphs (weighted and unweighted) and various types of transition systems as well as utils for graph traversal and modification.</description>
+	<url>https://sourceforge.net/projects/jagal/</url>
+	<organization>
+		<name>Institute of Computer Science and Social Studies, Department of Telematics</name>
+		<url>http://www.telematik.uni-freiburg.de/</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>bsd_3</name>
+			<url>http://opensource.org/licenses/BSD-3-Clause</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>http://svn.code.sf.net/p/jagal/code/trunk</url>
+	</scm>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>de.invation.code.toval</groupId>
@@ -28,11 +49,7 @@
 			<version>2.3.0.5</version>
 		</dependency>
 	</dependencies>
-	<organization>
-		<name>Institute of Computer Science and Social Studies, Department of Telematics</name>
-		<url>http://www.telematik.uni-freiburg.de/</url>
-	</organization>
-	<description>JAGAL provides implementations for directed graphs (weighted and unweighted) and various types of transition systems as well as utils for graph traversal and modification.</description>
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
@@ -135,4 +152,5 @@
 			</build>
 		</profile>
 	</profiles>
+
 </project>
