@@ -53,7 +53,7 @@
 		<pathelement location="${tests.target.dir}" />
 		<path refid="TOVAL.classpath" />
 		<pathelement location="lib/junit/junit-4.11.jar" />
-		<pathelement location="lib/jgraphXwithsources.jar" />
+		<pathelement location="lib/JGraphX-3_3_1_0-sources.jar" />
 	</path>
 
 	<!-- Package JARs -->
@@ -90,7 +90,7 @@
 			</manifest>
 			<fileset dir="${classes.target.dir}" />
 			<fileset dir="${TOVAL.location}/bin/classes-ant" />
-			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/jgraphXwithsources.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/JGraphX-3_3_1_0-sources.jar" />
 		</jar>
 	</target>
 
