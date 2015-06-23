@@ -4,7 +4,7 @@
 	<classpathentry kind="src" output="bin/tests" path="test"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/TOVAL"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/jgraphXwithsources.jar"/>
 	<classpathentry kind="lib" path="lib/junit/junit-4.11.jar"/>
+	<classpathentry kind="lib" path="lib/jgraphx-3_1_2_1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
