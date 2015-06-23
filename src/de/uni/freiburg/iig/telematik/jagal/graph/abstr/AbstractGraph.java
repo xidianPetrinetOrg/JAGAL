@@ -41,10 +41,10 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	protected final String toStringFormat = "%s: V=%s \n E=%s \n";
 	
 	protected String name = getDefaultName();
-	protected List<E> edgeList = new HashList<E>();
-	protected Map<String, V> vertexMap = new HashMap<String, V>();
-	protected Set<U> elementSet = new HashSet<U>();
-	protected Map<String, EdgeContainer<E>> edgeContainers = new LinkedHashMap<String, EdgeContainer<E>>();
+	protected List<E> edgeList = new HashList<>();
+	protected Map<String, V> vertexMap = new HashMap<>();
+	protected Set<U> elementSet = new HashSet<>();
+	protected Map<String, EdgeContainer<E>> edgeContainers = new LinkedHashMap<>();
 	
 	//------- Constructors ---------------------------------------------------------------
 	

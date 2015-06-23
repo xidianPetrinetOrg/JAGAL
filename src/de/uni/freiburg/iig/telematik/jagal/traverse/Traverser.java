@@ -24,11 +24,11 @@ public class Traverser<V extends Object> implements Iterator<V>{
 	
 	private Traversable<V> structure = null;
 	private TraversalMode mode = null;
-	private List<V> visited = new HashList<V>();
-	private ArrayBlockingQueue<V> queue = new ArrayBlockingQueue<V>(10);
-	private Stack<V> stack = new Stack<V>();
-	protected List<V> path = new ArrayList<V>();
-	private Map<V, Integer> indexMap = new HashMap<V, Integer>();
+	private final List<V> visited = new HashList<>();
+	private final ArrayBlockingQueue<V> queue = new ArrayBlockingQueue<>(10);
+	private final Stack<V> stack = new Stack<>();
+	protected List<V> path = new ArrayList<>();
+	private final Map<V, Integer> indexMap = new HashMap<>();
 	private boolean lastNodeAddedChildren;
 	
 	public Traverser(Traversable<V> traversableStructure, V startNode, TraversalMode mode){
@@ -104,10 +104,8 @@ public class Traverser<V extends Object> implements Iterator<V>{
 					default: return null;
 				}
 				checkPath();
-				lastNodeAddedChildren = !children.isEmpty();
-			}catch(VertexNotFoundException e){
-				e.printStackTrace();
-			} catch (ParameterException e) {
+				lastNodeAddedChildren = children != null && !children.isEmpty();
+			}catch(VertexNotFoundException | ParameterException e){
 				e.printStackTrace();
 			}
 			return visited.get(visited.size()-1);
@@ -143,13 +141,11 @@ public class Traverser<V extends Object> implements Iterator<V>{
 			Collection<V> parentsOfLastAddedElement = null;
 			try {
 				parentsOfLastAddedElement = structure.getParents(lastVisited());
-			} catch (VertexNotFoundException e) {
-				e.printStackTrace();
-			} catch (ParameterException e) {
+			} catch (VertexNotFoundException | ParameterException e) {
 				e.printStackTrace();
 			}
-			Set<V> pathElementsToRemove = new HashSet<V>();
-			if (path.size() > 1) {
+			Set<V> pathElementsToRemove = new HashSet<>();
+			if (path.size() > 1 && parentsOfLastAddedElement != null) {
 				for (int i = path.size() - 2; i >= 0; i--) {
 					if (!parentsOfLastAddedElement.contains(path.get(i))) {
 						pathElementsToRemove.add(path.get(i));
@@ -171,7 +167,7 @@ public class Traverser<V extends Object> implements Iterator<V>{
 	public enum TraversalMode {DEPTHFIRST, BREADTHFIRST}
 	
 	public static void main(String[] args) throws Exception {
-		Graph<Integer> g = new Graph<Integer>();
+		Graph<Integer> g = new Graph<>();
 		g.addVertex("1");
 		g.addVertex("2");
 		g.addVertex("3");
@@ -183,10 +179,9 @@ public class Traverser<V extends Object> implements Iterator<V>{
 		g.addEdge("3", "4");
 		g.addEdge("3", "5");
 		
-		Traverser<Vertex<Integer>> t = new Traverser<Vertex<Integer>>(g, g.getVertex("1"), TraversalMode.DEPTHFIRST);
+		Traverser<Vertex<Integer>> t = new Traverser<>(g, g.getVertex("1"), TraversalMode.DEPTHFIRST);
 		while(t.hasNext()){
 			System.out.println(t.next());
 		}
 	}
-
 }

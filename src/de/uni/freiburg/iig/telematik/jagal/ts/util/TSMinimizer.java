@@ -5,11 +5,13 @@ import java.util.HashSet;
 import de.uni.freiburg.iig.telematik.jagal.ts.MarkingStatePairContainer;
 import de.uni.freiburg.iig.telematik.jagal.ts.StatePair;
 import de.uni.freiburg.iig.telematik.jagal.ts.StatePairContainer;
+import de.uni.freiburg.iig.telematik.jagal.ts.exception.StateNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.LabeledTransitionSystem;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractEvent;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLTSState;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionRelation;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionSystem;
+import de.uni.freiburg.iig.telematik.jagal.ts.labeled.exception.EventNotFoundException;
 
 
 
@@ -21,7 +23,7 @@ public class TSMinimizer {
 		if(!ts.isDFA()){
 			throw new IllegalArgumentException("This minimization only operates on DFNs");
 		}
-		MarkingStatePairContainer<S,O> container = new MarkingStatePairContainer<S,O>(StatePairContainer.getStatePairsFrom(ts.getStates()));
+		MarkingStatePairContainer<S,O> container = new MarkingStatePairContainer<>(StatePairContainer.getStatePairsFrom(ts.getStates()));
 		for(StatePair<S,O> statePair: container.getStatePairs()){
 			if(   ( ts.isEndState(statePair.state1.getName()) && !ts.isEndState(statePair.state2.getName()))
 			   || (!ts.isEndState(statePair.state1.getName()) &&  ts.isEndState(statePair.state2.getName()))){
@@ -32,7 +34,7 @@ public class TSMinimizer {
 		boolean newMarkedPairs;
 		do{
 			newMarkedPairs = false;
-			for(StatePair<S,O> statePair: new HashSet<StatePair<S,O>>(container.getUnmarkedStatePairs())){
+			for(StatePair<S,O> statePair: new HashSet<>(container.getUnmarkedStatePairs())){
 				for(E event: ts.getEvents()){
 					try {
 						if(   (!ts.getTargetsFor(statePair.state1.getName(), event.getName()).isEmpty() && !ts.getTargetsFor(statePair.state2.getName(), event.getName()).isEmpty())
@@ -41,7 +43,7 @@ public class TSMinimizer {
 							newMarkedPairs = true;
 							break;
 						}
-					} catch (Exception e) {
+					} catch (StateNotFoundException | EventNotFoundException e) {
 						e.printStackTrace();
 					}
 				}

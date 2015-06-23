@@ -71,8 +71,9 @@ public class Vertex<T extends Object> {
 		return true;
 	}
 
+        @Override
 	public Vertex<T> clone(){
-		return new Vertex<T>(name, element);
+		return new Vertex<>(name, element);
 	}
 	
 }

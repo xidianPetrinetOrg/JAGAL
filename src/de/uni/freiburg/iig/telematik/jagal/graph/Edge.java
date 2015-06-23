@@ -61,10 +61,12 @@ public class Edge<V extends Vertex<? extends Object>> {
 		return true;
 	}
 
+        @Override
 	public Edge<V> clone(){
-		return new Edge<V>(source, target);
+		return new Edge<>(source, target);
 	}
 
+        @Override
 	public String toString(){
 		return "("+source+" -> "+target+")";
 	}
