@@ -24,3 +24,25 @@ Its key features include among others:
 ### Documentation
 
 A detailled documentation of JAGAL can be found under [http://doku.telematik.uni-freiburg.de/jagal](http://doku.telematik.uni-freiburg.de/jagal "http://doku.telematik.uni-freiburg.de/jagal").
+
+### Latest Release
+
+The most recent release is JAGAL 1.0.0, released July 29, 2015.
+
+* [jagal-1.0.0.jar](https://github.com/iig-uni-freiburg/JAGAL/releases/download/v1.0.0/jagal-1.0.0.jar)
+* [jagal-1.0.0-sources.jar](https://github.com/iig-uni-freiburg/JAGAL/releases/download/v1.0.0/jagal-1.0.0-sources.jar)
+* [jagal-1.0.0-javadoc.jar](https://github.com/iig-uni-freiburg/JAGAL/releases/download/v1.0.0/jagal-1.0.0-javadoc.jar)
+
+To add a dependency on JAGAL using Maven, use the following:
+
+```xml
+<dependency>
+  <groupId>de.uni.freiburg.iig.telematik</groupId>
+  <artifactId>JAGAL</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+
+### Older Releases
+
+Older releases can be found under [https://github.com/iig-uni-freiburg/JAGAL/releases](https://github.com/iig-uni-freiburg/JAGAL/releases).

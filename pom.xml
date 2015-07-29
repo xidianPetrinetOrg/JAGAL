@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>de.uni.freiburg.iig.telematik</groupId>
 		<artifactId>tools</artifactId>
-		<version>0.1.6-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 	<artifactId>JAGAL</artifactId>
 	<packaging>jar</packaging>
 
 	<name>JAGAL: Java Graph Library</name>
 	<description>JAGAL provides implementations for directed graphs (weighted and unweighted) and various types of transition systems as well as utils for graph traversal and modification.</description>
-	<url>https://sourceforge.net/projects/jagal/</url>
+	<url>https://github.com/iig-uni-freiburg/JAGAL</url>
 	<organization>
 		<name>Institute of Computer Science and Social Studies, Department of Telematics</name>
 		<url>http://www.telematik.uni-freiburg.de/</url>
@@ -27,7 +27,7 @@
 	</licenses>
 
 	<scm>
-		<url>http://svn.code.sf.net/p/jagal/code/trunk</url>
+		<url>https://github.com/iig-uni-freiburg/JAGAL.git</url>
 	</scm>
 
 	<properties>
@@ -38,7 +38,7 @@
 		<dependency>
 			<groupId>de.uni.freiburg.iig.telematik</groupId>
 			<artifactId>TOVAL</artifactId>
-			<version>0.1.6-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.monkeysintown</groupId>
