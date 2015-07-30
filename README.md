@@ -3,7 +3,7 @@ JAGAL: Java Graph Library
 
 ### About
 
-The Java Graph Library (JAGAL) is a Java library for modelling directed graphs. It comes with implementations of various types of graphs and transition systems, as well as utilities for their modification and traversal.
+<img align="right" src="http://iig-uni-freiburg.github.io/images/tools/jagal.png">The Java Graph Library (JAGAL) is a Java library for modelling directed graphs. It comes with implementations of various types of graphs and transition systems, as well as utilities for their modification and traversal.
 
 Its key features include among others:
 
