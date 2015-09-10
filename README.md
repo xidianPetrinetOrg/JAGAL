@@ -27,11 +27,11 @@ A detailled documentation of JAGAL can be found under [http://doku.telematik.uni
 
 ### Latest Release
 
-The most recent release is JAGAL 1.0.0, released July 29, 2015.
+The most recent release is JAGAL 1.0.1, released September 10, 2015.
 
-* [jagal-1.0.0.jar](https://github.com/iig-uni-freiburg/JAGAL/releases/download/v1.0.0/jagal-1.0.0.jar)
-* [jagal-1.0.0-sources.jar](https://github.com/iig-uni-freiburg/JAGAL/releases/download/v1.0.0/jagal-1.0.0-sources.jar)
-* [jagal-1.0.0-javadoc.jar](https://github.com/iig-uni-freiburg/JAGAL/releases/download/v1.0.0/jagal-1.0.0-javadoc.jar)
+* [jagal-1.0.1.jar](https://github.com/iig-uni-freiburg/JAGAL/releases/download/v1.0.1/jagal-1.0.1.jar)
+* [jagal-1.0.1-sources.jar](https://github.com/iig-uni-freiburg/JAGAL/releases/download/v1.0.1/jagal-1.0.1-sources.jar)
+* [jagal-1.0.1-javadoc.jar](https://github.com/iig-uni-freiburg/JAGAL/releases/download/v1.0.1/jagal-1.0.1-javadoc.jar)
 
 To add a dependency on JAGAL using Maven, use the following:
 
@@ -39,7 +39,7 @@ To add a dependency on JAGAL using Maven, use the following:
 <dependency>
   <groupId>de.uni.freiburg.iig.telematik</groupId>
   <artifactId>JAGAL</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
