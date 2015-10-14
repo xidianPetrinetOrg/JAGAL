@@ -33,7 +33,7 @@ public abstract class AbstractState<O extends Object> extends Vertex<O> implemen
 		return isLambdaState;
 	}
 
-	public void setLambdaState(boolean isLambdaState) {
+	public final void setLambdaState(boolean isLambdaState) {
 		this.isLambdaState = isLambdaState;
 	}
 

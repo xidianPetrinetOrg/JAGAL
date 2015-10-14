@@ -19,11 +19,11 @@ public class EdgeContainer<E extends Edge<?>>{
 	/**
 	 * Incoming edges.
 	 */
-	private ArrayList<E> incoming = new ArrayList<E>();
+	private final ArrayList<E> incoming = new ArrayList<>();
 	/**
 	 * Outgoing edges.
 	 */
-	private ArrayList<E> outgoing = new ArrayList<E>();
+	private final ArrayList<E> outgoing = new ArrayList<>();
 
 	/**
 	 * Returns an unmodifiable version of the incoming edges.
@@ -38,7 +38,7 @@ public class EdgeContainer<E extends Edge<?>>{
 	 * @return All outgoing edges.
 	 */
 	public List<E> getOutgoingEdges(){
-		return new ArrayList<E>(outgoing);
+                return Collections.unmodifiableList(outgoing);
 	}
 
 	/**

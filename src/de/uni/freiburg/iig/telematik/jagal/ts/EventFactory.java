@@ -12,7 +12,7 @@ public class EventFactory<E extends Event>{
 	public E createEvent(){
 		try {
 			return eventClass.newInstance();
-		} catch (Exception ex) {
+		} catch (InstantiationException | IllegalAccessException ex) {
 			throw new RuntimeException("Event factory failed", ex);
 		}
 	}

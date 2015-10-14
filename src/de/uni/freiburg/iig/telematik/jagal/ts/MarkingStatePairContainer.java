@@ -9,26 +9,28 @@ import de.uni.freiburg.iig.telematik.jagal.ts.abstr.AbstractState;
 
 
 public class MarkingStatePairContainer<S extends AbstractState<O>, O> extends StatePairContainer<S,O> {
-	private Set<StatePair<S,O>> markedPairs = new HashSet<StatePair<S,O>>();
-	private Set<StatePair<S,O>> unmarkedPairs = new HashSet<StatePair<S,O>>();
+	private final Set<StatePair<S,O>> markedPairs = new HashSet<>();
+	private final Set<StatePair<S,O>> unmarkedPairs = new HashSet<>();
 	
 	public MarkingStatePairContainer(){
 		super();
 	}
-	
-	public MarkingStatePairContainer(StatePair<S,O>... statePairs){
-		super();
-		for(StatePair<S,O> statePair: statePairs){
-			addStatePair(statePair);
-		}
-	}
-	
-	public MarkingStatePairContainer(Collection<StatePair<S,O>> statePairs){
-		super();
-		for(StatePair<S,O> statePair: statePairs){
-			addStatePair(statePair);
-		}
-	}
+
+        public static <S extends AbstractState<O>, O> MarkingStatePairContainer<S, O> newInstance(StatePair<S, O>... statePairs) {
+                MarkingStatePairContainer<S, O> container = new MarkingStatePairContainer<>();
+                for (StatePair<S, O> statePair : statePairs) {
+                        container.addStatePair(statePair);
+                }
+                return container;
+        }
+
+        public static <S extends AbstractState<O>, O> MarkingStatePairContainer<S, O> newInstance(Collection<StatePair<S, O>> statePairs) {
+                MarkingStatePairContainer<S, O> container = new MarkingStatePairContainer<>();
+                for (StatePair<S, O> statePair : statePairs) {
+                        container.addStatePair(statePair);
+                }
+                return container;
+        }
 	
 	public Set<StatePair<S,O>> getMarkedStatePairs(){
 		return Collections.unmodifiableSet(markedPairs);
@@ -48,7 +50,7 @@ public class MarkingStatePairContainer<S extends AbstractState<O>, O> extends St
 	}
 	
 	public boolean isMarked(S state1, S state2){
-		return markedPairs.contains(new StatePair<S,O>(state1, state2));
+		return markedPairs.contains(new StatePair<>(state1, state2));
 	}
 	
 	public void markPair(StatePair<S,O> statePair){
@@ -72,11 +74,11 @@ public class MarkingStatePairContainer<S extends AbstractState<O>, O> extends St
 	}
 	
 	public static void main(String[] args){
-		MarkingStatePairContainer<State,Object> c = new MarkingStatePairContainer<State,Object>();
+		MarkingStatePairContainer<State,Object> c = new MarkingStatePairContainer<>();
 		c.addStatePair(new State("s0"), new State("s5"));
 		System.out.println(c.getStatePairs());
-		StatePair<State,Object> p1 = new StatePair<State,Object>(new State("z4"), new State("z3"));
-		StatePair<State,Object> p2 = new StatePair<State,Object>(new State("z4"), new State("z2"));
+		StatePair<State,Object> p1 = new StatePair<>(new State("z4"), new State("z3"));
+		StatePair<State,Object> p2 = new StatePair<>(new State("z4"), new State("z2"));
 		System.out.println(p1.hashCode());
 		System.out.println(p2.hashCode());
 //		c.addStatePair(p1);

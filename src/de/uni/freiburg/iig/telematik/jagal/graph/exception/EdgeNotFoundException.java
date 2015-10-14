@@ -26,6 +26,7 @@ public class EdgeNotFoundException extends GraphException {
 		this.targetName = targetName;
 	}
 	
+        @Override
 	public String getMessage(){
 		return String.format(toStringFormat, getGraphName(), getSourceName(), getTargetName());
 	}

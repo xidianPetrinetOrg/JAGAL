@@ -35,6 +35,7 @@ import de.uni.freiburg.iig.telematik.jagal.traverse.Traversable;
  *
  * @param <V> Vertex Type
  * @param <E> Edge Type
+ * @param <U>
  */
 public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> implements Traversable<V>{
 	
@@ -129,7 +130,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * @return A list of all source vertexes.
 	 */
 	public List<V> getSources(){
-		List<V> sources = new ArrayList<V>();
+		List<V> sources = new ArrayList<>();
 		for(String vertexName: vertexMap.keySet()){
 			if(!getEdgeContainer(vertexName).hasIncomingEdges() && getEdgeContainer(vertexName).hasOutgoingEdges())
 				sources.add(getVertex(vertexName));
@@ -143,7 +144,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * @return A list of all drain vertexes.
 	 */
 	public List<V> getDrains(){
-		List<V> drains = new ArrayList<V>();
+		List<V> drains = new ArrayList<>();
 		for(String vertexName: vertexMap.keySet()){
 			if(!getEdgeContainer(vertexName).hasOutgoingEdges() && getEdgeContainer(vertexName).hasIncomingEdges())
 				drains.add(getVertex(vertexName));
@@ -157,7 +158,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 * @return A list of all separated vertexes.
 	 */
 	public Set<V> getSeparatedVertices(){
-		Set<V> separatedVertexes = new HashSet<V>();
+		Set<V> separatedVertexes = new HashSet<>();
 		for(String vertexName: vertexMap.keySet()){
 			if(getEdgeContainer(vertexName).isEmpty())
 				separatedVertexes.add(getVertex(vertexName));
@@ -241,7 +242,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 		if(containsVertex(vertexName))
 			return false;
 		vertexMap.put(vertexName, createNewVertex(vertexName, element));
-		edgeContainers.put(vertexName, new EdgeContainer<E>());
+		edgeContainers.put(vertexName, new EdgeContainer<>());
 		return true;
 	}
 	
@@ -300,6 +301,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	
 	/**
 	 * Checks, if the graph contains the given vertex.
+         * @param vertex
 	 * @return <code>true</code> if the specified vertex is present;
      *		<code>false</code> otherwise.
 	 */
@@ -320,15 +322,14 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	/**
 	 * Checks, if the graph contains a vertex with the given name and object.
 	 * @param name
+         * @param object
 	 * @return <code>true</code> if the specified vertex is present;
      *		<code>false</code> otherwise.
 	 */
 	public boolean containsVertex(String name, U object){
 		if(!vertexMap.containsKey(name))
 			return false;
-		if(getVertex(name).getElement() != object)
-			return false;
-		return true;
+		return getVertex(name).getElement() == object;
 	}
 	
 //	/**
@@ -641,7 +642,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
      * @return A set of all edged leading from or to the given vertex.
      */
     protected Set<E> getEdgesFor(String vertexName) {
-    	Set<E> inAndOut = new HashSet<E>();
+    	Set<E> inAndOut = new HashSet<>();
     	inAndOut.addAll(getEdgeContainer(vertexName).getIncomingEdges());
         inAndOut.addAll(getEdgeContainer(vertexName).getOutgoingEdges()); 
         return inAndOut;
@@ -788,7 +789,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 */
 	public Set<V> getChildren(String vertexName) throws VertexNotFoundException{
 		validateVertex(vertexName);
-		Set<V> children = new HashSet<V>();
+		Set<V> children = new HashSet<>();
 		for(E e: getEdgeContainer(vertexName).getOutgoingEdges()){
 			children.add(e.getTarget());
 		}
@@ -823,7 +824,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	 */
 	public ArrayList<V> getNeighbors(String vertexName) throws GraphException{
 		validateVertex(vertexName);
-		ArrayList<V> neighbors = new ArrayList<V>();
+		ArrayList<V> neighbors = new ArrayList<>();
 		neighbors.addAll(getChildren(vertexName));
 		neighbors.addAll(getParents(vertexName));
 		return neighbors;
@@ -861,7 +862,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	}
 	
 	public Set<U> getElementSet(Collection<V> vertexes){
-		Set<U> result = new HashSet<U>(vertexes.size());
+		Set<U> result = new HashSet<>(vertexes.size());
 		for(V vertex: vertexes)
 			result.add(vertex.getElement());
 		return result;
@@ -872,7 +873,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	}
 	
 	public List<U> getElementList(Collection<V> vertexes){
-		List<U> result = new HashList<U>();
+		List<U> result = new HashList<>();
 		for(V vertex: vertexes)
 			result.add(vertex.getElement());
 		return result;

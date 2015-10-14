@@ -10,7 +10,7 @@ public class VertexNotFoundException extends GraphException {
 	
 	private static final long serialVersionUID = -2531063172019479258L;
 	private String messagePart = " does not contain vertex ";
-	private String vertexName;
+	private final String vertexName;
 
 	public <V extends Vertex<U>, E extends Edge<V>, U> VertexNotFoundException(String vertexName, AbstractGraph<V, E, U> graph){
 		super(graph.getName());
@@ -23,6 +23,7 @@ public class VertexNotFoundException extends GraphException {
 		messagePart = " does not contain "+vertexDescription+" ";
 	}
 	
+        @Override
 	public String getMessage(){
 		return getGraphName()+messagePart+getVertex();
 	}

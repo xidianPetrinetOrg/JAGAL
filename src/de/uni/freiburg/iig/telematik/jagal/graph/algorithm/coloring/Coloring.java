@@ -15,8 +15,8 @@ public class Coloring<U extends Object> {
 	
 	private final String colorAssigmentFormat = "%s: %s";
 	
-	private Map<U, Integer> coloring = new HashMap<U, Integer>();
-	private Multiset<Integer> colorSupport = new Multiset<Integer>();
+	private final Map<U, Integer> coloring = new HashMap<>();
+	private final Multiset<Integer> colorSupport = new Multiset<>();
 	
 	public Coloring(){}
 	
@@ -52,10 +52,10 @@ public class Coloring<U extends Object> {
 	}
 	
 	public Map<Integer,Set<U>> getColorGroups(){
-		Map<Integer,Set<U>> colorGroups = new HashMap<Integer, Set<U>>();
+		Map<Integer,Set<U>> colorGroups = new HashMap<>();
 		for(U key: coloring.keySet()){
 			if(!colorGroups.containsKey(coloring.get(key))){
-				colorGroups.put(coloring.get(key), new HashSet<U>());
+				colorGroups.put(coloring.get(key), new HashSet<>());
 			}
 			colorGroups.get(coloring.get(key)).add(key);
 		}
@@ -64,7 +64,7 @@ public class Coloring<U extends Object> {
 	
 	public Set<U> getUncoloredKeys(Collection<U> keys) throws ParameterException{
 		Validate.notNull(keys);
-		Set<U> result = new HashSet<U>();
+		Set<U> result = new HashSet<>();
 		if(keys.isEmpty())
 			return result;
 		for(U key: keys){
@@ -76,13 +76,13 @@ public class Coloring<U extends Object> {
 	}
 	
 	public Coloring<U> clone(){
-		Coloring<U> clone = new Coloring<U>();
+		Coloring<U> clone = new Coloring<>();
 		for(U key: coloring.keySet()){
 			try {
 				clone.setColor(key, coloring.get(key));
 			} catch (ParameterException e) {
 				// Cannot happen, since all keys are taken from the keyset.
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 		}
 		return clone;

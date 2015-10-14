@@ -4,73 +4,75 @@ import de.invation.code.toval.parser.ParserException;
 
 public class SerializationException extends ParserException {
 
-	private static final long serialVersionUID = -8045175661721715415L;
-	
-	private final String msg_unsupportedNetType = "Unsupported net type";
-	private final String msg_unsupportedFormat = "Unsupported serialization format";
+        private static final long serialVersionUID = -8045175661721715415L;
 
-	private ErrorCode errorCode = null;
-	private Object object = null;
+        private final String msg_unsupportedNetType = "Unsupported net type";
+        private final String msg_unsupportedFormat = "Unsupported serialization format";
 
-	public SerializationException(ErrorCode errorCode) {
-		super();
-		this.errorCode = errorCode;
-	}
+        private ErrorCode errorCode = null;
+        private Object obj = null;
 
-	public SerializationException(ErrorCode errorCode, String message) {
-		super(message);
-		this.errorCode = errorCode;
-	}
+        public SerializationException(ErrorCode errorCode) {
+                super();
+                this.errorCode = errorCode;
+        }
 
-	public SerializationException(ErrorCode errorCode, Object object) {
-		super();
-		this.errorCode = errorCode;
-		this.object = object;
-	}
+        public SerializationException(ErrorCode errorCode, String message) {
+                super(message);
+                this.errorCode = errorCode;
+        }
 
-	public Object getObject() {
-		return object;
-	}
+        public SerializationException(ErrorCode errorCode, Object object) {
+                super();
+                this.errorCode = errorCode;
+                this.obj = object;
+        }
 
-	@Override
-	public String getMessage() {
-		StringBuffer msg = new StringBuffer();
+        @Override
+        public Object getObject() {
+                return obj;
+        }
 
-		switch (errorCode) {
-		case UNSUPPORTED_NET_TYPE:
-			msg.append(msg_unsupportedNetType);
-			break;
-		case UNSUPPORTED_FORMAT:
-			msg.append(msg_unsupportedFormat);
-			break;
-		default:
-			break;
-		}
-		if (msg != null) {
-			if (object == null) {
-				msg.append(".");
-			} else {
-				msg.append(": ").append(object.toString());
-			}
-		}
+        @Override
+        public String getMessage() {
+                StringBuilder msg = new StringBuilder();
 
-		String msgSuper = super.getMessage();
+                switch (errorCode) {
+                        case UNSUPPORTED_NET_TYPE:
+                                msg.append(msg_unsupportedNetType);
+                                break;
+                        case UNSUPPORTED_FORMAT:
+                                msg.append(msg_unsupportedFormat);
+                                break;
+                        default:
+                                break;
+                }
+                if (obj == null) {
+                        msg.append(".");
+                } else {
+                        msg.append(": ").append(obj.toString());
+                }
 
-		if (msg.length() == 0)
-			return msgSuper;
+                String msgSuper = super.getMessage();
 
-		if (msgSuper != null)
-			return msg.append("\n").append(msgSuper).toString();
+                if (msg.length() == 0) {
+                        return msgSuper;
+                }
 
-		return msg.toString();
-	}
+                if (msgSuper != null) {
+                        return msg.append("\n").append(msgSuper).toString();
+                }
 
-	public SerializationException.ErrorCode getErrorCode() {
-		return errorCode;
-	}
+                return msg.toString();
+        }
 
-	public enum ErrorCode {
-		UNSUPPORTED_NET_TYPE, UNSUPPORTED_FORMAT;
-	}
+        public SerializationException.ErrorCode getErrorCode() {
+                return errorCode;
+        }
+
+        public enum ErrorCode {
+
+                UNSUPPORTED_NET_TYPE, UNSUPPORTED_FORMAT;
+        }
 
 }

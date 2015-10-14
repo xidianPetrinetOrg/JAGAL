@@ -10,7 +10,7 @@ public class StateNotFoundException extends TSException {
 	private static final long serialVersionUID = -3197197858061603241L;
 	private static final String toStringFormat = "%s does not contain state %s";
 	
-	private String stateName;
+	private final String stateName;
 
 	public <S extends AbstractState<O>, T extends AbstractTransitionRelation<S,O>, O extends Object> 
 	StateNotFoundException(String stateName, AbstractTransitionSystem<S,T,O> ts) {
@@ -24,6 +24,7 @@ public class StateNotFoundException extends TSException {
 		this.stateName = graphException.getVertex();
 	}
 	
+        @Override
 	public String getMessage(){
 		return String.format(toStringFormat, getTSName(), getStateName());
 	}

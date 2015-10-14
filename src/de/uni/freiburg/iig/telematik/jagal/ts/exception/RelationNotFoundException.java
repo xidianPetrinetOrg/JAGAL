@@ -34,6 +34,7 @@ public class RelationNotFoundException extends TSException {
 		this.targetName = graphException.getTargetName();
 	}
 	
+        @Override
 	public String getMessage(){
 		return String.format(toStringFormat, getTSName(), getSourceName(), getTargetName());
 	}

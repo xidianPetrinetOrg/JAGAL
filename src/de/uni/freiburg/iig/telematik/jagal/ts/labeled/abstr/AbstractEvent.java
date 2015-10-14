@@ -27,7 +27,7 @@ public abstract class AbstractEvent implements Serializable{
 		setLambdaEvent(isLambdaEvent);
 	}
 	
-	public void setName(String name){
+	public final void setName(String name){
 		this.name = name;
 	}
 	
@@ -35,7 +35,7 @@ public abstract class AbstractEvent implements Serializable{
 		return name;
 	}
 	
-	public void setLabel(String label){
+	public final void setLabel(String label){
 		this.label = label;
 	}
 	
@@ -47,7 +47,7 @@ public abstract class AbstractEvent implements Serializable{
 		return isLambdaEvent;
 	}
 
-	public void setLambdaEvent(boolean isLambdaEvent) {
+	public final void setLambdaEvent(boolean isLambdaEvent) {
 		this.isLambdaEvent = isLambdaEvent;
 	}
 	
@@ -59,6 +59,7 @@ public abstract class AbstractEvent implements Serializable{
 		return result;
 	}
 	
+        @Override
 	public abstract AbstractEvent clone();
 	
 	public abstract AbstractEvent clone(int index);

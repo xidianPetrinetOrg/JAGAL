@@ -24,10 +24,7 @@ public class PetrifyTSParser implements TSParserInterface{
 	private static final String PREFIX_MARKING = ".marking ";
 	private static final String PREFIX_FINAL = ".final ";
 	private static final String PREFIX_COMMENT = "#";
-	
-	
 
-	@SuppressWarnings({"unchecked"})
 	@Override
 	public LabeledTransitionSystem parse(File file) throws IOException, ParserException{
 		
@@ -73,9 +70,7 @@ public class PetrifyTSParser implements TSParserInterface{
 		String nextLine = null;
 		int tokenCount = 0;
 		while((nextLine = reader.readLine()) != null){
-			if(nextLine.startsWith(PREFIX_COMMENT) || nextLine.startsWith(PREFIX_DOT)){
-				continue;
-			} else {
+			if(!nextLine.startsWith(PREFIX_COMMENT) && !nextLine.startsWith(PREFIX_DOT)){
 				tokenCount = getTokens(nextLine).size();
 				break;
 			}
@@ -90,8 +85,6 @@ public class PetrifyTSParser implements TSParserInterface{
 		}
 	}
 
-
-	@SuppressWarnings("rawtypes")
 	private void addTransition(LabeledTransitionSystem ts, String lineContent) throws ParserException {
 		
 		List<String> tokens = getTokens(lineContent);
@@ -144,7 +137,7 @@ public class PetrifyTSParser implements TSParserInterface{
 	}
 	
 	public List<String> getTokens(String lineContent){
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		StringTokenizer tokenizer = new StringTokenizer(lineContent, " ");
 		while(tokenizer.hasMoreTokens()){
 			result.add(tokenizer.nextToken());

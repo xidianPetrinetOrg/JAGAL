@@ -10,8 +10,8 @@ public abstract class AbstractLTSState<E extends AbstractEvent, O extends Object
 
 	private static final long serialVersionUID = 624171513114845628L;
 	
-	private Set<E> incomingEvents = new HashSet<E>();
-	private Set<E> outgoingEvents = new HashSet<E>();
+	private final Set<E> incomingEvents = new HashSet<>();
+	private final Set<E> outgoingEvents = new HashSet<>();
 	
 	protected AbstractLTSState(String name){
 		super(name);

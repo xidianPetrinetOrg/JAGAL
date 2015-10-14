@@ -11,7 +11,7 @@ public class StatePair<S extends AbstractState<O>, O> {
 	
 	public S state1;
 	public S state2;
-	private Set<S> stateSet = new HashSet<S>();
+	private final Set<S> stateSet = new HashSet<>();
 
 	public StatePair(S state1, S state2){
 		this.state1 = state1;
@@ -21,7 +21,7 @@ public class StatePair<S extends AbstractState<O>, O> {
 	}
 	
 	public static <SS extends AbstractState<OO>, OO extends Object> StatePair<SS,OO> createStatePair(SS state1, SS state2){
-		return new StatePair<SS,OO>(state1, state2);
+		return new StatePair<>(state1, state2);
 	}
 	
 	@Override

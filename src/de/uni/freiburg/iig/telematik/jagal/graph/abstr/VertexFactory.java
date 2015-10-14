@@ -13,7 +13,7 @@ public class VertexFactory<V extends Vertex<U>, U>{
 	public V createVertex(){
 		try {
 			return vertexClass.newInstance();
-		} catch (Exception ex) {
+		} catch (InstantiationException | IllegalAccessException ex) {
 			throw new RuntimeException("Vertex factory failed", ex);
 		}
 	}

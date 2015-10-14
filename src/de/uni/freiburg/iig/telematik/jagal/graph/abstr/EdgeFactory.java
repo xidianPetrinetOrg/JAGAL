@@ -14,7 +14,7 @@ public class EdgeFactory<V extends Vertex<U>, E extends Edge<V>, U>{
 	public E createEdge(){
 		try {
 			return edgeClass.newInstance();
-		} catch (Exception ex) {
+		} catch (InstantiationException | IllegalAccessException ex) {
 			throw new RuntimeException("Edge factory failed", ex);
 		}
 	}

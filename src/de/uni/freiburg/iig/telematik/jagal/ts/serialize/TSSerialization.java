@@ -15,8 +15,7 @@ import de.uni.freiburg.iig.telematik.jagal.ts.serialize.formats.TSSerializationF
 import de.uni.freiburg.iig.telematik.jagal.ts.serialize.serializer.LTSSerializer_Petrify;
 
 public class TSSerialization {
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+        
 	public static <S extends AbstractState<O>, 
 	   			   T extends AbstractTransitionRelation<S,O>,
 	   			   O extends Object>

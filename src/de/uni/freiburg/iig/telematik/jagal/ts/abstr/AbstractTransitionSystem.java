@@ -26,10 +26,10 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>,
 
 	private static final long serialVersionUID = -728502376317368044L;
 
-	private static final String toStringFormat = "TS = {S, T, S_start, S_end}\n  S       = %s\n  S_start = %s\n  S_end   = %s\n  T       = %s\n";
+	private static final String toStrFormat = "TS = {S, T, S_start, S_end}\n  S       = %s\n  S_start = %s\n  S_end   = %s\n  T       = %s\n";
 	
-	protected Map<String, S> endStates = new HashMap<String, S>();
-	protected Map<String, S> startStates = new HashMap<String, S>(); 
+	protected final Map<String, S> endStates = new HashMap<>();
+	protected final Map<String, S> startStates = new HashMap<>(); 
 	
 	public AbstractTransitionSystem() {
 		super();
@@ -51,9 +51,10 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>,
 	 * Creates a new state of type <code>S</code> with the given name.<br>
 	 * This method is abstract because only subclasses know the type <code>S</code> of their states.
 	 * @param name The name for the new state.
+         * @param element
 	 * @return A new state of type <code>S</code> with the given name.
 	 */
-	protected abstract S createNewState(String name, O element) ;
+	protected abstract S createNewState(String name, O element);
 	
 	/**
 	 * Creates a new relation of type <code>T</code> from the given source and target states.
@@ -204,20 +205,20 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>,
 	}
 	
 	public Set<S> getNonLeafEndStates(){
-		Set<S> nonLeafEndStates = new HashSet<S>(endStates.values());
+		Set<S> nonLeafEndStates = new HashSet<>(endStates.values());
 		for(S endState: endStates.values()){
 			try {
 				if(getOutgoingRelationsFor(endState.getName()).isEmpty())
 					nonLeafEndStates.remove(endState);
 			} catch (StateNotFoundException e) {
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 		}
 		return nonLeafEndStates;
 	}
 	
 	public Set<String> getNonLeafEndStateNames(){
-		Set<String> result = new HashSet<String>();
+		Set<String> result = new HashSet<>();
 		for(S nonLeafEndState: getNonLeafEndStates()){
 			result.add(nonLeafEndState.getName());
 		}
@@ -272,7 +273,7 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>,
 	}
 	
 	public List<S> getSourcesFor(String stateName) throws EventNotFoundException, StateNotFoundException{
-		List<S> result = new ArrayList<S>();
+		List<S> result = new ArrayList<>();
 		try {
 			if(hasIncomingEdges(stateName)){
 				for(AbstractTransitionRelation<S,O> relation: getIncomingRelationsFor(stateName)){
@@ -294,7 +295,7 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>,
 	}
 	
 	public List<S> getTargetsFor(String stateName) throws StateNotFoundException{
-		List<S> result = new ArrayList<S>();
+		List<S> result = new ArrayList<>();
 		try {
 			if(hasOutgoingEdges(stateName)){
 				for(AbstractTransitionRelation<S,O> relation: getOutgoingRelationsFor(stateName)){
@@ -361,7 +362,7 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>,
 				result.addRelation(ownRelation.getSource().getName(), ownRelation.getTarget().getName());
 			}
 		} catch (StateNotFoundException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return result;
 	}
@@ -385,7 +386,7 @@ public abstract class AbstractTransitionSystem<S extends AbstractState<O>,
 			relations.append(relation.toString());
 			relations.append('\n');
 		}
-		return String.format(toStringFormat, getVertices(), startStates.keySet(), endStates.keySet(), relations.toString());
+		return String.format(toStrFormat, getVertices(), startStates.keySet(), endStates.keySet(), relations.toString());
 	}
 	
 }

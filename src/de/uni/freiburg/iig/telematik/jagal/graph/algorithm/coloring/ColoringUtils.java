@@ -17,8 +17,8 @@ public class ColoringUtils {
 	
 	public static <V extends Vertex<U>, E extends Edge<V>, U> Coloring<V> naiveColoring(AbstractGraph<V, E, U> graph) {
 		Validate.notNull(graph);
-		Coloring<V> coloring = new Coloring<V>();
-		Set<Integer> neighborColors = new HashSet<Integer>();
+		Coloring<V> coloring = new Coloring<>();
+		Set<Integer> neighborColors = new HashSet<>();
 		for(V vertex: graph.getVertices()){
 			neighborColors.clear();
 			try {
@@ -27,11 +27,9 @@ public class ColoringUtils {
 						neighborColors.add(coloring.getColor(neighbor));
 					}
 				}
-			} catch (GraphException e) {
+			} catch (GraphException | ParameterException e) {
 				// Cannot hapen, since we only use graph vertexes.
-				e.printStackTrace();
-			} catch (ParameterException e){
-				// Cannot happen, since graph vertexes are never null
+				throw new RuntimeException(e);
 			}
 			Integer vertexColor = 1;
 			while(neighborColors.contains(vertexColor)){
@@ -44,7 +42,7 @@ public class ColoringUtils {
 	
 	public static <V extends Vertex<U>, E extends Edge<V>, U> Coloring<U> getElementColoring(AbstractGraph<V, E, U> graph, Coloring<V> vertexColoring) {
 		Validate.notNull(graph);
-		Coloring<U> elementColoring = new Coloring<U>();
+		Coloring<U> elementColoring = new Coloring<>();
 		for(V vertex: graph.getVertices()){
 			elementColoring.setColor(vertex.getElement(), vertexColoring.getColor(vertex));
 		}
@@ -54,17 +52,21 @@ public class ColoringUtils {
 	/**
 	 * Determines the maximum clique of the given graph.<br>
 	 * WARNING: Extreme bad runtime, use only for small graphs.
+         * @param <V>
+         * @param <E>
+         * @param <U>
 	 * @param graph
+         * @return 
 	 */
 	public static <V extends Vertex<U>, E extends Edge<V>, U> Set<V> maxClique(AbstractGraph<V, E, U> graph){
-		Set<V> vertexes = new HashSet<V>();
-		Set<V> biggestCliqueSoFar = new HashSet<V>();
+		Set<V> vertexes = new HashSet<>();
+		Set<V> biggestCliqueSoFar = new HashSet<>();
 		for(V testVertex: graph.getVertices()){
 			// Build the biggest clique containing the current vertex.
 			vertexes.addAll(graph.getVertices());
 			vertexes.remove(testVertex);
 			
-			Set<V> maxClique = new HashSet<V>();
+			Set<V> maxClique = new HashSet<>();
 			for(V vertex: vertexes){
 				boolean isCliqueVertex = true;
 				// Check if the given vertex is connected to all vertexes in the clique
@@ -77,7 +79,7 @@ public class ColoringUtils {
 						}
 					} catch (GraphException e) {
 						// Cannot happen, since we only use graph vertexes
-						e.printStackTrace();
+						throw new RuntimeException(e);
 					}
 				}
 				if(isCliqueVertex){
@@ -92,7 +94,7 @@ public class ColoringUtils {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		Graph<String> g = new Graph<String>();
+		Graph<String> g = new Graph<>();
 		g.addVertex("1");
 		g.addVertex("2");
 		g.addVertex("3");

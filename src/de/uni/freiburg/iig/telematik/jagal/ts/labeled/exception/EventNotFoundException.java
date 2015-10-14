@@ -13,7 +13,7 @@ public class EventNotFoundException extends TSException {
 	private static final long serialVersionUID = -4259274129546118573L;
 	private static final String toStringFormat = "%s does not contain event %s";
 	
-	private String eventName;
+	private final String eventName;
 
 	public <E extends AbstractEvent, S extends AbstractLTSState<E,O>, R extends AbstractLabeledTransitionRelation<S,E,O>, O extends Object>
 	EventNotFoundException(String eventName, AbstractLabeledTransitionSystem<E,S,R,O> transitionSystem){
@@ -21,6 +21,7 @@ public class EventNotFoundException extends TSException {
 		this.eventName = eventName;
 	}
 	
+        @Override
 	public String getMessage(){
 		return String.format(toStringFormat, getTSName(), getEventName());
 	}

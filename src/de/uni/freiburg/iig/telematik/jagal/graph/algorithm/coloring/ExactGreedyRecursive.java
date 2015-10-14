@@ -26,7 +26,7 @@ public class ExactGreedyRecursive implements GraphColoring {
 	@Override
 	public <V extends Vertex<U>, E extends Edge<V>, U> Coloring<V> determineColoring(AbstractGraph<V, E, U> graph) throws ParameterException {
 		Validate.notNull(graph);
-		Coloring<V> initialColoring = new Coloring<V>();
+		Coloring<V> initialColoring = new Coloring<>();
 		Set<V> maxClique = ColoringUtils.maxClique(graph);
 		int color = 1;
 		for(V vertex: maxClique)
@@ -53,14 +53,12 @@ public class ExactGreedyRecursive implements GraphColoring {
 		if(coloring.isComplete(graph.getVertices())){
 			// TODO: Store coloring
 			storedColorings.add(coloring);
-			return new RecursiveResult<V>(coloring.chromaticNumber(), storedColorings);
+			return new RecursiveResult<>(coloring.chromaticNumber(), storedColorings);
 		}
 		
 		V uncoloredVertex = coloring.getUncoloredKeys(graph.getVertices()).iterator().next();
 		for(int c=1; c <= Math.min(k + 1, best - 1); c++){
-			if(isColorUsedByNeighbors(graph, uncoloredVertex, coloring, c)){
-				continue;
-			} else {
+			if(!isColorUsedByNeighbors(graph, uncoloredVertex, coloring, c)){
 				coloring.setColor(uncoloredVertex, c);
 				RecursiveResult<V> recursiveResult = determineColoringRec(graph, coloring.clone(), Math.max(c, k), best, bound, storedColorings);
 				coloring.uncolor(uncoloredVertex);
@@ -69,7 +67,7 @@ public class ExactGreedyRecursive implements GraphColoring {
 				}
 			}
 		}
-		return new RecursiveResult<V>(best, storedColorings);
+		return new RecursiveResult<>(best, storedColorings);
 	}
 	
 	private <V extends Vertex<U>, E extends Edge<V>, U> boolean isColorUsedByNeighbors(AbstractGraph<V, E, U> graph, 
@@ -90,7 +88,7 @@ public class ExactGreedyRecursive implements GraphColoring {
 			}
 		} catch (GraphException e) {
 			// Cannot happen, since we only use graph Vertices
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return colorAlreadyUsed;
 	}
@@ -106,7 +104,7 @@ public class ExactGreedyRecursive implements GraphColoring {
 	}
 	
 	public static void main(String[] args) throws Exception{
-		Graph<String> g = new Graph<String>();
+		Graph<String> g = new Graph<>();
 		g.addVertex("1");
 		g.addVertex("2");
 		g.addVertex("3");

@@ -106,7 +106,7 @@ public class Traverser<V extends Object> implements Iterator<V>{
 				checkPath();
 				lastNodeAddedChildren = children != null && !children.isEmpty();
 			}catch(VertexNotFoundException | ParameterException e){
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 			return visited.get(visited.size()-1);
 		} 
@@ -142,7 +142,7 @@ public class Traverser<V extends Object> implements Iterator<V>{
 			try {
 				parentsOfLastAddedElement = structure.getParents(lastVisited());
 			} catch (VertexNotFoundException | ParameterException e) {
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 			Set<V> pathElementsToRemove = new HashSet<>();
 			if (path.size() > 1 && parentsOfLastAddedElement != null) {

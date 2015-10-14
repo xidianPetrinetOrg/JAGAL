@@ -26,16 +26,16 @@ public class WeightedGraph<T extends Object> extends AbstractWeightedGraph<Verte
 	
 	@Override
 	protected Vertex<T> createNewVertex(String name, T element) {
-		return new Vertex<T>(name, element);
+		return new Vertex<>(name, element);
 	}
 	
 	@Override
 	protected WeightedEdge<Vertex<T>> createNewEdge(Vertex<T> sourceVertex, Vertex<T> targetVertex) {
-		return new WeightedEdge<Vertex<T>>(sourceVertex, targetVertex);
+		return new WeightedEdge<>(sourceVertex, targetVertex);
 	}
 
 	public static void main(String[] args) throws Exception{
-		WeightedGraph<String> g = new WeightedGraph<String>();
+		WeightedGraph<String> g = new WeightedGraph<>();
 		g.addVertex("A");
 		g.addVertex("B");
 		g.addEdge("A", "B", 0.5);

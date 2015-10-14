@@ -23,7 +23,7 @@ public class TSUtils {
 	}
 	
 	public static <S extends AbstractState<O>, O> Set<S> getStates(Set<AbstractTransitionRelation<S,O>> relations){
-		Set<S> result = new HashSet<S>();
+		Set<S> result = new HashSet<>();
 		for(AbstractTransitionRelation<S,O> relation: relations){
 			result.add(relation.getSource());
 			result.add(relation.getTarget());
@@ -32,7 +32,7 @@ public class TSUtils {
 	}
 	
 	public static <E extends AbstractEvent, S extends AbstractLTSState<E,O>, O> Set<AbstractTransitionRelation<S,O>> convert(Set<AbstractLabeledTransitionRelation<S,E,O>> relations){
-		Set<AbstractTransitionRelation<S,O>> result = new HashSet<AbstractTransitionRelation<S,O>>();
+		Set<AbstractTransitionRelation<S,O>> result = new HashSet<>();
 		for(AbstractLabeledTransitionRelation<S,E,O> relation: relations){
 			result.add((AbstractTransitionRelation<S,O>) relation);
 		}

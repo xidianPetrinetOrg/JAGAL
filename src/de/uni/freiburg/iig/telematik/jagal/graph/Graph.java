@@ -27,16 +27,16 @@ public class Graph<T extends Object> extends AbstractGraph<Vertex<T>, Edge<Verte
 	
 	@Override
 	protected Vertex<T> createNewVertex(String name, T element) {
-		return new Vertex<T>(name, element);
+		return new Vertex<>(name, element);
 	}
 
 	@Override
 	protected Edge<Vertex<T>> createNewEdge(Vertex<T> sourceVertex, Vertex<T> targetVertex) {
-		return new Edge<Vertex<T>>(sourceVertex, targetVertex);
+		return new Edge<>(sourceVertex, targetVertex);
 	}
 
 	public static void main(String[] args) throws Exception {
-		Graph<String> g = new Graph<String>();
+		Graph<String> g = new Graph<>();
 		g.addVertex("v1");
 		g.addVertex("v2");
 		g.addEdge("v1", "v2");

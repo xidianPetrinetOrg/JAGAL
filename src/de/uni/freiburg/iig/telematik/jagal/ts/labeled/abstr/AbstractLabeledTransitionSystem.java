@@ -31,10 +31,10 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	
 	private static final long serialVersionUID = -8005788902665552329L;
 
-	protected static final String toStringFormat = "TS = {S, E, T, S_start, S_end}\n  S       = %s\n  S_start = %s\n  S_end   = %s\n  E       = %s\n  T       = %s\n";
+	protected static final String toStrFormat = "TS = {S, E, T, S_start, S_end}\n  S       = %s\n  S_start = %s\n  S_end   = %s\n  E       = %s\n  T       = %s\n";
 	
-	protected Map<String, E> events = new HashMap<String, E>();
-	protected Map<String, Set<R>> eventRelations = new HashMap<String, Set<R>>();
+	protected Map<String, E> events = new HashMap<>();
+	protected Map<String, Set<R>> eventRelations = new HashMap<>();
 	
 	protected AbstractLabeledTransitionSystem() {
 		super();
@@ -69,6 +69,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	 * @param targetStateName The state where the relation ends
 	 * @param eventName The event which triggers the relation
 	 * @return A new labeled transition relation.
+         * @throws Exception
 	 */
 	protected abstract R createNewTransitionRelation(String sourceStateName, String targetStateName, String eventName) throws Exception;
 	
@@ -89,14 +90,14 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 			return false;
 		for(S state: getStates()){
 			try {
-				Set<E> relationEvents = new HashSet<E>();
+				Set<E> relationEvents = new HashSet<>();
 				for(R outgoingRelation: getOutgoingRelationsFor(state.getName())){
 					if(!relationEvents.add(outgoingRelation.getEvent()))
 						return false;
 				}
 			} catch (StateNotFoundException e) {
 				// Cannot happen, since we iterate over TS states
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 		}
 		return true;
@@ -126,10 +127,10 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	
 	protected void addEvent(E event){
 		events.put(event.getName(), event);
-		eventRelations.put(event.getName(), new HashSet<R>());
+		eventRelations.put(event.getName(), new HashSet<>());
 	}
 	
-	public boolean addEvents(Collection<String> eventNames) {
+	public final boolean addEvents(Collection<String> eventNames) {
 		Validate.notNull(eventNames);
 		boolean modified = false;
 		for(String eventName: eventNames){
@@ -152,7 +153,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	}
 	
 	public Set<E> getLambdaEvents(){
-		Set<E> result = new HashSet<E>();
+		Set<E> result = new HashSet<>();
 		for(E event: getEvents()){
 			if(event.isLambdaEvent()){
 				result.add(event);
@@ -162,7 +163,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	}
 	
 	public Set<E> getNonLambdaEvents(){
-		Set<E> result = new HashSet<E>();
+		Set<E> result = new HashSet<>();
 		for(E event: getEvents()){
 			if(!event.isLambdaEvent()){
 				result.add(event);
@@ -172,7 +173,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	}
 	
 	public Set<E> getEventsWithLabel(String label){
-		Set<E> result = new HashSet<E>();
+		Set<E> result = new HashSet<>();
 		for(E event: events.values()){
 			if(event.getLabel().equals(label)){
 				result.add(event);
@@ -200,11 +201,11 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	}
 	
 	public Set<E> getUnusedEvents(){
-		Set<E> usedEvents = new HashSet<E>();
+		Set<E> usedEvents = new HashSet<>();
 		for(R relation: getRelations()){
 			usedEvents.add(relation.getEvent());
 		}
-		Set<E> unusedEvents = new HashSet<E>(events.values());
+		Set<E> unusedEvents = new HashSet<>(events.values());
 		unusedEvents.removeAll(usedEvents);
 		return unusedEvents;
 	}
@@ -215,7 +216,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	
 	public Set<S> getSourceStates(String eventName) throws EventNotFoundException {
 		validateEvent(eventName);
-		Set<S> result = new HashSet<S>();
+		Set<S> result = new HashSet<>();
 		for(R relation: getRelationsForEvent(eventName)){
 			result.add(relation.getSource());
 		}
@@ -224,7 +225,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	
 	public Set<S> getTargetStates(String eventName) throws EventNotFoundException {
 		validateEvent(eventName);
-		Set<S> result = new HashSet<S>();
+		Set<S> result = new HashSet<>();
 		for(R relation: getRelationsForEvent(eventName)){
 			result.add(relation.getTarget());
 		}
@@ -270,6 +271,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 		return false;
 	}
 	
+        @Override
 	public boolean containsRelation(String sourceStateName, String targetStateName){
 		throw new UnsupportedOperationException();
 	}
@@ -336,7 +338,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 		validateEvent(eventName);
 		validateState(stateName);
 		
-		List<R> incomingRelations =  new ArrayList<R>(getIncomingRelationsFor(stateName));
+		List<R> incomingRelations =  new ArrayList<>(getIncomingRelationsFor(stateName));
 		incomingRelations.retainAll(getRelationsForEvent(eventName));
 		return incomingRelations;
 	}
@@ -353,7 +355,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	public List<R> getOutgoingRelationsFor(String stateName, String eventName) throws StateNotFoundException, EventNotFoundException{
 		validateEvent(eventName);
 		validateState(stateName);
-		List<R> outgoingRelations = new ArrayList<R>(getOutgoingRelationsFor(stateName));
+		List<R> outgoingRelations = new ArrayList<>(getOutgoingRelationsFor(stateName));
 		outgoingRelations.retainAll(getRelationsForEvent(eventName));
 		return outgoingRelations;
 	}
@@ -371,7 +373,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 		validateEvent(eventName);
 		validateState(stateName);
 		
-		List<S> result = new ArrayList<S>();
+		List<S> result = new ArrayList<>();
 		if(hasOutgoingRelations(stateName)){
 			for(R relation: getOutgoingRelationsFor(stateName, eventName)){
 				result.add(relation.getTarget());
@@ -395,7 +397,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 			eventRelations.remove(eventName);
 		} catch (VertexNotFoundException e) {
 			// Edge vertexes are present, since the edge itself was contained in the ts before.
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
         return events.remove(eventName) != null;
 	}
@@ -407,7 +409,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 		Validate.notEmpty(sequence);
 		
 		// Find all possible start states
-		Set<S> possibleStartStates = new HashSet<S>();
+		Set<S> possibleStartStates = new HashSet<>();
 		for (S startState : getStartStates()) {
 			for (R relation : getOutgoingRelationsFor(startState.getName())) {
 				if (relation.getEvent().getLabel().equals(sequence[0])) {
@@ -440,7 +442,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 		}
 		
 		// Check if there is an outgoing relation with the right label
-		Set<S> successors = new HashSet<S>();
+		Set<S> successors = new HashSet<>();
 		for (R relation : getOutgoingRelationsFor(actualState.getName())) {
 			if (relation.getEvent().getLabel().equals(restSequence[0])) {
 				successors.add(relation.getTarget());
@@ -459,10 +461,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 	
 	@Override
 	public boolean addStartState(String stateName) {
-		if(super.addStartState(stateName)){
-			return true;
-		}
-		return false;
+		return super.addStartState(stateName);
 	}
 
 	public void validateEvent(String eventName) throws EventNotFoundException {
@@ -497,7 +496,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 				result.addRelation(ownRelation.getSource().getName(), ownRelation.getTarget().getName(), ownRelation.getEvent().getName());
 			}
 		} catch (TSException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return result;
 	}
@@ -530,7 +529,7 @@ public abstract class AbstractLabeledTransitionSystem<	E extends AbstractEvent,
 			relations.append('\n');
 			firstEntry = false;
 		}
-		return String.format(toStringFormat, getVertices(), startStates.keySet(), endStates.keySet(), events.keySet(), relations.toString());
+		return String.format(toStrFormat, getVertices(), startStates.keySet(), endStates.keySet(), events.keySet(), relations.toString());
 	}
 	
 }

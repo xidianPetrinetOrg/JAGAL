@@ -22,7 +22,6 @@ public class LTSSerializer_Petrify<	S extends AbstractLTSState<E,O>,
 		super(ts);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public String serialize() throws SerializationException {
 		AbstractLabeledTransitionSystem<E,S,T,O> ts = (AbstractLabeledTransitionSystem<E,S,T,O>) getTransitionSystem();
