@@ -18,7 +18,11 @@ import de.uni.freiburg.iig.telematik.jagal.graph.Edge;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 import de.uni.freiburg.iig.telematik.jagal.graph.abstr.AbstractGraph;
 
-public abstract class AbstractGraphComponent<G extends AbstractGraph<V,E,U>,V extends Vertex<U>,E extends Edge<V>,U> extends JPanel {
+public abstract class AbstractGraphComponent<G extends AbstractGraph<V,E,U>,
+                                             V extends Vertex<U>,
+                                             E extends Edge<V>,
+                                             U> 
+                                         extends JPanel {
 	
 	private static final long serialVersionUID = -5919436015610195204L;
 	
