@@ -5,7 +5,9 @@ import de.uni.freiburg.iig.telematik.jagal.graph.Edge;
 import de.uni.freiburg.iig.telematik.jagal.graph.Graph;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 
-public class GraphComponent<G extends Graph<T>, T extends Object> extends AbstractGraphComponent<G, Vertex<T>, Edge<Vertex<T>>, T> {
+public class GraphComponent<G extends Graph<T>, 
+                            T extends Object> 
+             extends AbstractGraphComponent<G, Vertex<T>, Edge<Vertex<T>>, T> {
 
 	private static final long serialVersionUID = 7114630729271184459L;
 
@@ -21,6 +23,9 @@ public class GraphComponent<G extends Graph<T>, T extends Object> extends Abstra
 		g.addVertex("v3");
 		g.addEdge("v1", "v2");
 		g.addEdge("v2", "v3");
-		new DisplayFrame(new GraphComponent(g), true);
+		//new DisplayFrame(new GraphComponent(g), true);  // 仅有此句，显示窗中无内容
+		GraphComponent<Graph<Object>,Object> component = new GraphComponent<>(g);
+		component.initialize();
+		new DisplayFrame(component,true);
 	}
 }
