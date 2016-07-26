@@ -19,18 +19,31 @@ import de.uni.freiburg.iig.telematik.jagal.graph.Graph;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 
-
+/**
+ * 遍历Graph，深度优先/广度优先
+ * @param <V> 顶点类型
+ */
 public class Traverser<V extends Object> implements Iterator<V>{
-	
+	/** Traversable接口对象，AbstractGraph实现了该接口，因此Graph可以是此处的变量*/
 	private Traversable<V> structure = null;
+	/** DEPTHFIRST,BREADTHFIRST */
 	private TraversalMode mode = null;
 	private final List<V> visited = new HashList<>();
+	/** BREADTHFIRST，广度优先，暂存节点 */
 	private final ArrayBlockingQueue<V> queue = new ArrayBlockingQueue<>(10);
+	/** DEPTHFIRST，深度优先，暂存节点 */
 	private final Stack<V> stack = new Stack<>();
 	protected List<V> path = new ArrayList<>();
 	private final Map<V, Integer> indexMap = new HashMap<>();
 	private boolean lastNodeAddedChildren;
 	
+	/**
+	 * 遍历Graph，深度优先/广度优先
+	 * @param traversableStructure Traversable接口对象，AbstractGraph实现了该接口，因此Graph可以是此参数的实参
+	 * @param startNode 开始节点（顶点）
+	 * @param mode   DEPTHFIRST,BREADTHFIRST
+	 * @param <V> 顶点类型
+	 */
 	public Traverser(Traversable<V> traversableStructure, V startNode, TraversalMode mode){
 		structure = traversableStructure;
 		this.mode = mode;
@@ -113,20 +126,24 @@ public class Traverser<V extends Object> implements Iterator<V>{
 		return null;
 	}
 	
+	/** 深度优先，未访问的子节点压入stack暂存*/
 	protected void childFoundDF(V child){
 		if(!visited.contains(child))
 			pushToStack(child);
 	}
 	
+	/** push node to stack */
 	protected void pushToStack(V node){
 		stack.push(node);
 	}
 	
+	/** 广度优先，未访问的子节点入队列 */
 	protected void childFoundBF(V child){
 		if(!visited.contains(child))
 			queue.offer(child);
 	}
 	
+	/** 存入路径 */
 	protected void addToPath(V vertex){
 		path.add(vertex);
 	}
@@ -181,7 +198,7 @@ public class Traverser<V extends Object> implements Iterator<V>{
 		
 		Traverser<Vertex<Integer>> t = new Traverser<>(g, g.getVertex("1"), TraversalMode.DEPTHFIRST);
 		while(t.hasNext()){
-			System.out.println(t.next());
+			System.out.println(t.next());  // 1,3,5,4,2
 		}
 	}
 }

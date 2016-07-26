@@ -23,22 +23,24 @@ public class TraversalUtils {
 
         /**
          * Returns <code>true</code>, if the given traversable structure is
-         * weakly connected.
+         * weakly connected.<br>
+         * A directed graph is called weakly connected if all pairs of edges are connected ignoring the direction of an edge
          *
-         * @param <V>
-         * @param traversableStructure
+         * @param <V> 顶点类型
+         * @param traversableStructure 实现了接口Traversable<V>的对象，AbstractGraph类实现了该接口，因此，Graph可以是此参数的实参
          * @return
          */
         public static <V extends Object> boolean isWeaklyConnected(Traversable<V> traversableStructure) {
                 Validate.notNull(traversableStructure);
                 for (V node : traversableStructure.getNodes()) {
-                        Set<V> nodes = new HashSet<>();
+                        Set<V> nodes = new HashSet<>();  // 顶点node的邻接点集合
                         try {
                                 weakConnectivityRec(traversableStructure, node, nodes);
                         } catch (ParameterException | VertexNotFoundException e) {
                                 // shouldn't be happening
                                 throw new RuntimeException(e);
                         }
+                        // nodes: 所有节点的邻接节点集合，该集合中不含重复顶点。（如果图是若连通的，其数量=图的顶点数）
                         if (nodes.size() < traversableStructure.getNodes().size()) {
                                 return false;
                         }
@@ -50,10 +52,11 @@ public class TraversalUtils {
         /**
          * Returns <code>true</code>, if the given traversable structure is
          * strongly connected.
+         * A graph component is called strongly connected, if all pairs of vertices inside a component are reachable by each other.
          *
-         * @param <V>
+         * @param <V> 顶点类型
          * @param traversableStructure
-         * @param node
+         * @param node 开始顶点
          * @return
          */
         public static <V extends Object> boolean isStronglyConnected(Traversable<V> traversableStructure, V node) {
@@ -66,6 +69,15 @@ public class TraversalUtils {
                 return visitedNodes == traversableStructure.nodeCount();
         }
 
+        /**
+         * 获取强连通分量<br>
+         * 在有向图G中，如果两个顶点间至少存在一条路径，称两个顶点强连通(strongly connected)。
+         * 如果有向图G的每两个顶点都强连通，称G是一个强连通图。非强连通图有向图的极大强连通子图，称为强连通分量(strongly connected components)。
+         * @param
+         * @param traversableStructure
+         * @return
+         * @throws ParameterException
+         */
         public static <V extends Object> Set<Set<V>> getStronglyConnectedComponents(Traversable<V> traversableStructure) throws ParameterException {
                 SCCTarjan<V> tarjan = new SCCTarjan<>();
                 return tarjan.execute(traversableStructure);
@@ -267,7 +279,7 @@ public class TraversalUtils {
          * Returns a list of paths leading from one source vertex to
          * targetVertex.
          *
-         * @param <V>
+         * @param <V> 顶点类型
          * @param traversableStructure The graph that contains the vertexes.
          * @param sourceNodes The source vertexes for the desired paths.
          * @param targetNode The target vertex for the desired paths.
@@ -311,10 +323,22 @@ public class TraversalUtils {
                 return finalPaths;
         }
 
+        /**
+         * 找出顶点v的所有邻接点，进而，递归找出所有节点的邻接节点集合，该集合中不含重复顶点。（如果图是若连通的，其数量=图的顶点数）
+         * this function recursively traverses all neighbours of a node. 
+         * Neighbours can be retrieved by merging children and parents of a vertex. 
+         *
+         * @param <V> 顶点类型
+         * @param graph 实现接口的图
+         * @param v 顶点v
+         * @param nodes 所有节点的邻接节点集合，该集合中不含重复顶点（如果图是若连通的，其数量=图的顶点数）
+         * @throws ParameterException
+         * @throws VertexNotFoundException
+         */
         private static <V extends Object> void weakConnectivityRec(Traversable<V> graph, V v, Set<V> nodes) throws ParameterException, VertexNotFoundException {
                 Set<V> neighbours = new HashSet<>();
-                neighbours.addAll(graph.getChildren(v));
-                neighbours.addAll(graph.getParents(v));
+                neighbours.addAll(graph.getChildren(v));  // 顶点v的子节点集合
+                neighbours.addAll(graph.getParents(v));   // 顶点v的父节点集合
                 for (V n : neighbours) {
                         if (false == nodes.contains(n)) {
                                 nodes.add(n);
