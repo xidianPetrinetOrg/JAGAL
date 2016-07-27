@@ -31,7 +31,7 @@ import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundExcepti
  *   visited.add(node);
  *   for(child: children of node)  { if(visited不含child,即子节点未访问，才压入栈) stack.puch(child); }
  *   【option,记录节点访问顺序】
- *   indexMap.push(node,visited.size()+1); // 源码中，map的值（访问顺序）从2开始，2,3,4,...,实际上不加1，从1开始更自然
+ *   indexMap.push(node,visited.size()); // 源码中，map的值（访问顺序）从2开始，2,3,4,...,改为不加1，从1开始更自然
  *   【option, path.push(node);  checkPath();path访问路径，检查，显示】
  * } while(node != null)
  * 
@@ -117,7 +117,7 @@ public class Traverser<V extends Object> implements Iterator<V>{
 				switch(mode){
 					case DEPTHFIRST:  // 访问栈顶元素，其子节点压入堆栈
 						visited.add(stack.peek());
-						indexMap.put(stack.peek(), visited.size()+1); // 源码中，访问顺序从2开始，2,3,4,...,实际上不加1，从1开始更自然
+						indexMap.put(stack.peek(), visited.size()); // 源码中，访问顺序从2开始，2,3,4,...,改为不加1，从1开始更自然
 						addToPath(stack.peek());
 						children = structure.getChildren(stack.pop());
 						for(V child: children){
@@ -126,7 +126,7 @@ public class Traverser<V extends Object> implements Iterator<V>{
 						break;
 					case BREADTHFIRST: // 访问队首元素，其子接点入队尾
 						visited.add(queue.peek());
-						indexMap.put(queue.peek(), visited.size()+1); // 源码中，访问顺序从2开始，2,3,4,...,实际上不加1，从1开始更自然
+						indexMap.put(queue.peek(), visited.size()); // 源码中，访问顺序从2开始，2,3,4,...,改为不加1，从1开始更自然
 						addToPath(queue.peek());
 						children = structure.getChildren(queue.poll());
 						for(V child: children){
