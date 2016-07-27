@@ -20,7 +20,23 @@ import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 
 /**
- * 遍历有向图Graph，深度优先/广度优先
+ * 遍历有向图Graph，深度优先/广度优先<br>
+ * 实现了Iterator<V>, 调用hasNetxt(),next()完成遍历图<br>
+ * 构造函数传入Traversable接口对象，AbstractGraph实现了该接口，因此Graph可以是构造函数参数的实参<br>
+ * <pre>
+ * DEPTHFIRST深度优先遍历算法：
+ * stack.push(startNode);
+ * do {
+ *   node = stack.pop();
+ *   visited.add(node);
+ *   for(child: children of node)  { if(visited不含child,即子节点未访问，才压入栈) stack.puch(child); }
+ *   【option,记录节点访问顺序】
+ *   indexMap.push(node,visited.size()+1); // 源码中，map的值（访问顺序）从2开始，2,3,4,...,实际上不加1，从1开始更自然
+ *   【option, path.push(node);  checkPath();path访问路径，检查，显示】
+ * } while(node != null)
+ * 
+ * BREADTHFIRST，广度优先遍历，把上述的stack替换为queue即可
+ * </pre>
  * @param <V> 顶点类型
  */
 public class Traverser<V extends Object> implements Iterator<V>{
@@ -28,7 +44,7 @@ public class Traverser<V extends Object> implements Iterator<V>{
 	private Traversable<V> structure = null;
 	/** DEPTHFIRST,BREADTHFIRST */
 	private TraversalMode mode = null;
-	/** 已经访问过的顶点 */
+	/** 记录顶点访问序列 */
 	private final List<V> visited = new HashList<>();
 	/** BREADTHFIRST，广度优先，暂存节点 */
 	private final ArrayBlockingQueue<V> queue = new ArrayBlockingQueue<>(10);
@@ -36,7 +52,7 @@ public class Traverser<V extends Object> implements Iterator<V>{
 	private final Stack<V> stack = new Stack<>();
 	/** 访问路径  */
 	protected List<V> path = new ArrayList<>();
-	/** 顶点索引 */
+	/** 顶点访问顺序，key: Vertex, Value：顶点访问序号 */
 	private final Map<V, Integer> indexMap = new HashMap<>();
 	private boolean lastNodeAddedChildren;
 	
@@ -101,7 +117,7 @@ public class Traverser<V extends Object> implements Iterator<V>{
 				switch(mode){
 					case DEPTHFIRST:  // 访问栈顶元素，其子节点压入堆栈
 						visited.add(stack.peek());
-						indexMap.put(stack.peek(), visited.size()+1);
+						indexMap.put(stack.peek(), visited.size()+1); // 源码中，访问顺序从2开始，2,3,4,...,实际上不加1，从1开始更自然
 						addToPath(stack.peek());
 						children = structure.getChildren(stack.pop());
 						for(V child: children){
@@ -110,7 +126,7 @@ public class Traverser<V extends Object> implements Iterator<V>{
 						break;
 					case BREADTHFIRST: // 访问队首元素，其子接点入队尾
 						visited.add(queue.peek());
-						indexMap.put(queue.peek(), visited.size()+1);
+						indexMap.put(queue.peek(), visited.size()+1); // 源码中，访问顺序从2开始，2,3,4,...,实际上不加1，从1开始更自然
 						addToPath(queue.peek());
 						children = structure.getChildren(queue.poll());
 						for(V child: children){
@@ -155,6 +171,9 @@ public class Traverser<V extends Object> implements Iterator<V>{
 		return visited.get(visited.size()-1);
 	}
 	
+	/**
+	 * 访问路径，检查，显示
+	 */
 	protected void checkPath(){
 //		System.out.print(path + " -> ");
 		if(!lastNodeAddedChildren && !visited.isEmpty()){
@@ -184,6 +203,13 @@ public class Traverser<V extends Object> implements Iterator<V>{
 		throw new UnsupportedOperationException();
 	}
 	
+	public void debug() {
+		System.out.println("visited: " + visited);
+		System.out.println("idexMap: " + indexMap);
+		System.out.println("stack: " + stack);
+		System.out.println("path: " + stack);
+	}
+	
 	public enum TraversalMode {DEPTHFIRST, BREADTHFIRST}
 	
 	public static void main(String[] args) throws Exception {
@@ -201,7 +227,10 @@ public class Traverser<V extends Object> implements Iterator<V>{
 		
 		Traverser<Vertex<Integer>> t = new Traverser<>(g, g.getVertex("1"), TraversalMode.DEPTHFIRST);
 		while(t.hasNext()){
+			t.debug();
 			System.out.println(t.next());  // 1,3,5,4,2
 		}
+		
+		t.debug();
 	}
 }
