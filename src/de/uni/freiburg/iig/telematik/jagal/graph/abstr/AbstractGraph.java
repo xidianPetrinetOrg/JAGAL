@@ -307,7 +307,8 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 //		return check;
 //	}
 	public boolean containsElement(U element) {
-		return vertexMap.containsKey(name);
+		//return vertexMap.containsKey(name);
+		return vertexMap.containsValue(element);  // djt modify
 	}
 
 	/**
