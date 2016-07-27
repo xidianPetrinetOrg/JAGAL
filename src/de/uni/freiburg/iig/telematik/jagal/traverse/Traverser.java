@@ -207,7 +207,7 @@ public class Traverser<V extends Object> implements Iterator<V>{
 		System.out.println("visited: " + visited);
 		System.out.println("idexMap: " + indexMap);
 		System.out.println("stack: " + stack);
-		System.out.println("path: " + stack);
+		System.out.println("path: " + path);
 	}
 	
 	public enum TraversalMode {DEPTHFIRST, BREADTHFIRST}
