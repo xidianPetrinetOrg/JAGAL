@@ -324,7 +324,7 @@ public class TraversalUtils {
         }
 
         /**
-         * 找出顶点v的所有邻接点，进而，递归找出所有节点的邻接节点集合，该集合中不含重复顶点。（如果图是若连通的，其数量=图的顶点数）
+         * 找出顶点v的所有邻接点，进而，递归找出v的邻接节点的邻接点，即与v连接的所有节点集合，该集合中不含重复顶点。（如果图是若连通的，其数量=图的顶点数）
          * this function recursively traverses all neighbours of a node. 
          * Neighbours can be retrieved by merging children and parents of a vertex. 
          *
