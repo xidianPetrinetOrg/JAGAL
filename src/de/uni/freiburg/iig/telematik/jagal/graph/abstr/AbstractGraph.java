@@ -31,17 +31,17 @@ import de.uni.freiburg.iig.telematik.jagal.traverse.Traversable;
  *
  * @param <V> Vertex Type
  * @param <E> Edge Type
- * @param <U>
+ * @param <U> Element of Vertex Type
  */
 public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> implements Traversable<V> {
 
 	protected final String toStringFormat = "%s: V=%s \n E=%s \n";
 
-	protected String name = getDefaultName();
-	protected List<E> edgeList = new HashList<>();
-	protected Map<String, V> vertexMap = new HashMap<>();
-	protected Set<U> elementSet = new HashSet<>();
-	protected Map<String, EdgeContainer<E>> edgeContainers = new LinkedHashMap<>();
+	protected String name = getDefaultName();  // 图名称
+	protected List<E> edgeList = new HashList<>(); // 边集合
+	protected Map<String, V> vertexMap = new HashMap<>(); // Key: vertexName, 顶点集合
+	protected Set<U> elementSet = new HashSet<>();  // 顶点元素集合，不重复
+	protected Map<String, EdgeContainer<E>> edgeContainers = new LinkedHashMap<>();  // key：vertexName，value：边集合
 
 	//------- Constructors ---------------------------------------------------------------
 	public AbstractGraph() {
