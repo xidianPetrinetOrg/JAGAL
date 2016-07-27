@@ -20,20 +20,23 @@ import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 
 /**
- * 遍历Graph，深度优先/广度优先
+ * 遍历有向图Graph，深度优先/广度优先
  * @param <V> 顶点类型
  */
 public class Traverser<V extends Object> implements Iterator<V>{
-	/** Traversable接口对象，AbstractGraph实现了该接口，因此Graph可以是此处的变量*/
+	/** Traversable接口对象，AbstractGraph实现了该接口，因此构造函数的参数traversableStructure，可以设Graph为实参*/
 	private Traversable<V> structure = null;
 	/** DEPTHFIRST,BREADTHFIRST */
 	private TraversalMode mode = null;
+	/** 已经访问过的顶点 */
 	private final List<V> visited = new HashList<>();
 	/** BREADTHFIRST，广度优先，暂存节点 */
 	private final ArrayBlockingQueue<V> queue = new ArrayBlockingQueue<>(10);
 	/** DEPTHFIRST，深度优先，暂存节点 */
 	private final Stack<V> stack = new Stack<>();
+	/** 访问路径  */
 	protected List<V> path = new ArrayList<>();
+	/** 顶点索引 */
 	private final Map<V, Integer> indexMap = new HashMap<>();
 	private boolean lastNodeAddedChildren;
 	
@@ -96,7 +99,7 @@ public class Traverser<V extends Object> implements Iterator<V>{
 			Collection<V> children = null;
 			try {
 				switch(mode){
-					case DEPTHFIRST:
+					case DEPTHFIRST:  // 访问栈顶元素，其子节点压入堆栈
 						visited.add(stack.peek());
 						indexMap.put(stack.peek(), visited.size()+1);
 						addToPath(stack.peek());
@@ -105,7 +108,7 @@ public class Traverser<V extends Object> implements Iterator<V>{
 							childFoundDF(child);
 						}
 						break;
-					case BREADTHFIRST:
+					case BREADTHFIRST: // 访问队首元素，其子接点入队尾
 						visited.add(queue.peek());
 						indexMap.put(queue.peek(), visited.size()+1);
 						addToPath(queue.peek());
