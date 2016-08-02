@@ -50,6 +50,11 @@ public abstract class AbstractGraphComponent<G extends AbstractGraph<V,E,U>,
 		setPreferredSize(getGraphPanel().getPreferredSize());
 	}
 
+	/**
+	 * 子类重写此方法，insertVextex，isertEdge
+	 * @param graph
+	 * @throws Exception
+	 */
 	protected void setupVisualGraph(G graph) throws Exception{
 		Validate.notNull(graph);
 		visualGraph = new mxGraph();
@@ -92,10 +97,21 @@ public abstract class AbstractGraphComponent<G extends AbstractGraph<V,E,U>,
 		layout.execute(visualGraph.getDefaultParent());
 	}
 	
+	/**
+	 * 顶点的shape,缺省是"shape=ellipse",
+	 * 子类可以重写该方法，定义顶点的形状，如"shape=doubleEllipse";
+	 * @param graphVertex
+	 * @return
+	 */
 	protected String getShapeForVertex(V graphVertex) {
 		return "shape=ellipse";
 	}
 
+	/**
+	 * 边的Label，这里是"",子类可以重写此方法，显示边的Label
+	 * @param edge
+	 * @return
+	 */
 	protected String getEdgeLabel(E edge){
 		return "";
 	}
