@@ -18,7 +18,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/junit/junit-4.11.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jgraphx-3_1_2_1.jar" sourcepath="lib/jgraphx-3_1_2_1-src.zip"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jgraphx"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/TOVAL"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
