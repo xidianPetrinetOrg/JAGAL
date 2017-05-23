@@ -40,7 +40,7 @@ public class TraversalUtils {
                                 // shouldn't be happening
                                 throw new RuntimeException(e);
                         }
-                        // nodes: 所有节点的邻接节点集合，该集合中不含重复顶点。（如果图是若连通的，其数量=图的顶点数）
+                        // nodes: 所有节点的邻接节点集合，该集合中不含重复顶点。（如果图是弱连通的，其数量=图的顶点数）
                         if (nodes.size() < traversableStructure.getNodes().size()) {
                                 return false;
                         }
@@ -50,8 +50,8 @@ public class TraversalUtils {
         }
 
         /**
-         * Returns <code>true</code>, if the given traversable structure is
-         * strongly connected.
+         * Returns <code>true</code>, if the given traversable structure is strongly connected.<br>
+         * node是否可以到达图中的所有节点
          * A graph component is called strongly connected, if all pairs of vertices inside a component are reachable by each other.
          *
          * @param <V> 顶点类型
