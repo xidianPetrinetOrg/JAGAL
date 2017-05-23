@@ -51,7 +51,7 @@ public class TraversalUtils {
 
         /**
          * Returns <code>true</code>, if the given traversable structure is strongly connected.<br>
-         * node是否可以到达图中的所有节点
+         * node是否可以到达图中的其它所有节点（不检查是否是封闭的，即检查p0->p1->p2->p3,即p0到其它3个节点都可到达，但是不检查是否p0->p1->p2-p3->p0）
          * A graph component is called strongly connected, if all pairs of vertices inside a component are reachable by each other.
          *
          * @param <V> 顶点类型
@@ -324,14 +324,14 @@ public class TraversalUtils {
         }
 
         /**
-         * 找出顶点v的所有邻接点，进而，递归找出v的邻接节点的邻接点，即与v连接的所有节点集合，该集合中不含重复顶点。（如果图是若连通的，其数量=图的顶点数）
+         * 找出顶点v的所有邻接点，进而，递归找出v的邻接节点的邻接点，即与v连接的所有节点集合，该集合中不含重复顶点。（如果图是弱连通的，其数量=图的顶点数）
          * this function recursively traverses all neighbours of a node. 
          * Neighbours can be retrieved by merging children and parents of a vertex. 
          *
          * @param <V> 顶点类型
          * @param graph 实现接口的图
          * @param v 顶点v
-         * @param nodes 所有节点的邻接节点集合，该集合中不含重复顶点（如果图是若连通的，其数量=图的顶点数）
+         * @param nodes 所有节点的邻接节点集合，该集合中不含重复顶点（如果图是弱连通的，其数量=图的顶点数）
          * @throws ParameterException
          * @throws VertexNotFoundException
          */
