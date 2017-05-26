@@ -96,7 +96,7 @@ public class TraversalUtils {
         /**
          * Checks, if <code>queryNode</code> is a predecessor of
          * <code>baseNode</code>.
-         *
+         * 检查queyNode是baseNode的前继（包括前继的前继），即父节点或父节点的父节点
          * @param <V>
          * @param traversableStructure
          * @param baseNode Basic Node for predecessor search
@@ -120,6 +120,9 @@ public class TraversalUtils {
                         }
                         //Cast is safe since only objects of type V were added to the queue before.
                         for (V parent : traversableStructure.getParents((V) queue.peek())) {
+                        	    if (queryNode.equals(parent)) {  // djt add, 适于querNode在一个Cycle中
+                                     return true;
+                                }
                                 if (!visited.contains(parent) && !queue.contains(parent)) {
                                         queue.add(parent);
                                 }
@@ -132,7 +135,7 @@ public class TraversalUtils {
         /**
          * Checks, if <code>queryNode&lt;T&gt;</code> is a successor of
          * <code>baseNode&lt;T&gt;</code>.
-         *
+         * 检查queyNode是baseNode的后继（包括后继的后继），即子节点或子节点的子节点
          * @param <V>
          * @param traversableStructure
          * @param baseNode Basic Node&lt;T&gt; for successor search
@@ -157,6 +160,9 @@ public class TraversalUtils {
                         }
                         //Cast is safe since only objects of type V were added to the queue before.
                         for (V child : traversableStructure.getChildren((V) queue.peek())) {
+                        	    if (queryNode.equals(child)) {  // djt add, 适于querNode在一个Cycle中
+                                    return true;
+                                }
                                 if (!visited.contains(child) && !queue.contains(child)) {
                                         queue.add(child);
                                 }
@@ -166,7 +172,14 @@ public class TraversalUtils {
                 return false;
         }
 
-//	public static <V extends Vertex<U>, U> Set<V> getPredecessorsFor(AbstractGraph<V, ?, U> graph, V vertex) throws VertexNotFoundException
+        /**
+         * 获取startNode的所有前继，即父节点及父节点的父节点
+         * @param traversableStructure
+         * @param startNode
+         * @return
+         * @throws VertexNotFoundException
+         * @throws ParameterException
+         */
         public static <V extends Object> Set<V> getPredecessorsFor(Traversable<V> traversableStructure, V startNode) throws VertexNotFoundException, ParameterException {
                 Validate.notNull(traversableStructure);
                 Set<V> visitedNodes = new HashSet<>();
@@ -188,7 +201,7 @@ public class TraversalUtils {
                 return visitedNodes;
         }
 
-//	public static <V extends Vertex<U>, U> Set<V> getSuccessorsFor(AbstractGraph<V, ?, U> graph, V vertex) throws GraphException
+        //  获取startNode的所有后继，即子节点及子节点的子节点
         public static <V extends Object> Set<V> getSuccessorsFor(Traversable<V> traversableStructure, V startNode) throws VertexNotFoundException, ParameterException {
                 Validate.notNull(traversableStructure);
                 Set<V> visitedNodes = new HashSet<>();
@@ -254,9 +267,9 @@ public class TraversalUtils {
                 return false;
         }
 
-//	public static <V extends Vertex<U>, U> ArrayBlockingQueue<ArrayList<V>> getDirectedPathsFor(AbstractGraph<V, ?, U> graph, V sourceVertex, V targetVertex) throws VertexNotFoundException{
         /**
-         * Returns a list of paths that lead from sourceVertex to targetVertex.
+         * Returns a list of paths that lead from sourceVertex to targetVertex. <br>
+         * 获取sourceNode到targetNode的所有路径; 如果sourceNode与targetNode相同，认为没有路径
          *
          * @param <V>
          * @param traversableStructure
@@ -274,10 +287,10 @@ public class TraversalUtils {
                 return getDirectedPathsFor(traversableStructure, Arrays.asList(sourceNode), targetNode);
         }
 
-//	public static <V extends Vertex<U>, U> ArrayBlockingQueue<List<V>> getDirectedPathsFor(AbstractGraph<V, ?, U> graph, List<V> sourceVertexes, V targetVertex) throws VertexNotFoundException{
+
         /**
-         * Returns a list of paths leading from one source vertex to
-         * targetVertex.
+         * Returns a list of paths leading from one source vertex to targetVertex.<br>
+         * 获取sourceNodes到targetNode的所有路径; 如果sourceNode与targetNode相同，认为没有路径
          *
          * @param <V> 顶点类型
          * @param traversableStructure The graph that contains the vertexes.
