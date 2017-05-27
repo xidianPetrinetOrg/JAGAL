@@ -223,11 +223,10 @@ public class TraversalUtils {
                 return visitedNodes;
         }
 
-//	public static <V extends Vertex<U>, U> boolean isVertexInCycle(AbstractGraph<V, ?, U> graph, V vertex) throws VertexNotFoundException{
         /**
          * Checks if a vertex is contained in a cycle.<br>
-         * In case the given vertex is in a cycle, it is a predecessor of
-         * itself.
+         * In case the given vertex is in a cycle, it is a predecessor of itself. <br>
+         * 即该节点既是本身的父节点（或父节点的父节点），也是子节点（或子节点的子节点）
          *
          * @param <V>
          * @param traversableStructure The graph that contains the vertex.
@@ -245,8 +244,8 @@ public class TraversalUtils {
         }
 
         /**
-         * Checks if a traversable structure contains a cycle.
-         *
+         * Checks if a traversable structure contains a cycle.<br>
+         * 网中存在节点：该节点既是本身的父节点（或父节点的父节点），也是子节点（或子节点的子节点）
          * @param <V>
          * @param traversableStructure The graph to check for cycles.
          * @return <code>true</code> if the given structure contains at least
