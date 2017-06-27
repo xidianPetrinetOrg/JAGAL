@@ -40,7 +40,7 @@ public abstract class AbstractGraph<V extends Vertex<U>, E extends Edge<V>, U> i
 	protected String name = getDefaultName();  // 图名称
 	protected List<E> edgeList = new HashList<>(); // 边集合
 	protected Map<String, V> vertexMap = new HashMap<>(); // Key: vertexName, 顶点集合
-	protected Set<U> elementSet = new HashSet<>();  // 顶点元素集合，不重复
+	//protected Set<U> elementSet = new HashSet<>();  // 顶点元素集合，不重复, 目前未使用
 	protected Map<String, EdgeContainer<E>> edgeContainers = new LinkedHashMap<>();  // key：vertexName，value：边集合
 
 	//------- Constructors ---------------------------------------------------------------
